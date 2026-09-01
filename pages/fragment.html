@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fragment — Adrien Pons</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Adrien Pons</span>
+  <div class="nav-links">
+    <a href="../espace.html">Espace</a>
+    <a href="atelier.html">Atelier</a>
+    <a href="vestiaire.html">Vestiaire</a>
+    <a href="regard.html">Regard</a>
+    <a href="adrienpons.html">Adrien Pons</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<div class="notebook-page">
+  <div class="notebook">
+    <a class="notebook-back" href="../espace.html">&larr; retour à l'espace</a>
+    <div class="notebook-num" id="nb-num"></div>
+    <h1 class="notebook-title" id="nb-title"></h1>
+    <div class="notebook-image" id="nb-image"></div>
+    <div class="notebook-body">
+      <p class="notebook-text voice" id="nb-text"></p>
+      <div class="notebook-margin" id="nb-margin"></div>
+    </div>
+  </div>
+</div>
+
+<script src="../fragments.js"></script>
+<script src="../main.js"></script>
+<script>
+  initFragmentPage();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,416 @@
+/*
+  style.css — direction artistique validée : fond noir profond, sensation
+  d'espace / archive / constellation. Ce fichier est partagé par toutes
+  les pages du site (index, explorer, fragment, atelier, vestiaire,
+  à propos, contact).
+*/
+
+:root {
+  --void: #0c0b0a;
+  --void-alt: #151312;
+  --ink: #e9e4d8;
+  --ink-soft: #8c8577;
+  --line: #3a362f;
+  --accent: #d97a4f;
+  --star: #6b6558;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--void);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.voice { font-family: Georgia, "Iowan Old Style", "Times New Roman", serif; }
+a { color: inherit; text-decoration: none; }
+
+body {
+  opacity: 0;
+  animation: pageFade 0.5s ease forwards;
+}
+@keyframes pageFade { to { opacity: 1; } }
+
+/* ---------- NAV, présente sur toutes les pages ---------- */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 44px;
+  z-index: 100;
+  font-size: 12.5px;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+}
+.nav-brand { font-weight: 400; color: var(--ink-soft); font-size: 12.5px; letter-spacing: 0.08em; }
+.nav-links { display: flex; gap: 24px; align-items: center; }
+.nav a {
+  color: var(--ink-soft);
+  cursor: pointer;
+  padding: 4px 2px;
+  transition: color 0.4s ease;
+}
+.nav a:hover { color: var(--ink); }
+
+/* ---------- ESPACE : la constellation, coeur du site (explorer.html) ---------- */
+.space {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.constellation-svg {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.constellation-svg line {
+  stroke: var(--line);
+  stroke-width: 0.6;
+  opacity: 0.35;
+}
+
+.star-word {
+  position: absolute;
+  font-family: Georgia, "Iowan Old Style", serif;
+  font-style: italic;
+  font-size: 11px;
+  color: var(--star);
+  opacity: 0.5;
+  pointer-events: none;
+  letter-spacing: 0.02em;
+  animation: drift-word 18s ease-in-out infinite;
+}
+
+.fragment {
+  position: absolute;
+  cursor: pointer;
+  z-index: 3;
+  animation: drift 22s ease-in-out infinite;
+}
+.fragment-surface {
+  background: var(--void-alt);
+  border: 1px solid var(--line);
+  overflow: hidden;
+  transition: border-color 0.5s ease, box-shadow 0.5s ease;
+  box-shadow: 0 0 0 rgba(217,122,79,0);
+}
+.fragment-surface img { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0.92; }
+.fragment-caption {
+  margin-top: 10px;
+  font-size: 11px;
+  color: var(--ink-soft);
+  opacity: 0.7;
+  text-align: center;
+}
+.fragment:hover .fragment-surface { border-color: var(--accent); box-shadow: 0 0 16px rgba(217,122,79,0.15); }
+.fragment:hover { animation-play-state: paused; }
+
+.fragment[data-shape="square"] .fragment-surface { aspect-ratio: 1/1; }
+.fragment[data-shape="tall"]   .fragment-surface { aspect-ratio: 3/5; }
+.fragment[data-shape="wide"]   .fragment-surface { aspect-ratio: 4/5; }
+.fragment[data-shape="long"]   .fragment-surface { aspect-ratio: 5/3; }
+
+@keyframes drift {
+  0%   { transform: translate(0, 0) rotate(var(--rot)); }
+  25%  { transform: translate(8px, -10px) rotate(calc(var(--rot) + 0.6deg)); }
+  50%  { transform: translate(-6px, 6px) rotate(calc(var(--rot) - 0.5deg)); }
+  75%  { transform: translate(6px, 10px) rotate(calc(var(--rot) + 0.3deg)); }
+  100% { transform: translate(0, 0) rotate(var(--rot)); }
+}
+@keyframes drift-word {
+  0%   { transform: translate(0, 0); opacity: 0.35; }
+  50%  { transform: translate(-4px, -8px); opacity: 0.6; }
+  100% { transform: translate(0, 0); opacity: 0.35; }
+}
+
+.fragment.enter {
+  animation: fadeInFrag 1.2s ease forwards, drift 22s ease-in-out infinite;
+  animation-delay: var(--delay), var(--delay);
+  opacity: 0;
+}
+@keyframes fadeInFrag { to { opacity: 1; } }
+
+@media (max-width: 900px) {
+  .space { min-height: 140vh; }
+}
+
+/* ---------- FRAGMENT : page de carnet (fragment.html) ---------- */
+.notebook-page { padding: 130px 40px 110px; min-height: 100vh; }
+.notebook { max-width: 620px; margin: 0 auto; }
+.notebook-back { font-size: 12px; color: var(--ink-soft); background: none; border: none; cursor: pointer; margin-bottom: 54px; padding: 0; }
+.notebook-back:hover { color: var(--ink); }
+.notebook-num { font-size: 12px; color: var(--ink-soft); margin-bottom: 8px; letter-spacing: 0.04em; }
+.notebook-title { font-family: Georgia, "Iowan Old Style", serif; font-size: 24px; font-weight: 400; letter-spacing: 0.01em; margin: 0 0 40px; }
+.notebook-image { margin: 0 auto 8px; background: var(--void-alt); border: 1px solid var(--line); overflow: hidden; }
+.notebook-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.notebook-body { display: grid; grid-template-columns: 1fr 110px; gap: 30px; align-items: start; margin-top: 46px; }
+.notebook-text { font-family: Georgia, "Iowan Old Style", serif; font-size: 18px; line-height: 1.9; color: var(--ink); margin: 0; }
+.notebook-margin { padding-top: 6px; border-left: 1px solid var(--line); padding-left: 16px; }
+.notebook-margin-word {
+  display: block; background: none; border: none;
+  font-family: Georgia, "Iowan Old Style", serif; font-style: italic; font-size: 13px;
+  color: var(--ink-soft); opacity: 0.7; cursor: pointer; text-align: left; padding: 0 0 16px; line-height: 1.3;
+}
+.notebook-margin-word:hover { opacity: 1; color: var(--accent); }
+
+@media (max-width: 700px) {
+  .notebook-body { grid-template-columns: 1fr; }
+  .notebook-margin { border-left: none; border-top: 1px solid var(--line); padding-left: 0; padding-top: 16px; margin-top: 10px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .notebook-margin-word { padding: 0; }
+}
+
+/* ---------- PAGES SIMPLES : atelier, vestiaire, à propos, contact ---------- */
+.simple-page { padding: 140px 40px 110px; min-height: 100vh; }
+.simple-inner { max-width: 640px; margin: 0 auto; }
+.simple-kicker { font-size: 12px; color: var(--ink-soft); margin-bottom: 12px; letter-spacing: 0.03em; }
+.simple-title { font-family: Georgia, "Iowan Old Style", serif; font-size: 30px; font-weight: 400; margin: 0 0 32px; }
+.simple-body p { font-size: 15px; line-height: 1.85; color: var(--ink); margin: 0 0 20px; }
+.simple-list { margin: 32px 0; padding: 0; list-style: none; }
+.simple-list li { padding: 15px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-soft); }
+.simple-list li span { color: var(--ink); font-weight: 500; margin-right: 10px; }
+.simple-list-long li { line-height: 1.75; }
+.simple-list-long li span { display: block; margin-right: 0; margin-bottom: 8px; }
+.simple-cta {
+  display: inline-block; margin-top: 22px; padding: 12px 28px;
+  border: 1px solid var(--line); border-radius: 1px; font-size: 12.5px; color: var(--ink-soft);
+  cursor: pointer; background: none; transition: border-color 0.35s, color 0.35s;
+}
+.simple-cta:hover { border-color: var(--accent); color: var(--accent); }
+.about-fragments { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 32px 0; }
+.about-fragments div {
+  aspect-ratio: 1; background: var(--void-alt); border: 1px solid var(--line);
+  font-size: 10px; color: var(--ink-soft); display: flex; align-items: center; justify-content: center; text-align: center; padding: 8px;
+}
+
+@media (max-width: 780px) {
+  .about-fragments { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- BLOCS NIVEAU 2 : entrées courtes (Atelier, Adrien Pons) ---------- */
+.simple-blocks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 32px 0; }
+.simple-blocks .block {
+  border: 1px solid var(--line); padding: 20px 18px; background: var(--void-alt);
+}
+.simple-blocks .block-label {
+  font-family: Georgia, "Iowan Old Style", serif; font-size: 15px; color: var(--ink);
+  margin: 0 0 10px; letter-spacing: 0.01em;
+}
+.simple-blocks .block-text { font-size: 13px; line-height: 1.6; color: var(--ink-soft); margin: 0; }
+
+.simple-blocks.five { grid-template-columns: repeat(5, 1fr); }
+
+@media (max-width: 780px) {
+  .simple-blocks { grid-template-columns: 1fr; }
+  .simple-blocks.five { grid-template-columns: 1fr; }
+}
+
+/* ---------- APPROFONDISSEMENT : contenu niveau 3, replié par défaut ---------- */
+.simple-more { margin-top: 8px; }
+.simple-more summary {
+  cursor: pointer; font-size: 12.5px; color: var(--ink-soft);
+  list-style: none; padding: 4px 0; border-top: 1px solid var(--line); padding-top: 16px;
+}
+.simple-more summary::-webkit-details-marker { display: none; }
+.simple-more summary::before { content: "+ "; color: var(--accent); }
+.simple-more[open] summary::before { content: "− "; }
+.simple-more summary:hover { color: var(--ink); }
+.simple-more .simple-body { margin-top: 18px; }
+
+/* ---------- INDEX : redirection discrète ---------- */
+.redirect-inner {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.redirect-name {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  letter-spacing: 0.08em;
+}
+
+/* ---------- LISTES CLIQUABLES (regard.html : lien vers un formulaire) ---------- */
+.simple-list-long li { padding: 0; }
+.simple-list-long li a { display: block; padding: 15px 0; color: var(--ink-soft); transition: color 0.35s ease; }
+.simple-list-long li a span { transition: color 0.35s ease; }
+.simple-list-long li a:hover span { color: var(--accent); }
+
+/* ---------- FORMULAIRES : contact, brief-style, piece-juste ----------
+   Même esprit que l'espace : pas de boîtes pleines, des lignes fines,
+   du texte qui respire, des transitions douces plutôt que des à-coups. */
+.form-block { margin-top: 44px; }
+
+.field {
+  margin-bottom: 34px;
+}
+.field-label {
+  display: block;
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+.field-label .req { color: var(--accent); margin-left: 3px; }
+.field-hint {
+  font-size: 12px;
+  color: var(--ink-soft);
+  opacity: 0.7;
+  margin-top: 10px;
+}
+
+/* Champs texte : plus de boîte, juste une ligne — comme le reste du site */
+.field-input,
+.field-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  padding: 9px 2px;
+  transition: border-color 0.4s ease;
+}
+.field-textarea {
+  border: 1px solid var(--line);
+  border-radius: 1px;
+  padding: 14px 16px;
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.8;
+}
+.field-input::placeholder,
+.field-textarea::placeholder { color: var(--star); opacity: 0.75; }
+.field-input:focus,
+.field-textarea:focus { outline: none; border-color: var(--accent); }
+
+/* Options (radio / checkbox) : liste fine, pas de pilules ni de fond */
+.field-options {
+  display: flex;
+  flex-direction: column;
+}
+.field-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 2px;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--ink-soft);
+  transition: color 0.35s ease, padding-left 0.35s ease;
+}
+.field-options label.field-option:last-child { border-bottom: 1px solid var(--line); }
+.field-option:hover { color: var(--ink); }
+.field-option input {
+  accent-color: var(--accent);
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+.field-option.is-checked {
+  color: var(--ink);
+  padding-left: 10px;
+}
+
+.form-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 13px 30px;
+  border: 1px solid var(--line);
+  border-radius: 1px;
+  background: none;
+  color: var(--ink-soft);
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: border-color 0.35s, color 0.35s;
+}
+.form-submit:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.form-submit:disabled { opacity: 0.5; cursor: default; }
+
+.form-status {
+  margin-top: 20px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  min-height: 1.4em;
+  transition: opacity 0.3s ease;
+}
+.form-status.is-error { color: #d9704f; }
+.form-status.is-success { color: var(--accent); }
+
+.form-success {
+  padding: 70px 0;
+  animation: stepIn 0.6s ease;
+}
+.form-success p { font-size: 15px; line-height: 1.85; color: var(--ink); }
+
+/* étapes (brief-style.html) */
+.form-progress {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 40px;
+}
+.form-progress span {
+  height: 1.5px;
+  flex: 1;
+  background: var(--line);
+  transition: background 0.5s ease;
+}
+.form-progress span.is-active,
+.form-progress span.is-done { background: var(--accent); }
+.form-step-label {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+  letter-spacing: 0.03em;
+}
+.form-step { display: none; }
+.form-step.is-active {
+  display: block;
+  animation: stepIn 0.5s ease;
+}
+@keyframes stepIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.form-step-title {
+  font-family: Georgia, "Iowan Old Style", serif;
+  font-size: 21px;
+  font-weight: 400;
+  margin: 0 0 30px;
+}
+.form-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 38px;
+}
+.form-nav-back {
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 0;
+  transition: color 0.3s ease;
+}
+.form-nav-back:hover { color: var(--ink); }
+.form-nav-back:disabled { opacity: 0; pointer-events: none; }
+
+@media (max-width: 600px) {
+  .field-option { padding: 13px 0; }
+}

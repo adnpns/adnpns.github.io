@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La pièce juste — Adrien Pons</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Adrien Pons</span>
+  <div class="nav-links">
+    <a href="../espace.html">Espace</a>
+    <a href="atelier.html">Atelier</a>
+    <a href="vestiaire.html">Vestiaire</a>
+    <a href="regard.html">Regard</a>
+    <a href="adrienpons.html">Adrien Pons</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<div class="simple-page">
+  <div class="simple-inner">
+    <p class="simple-kicker">Regard — La pièce juste</p>
+    <h1 class="simple-title voice">Tu cherches une pièce précise ?</h1>
+    <div class="simple-body">
+      <p>Dis-m'en le plus possible, je pars en recherche et je reviens vers toi avec une sélection.</p>
+    </div>
+
+    <form class="form-block" id="piece-form">
+      <div class="field">
+        <label class="field-label" for="prenom">Ton prénom<span class="req">*</span></label>
+        <input class="field-input" type="text" id="prenom" name="prenom" required>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="contact">Ton email ou numéro pour te recontacter<span class="req">*</span></label>
+        <input class="field-input" type="text" id="contact" name="contact" required>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="budget">Budget que tu envisages pour cette pièce<span class="req">*</span></label>
+        <input class="field-input" type="text" id="budget" name="budget" required placeholder="Ex : autour de 200€">
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="description">Décris la pièce que tu recherches<span class="req">*</span></label>
+        <textarea class="field-textarea" id="description" name="description" required placeholder="Type, couleur, matière, marque si tu en as une en tête, occasion pour laquelle tu la cherches…"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Pour cette recherche, tu préfères :<span class="req">*</span></label>
+        <div class="field-options">
+          <label class="field-option"><input type="radio" name="preference" value="Que je privilégie la seconde main" required> Que je privilégie la seconde main</label>
+          <label class="field-option"><input type="radio" name="preference" value="Que je privilégie le neuf"> Que je privilégie le neuf</label>
+          <label class="field-option"><input type="radio" name="preference" value="Peu importe, je veux surtout trouver la bonne pièce"> Peu importe, je veux surtout trouver la bonne pièce</label>
+        </div>
+      </div>
+
+      <button class="form-submit" type="submit" id="piece-submit">Envoyer</button>
+      <p class="form-status" id="piece-status"></p>
+    </form>
+
+    <div class="form-success" id="piece-success" style="display:none;">
+      <p class="voice" style="font-size:19px;">C'est envoyé.</p>
+      <p>Je pars en recherche et je reviens vers toi.</p>
+      <a class="simple-cta" href="../espace.html">Retour à l'espace</a>
+    </div>
+  </div>
+</div>
+
+<script src="../forms.js"></script>
+<script>
+  (function () {
+    var form = document.getElementById('piece-form');
+    var status = document.getElementById('piece-status');
+    var submitBtn = document.getElementById('piece-submit');
+    wireFieldOptions(form);
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = {
+        prenom: form.prenom.value,
+        contact: form.contact.value,
+        budget: form.budget.value,
+        description: form.description.value,
+        preference: form.preference.value || ''
+      };
+      submitBtn.disabled = true;
+      status.textContent = 'Envoi en cours…';
+      status.className = 'form-status';
+
+      submitToSheet('piece', data).then(function () {
+        form.style.display = 'none';
+        document.getElementById('piece-success').style.display = 'block';
+      }).catch(function () {
+        status.textContent = "Un souci à l'envoi — réessaie, ou écris directement à bonjour@adrienpons.fr.";
+        status.className = 'form-status is-error';
+        submitBtn.disabled = false;
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adrien Pons</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Adrien Pons</span>
+  <div class="nav-links">
+    <a href="espace.html">Espace</a>
+    <a href="pages/atelier.html">Atelier</a>
+    <a href="pages/vestiaire.html">Vestiaire</a>
+    <a href="pages/regard.html">Regard</a>
+    <a href="pages/adrienpons.html">Adrien Pons</a>
+    <a href="pages/contact.html">Contact</a>
+  </div>
+</nav>
+
+<div class="space">
+  <svg class="constellation-svg" id="lines"></svg>
+  <div id="field"></div>
+  <div id="star-words"></div>
+</div>
+
+<script src="fragments.js"></script>
+<script src="main.js"></script>
+<script>
+  initConstellation();
+  applyHighlightFromURL();
+</script>
+
+</body>
+</html>

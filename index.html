@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adrien Pons</title>
+<meta http-equiv="refresh" content="0; url=espace.html">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!--
+    index.html n'est qu'un point d'entrée technique : la direction validée
+    est d'arriver directement dans l'espace (espace.html), sans page
+    d'accueil séparée ni bouton "Explorer" obligatoire. La redirection
+    meta ci-dessus est immédiate ; ce lien sert de filet si un navigateur
+    l'ignore ou si JavaScript est désactivé.
+  -->
+  <div class="redirect-inner">
+    <p class="redirect-name">Adrien Pons — <a href="espace.html">entrer</a></p>
+  </div>
+  <script>window.location.replace('espace.html');</script>
+</body>
+</html>

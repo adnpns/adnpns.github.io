@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — Adrien Pons</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Adrien Pons</span>
+  <div class="nav-links">
+    <a href="../espace.html">Espace</a>
+    <a href="atelier.html">Atelier</a>
+    <a href="vestiaire.html">Vestiaire</a>
+    <a href="regard.html">Regard</a>
+    <a href="adrienpons.html">Adrien Pons</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<div class="simple-page">
+  <div class="simple-inner">
+    <p class="simple-kicker">Contact</p>
+    <h1 class="simple-title voice">On se parle ?</h1>
+    <div class="simple-body">
+      <p>Quelques infos pour démarrer, et je reviens vers toi rapidement.</p>
+    </div>
+
+    <form class="form-block" id="contact-form">
+      <div class="field">
+        <label class="field-label" for="prenom">Ton prénom<span class="req">*</span></label>
+        <input class="field-input" type="text" id="prenom" name="prenom" required>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="email">Ton email<span class="req">*</span></label>
+        <input class="field-input" type="email" id="email" name="email" required>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="whatsapp">Ton numéro / WhatsApp<span class="req">*</span></label>
+        <input class="field-input" type="tel" id="whatsapp" name="whatsapp" required>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Qu'est-ce qui t'amène ?<span class="req">*</span></label>
+        <div class="field-options">
+          <label class="field-option"><input type="radio" name="sujet" value="Trouver une pièce précise" required> Trouver une pièce précise</label>
+          <label class="field-option"><input type="radio" name="sujet" value="Repenser mon vestiaire"> Repenser mon vestiaire</label>
+          <label class="field-option"><input type="radio" name="sujet" value="Un shooting / un projet à styliser"> Un shooting / un projet à styliser</label>
+          <label class="field-option"><input type="radio" name="sujet" value="Un conseil ponctuel"> Un conseil ponctuel</label>
+          <label class="field-option"><input type="radio" name="sujet" value="Autre"> Autre</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="instagram">Ton Instagram</label>
+        <input class="field-input" type="text" id="instagram" name="instagram" placeholder="@...">
+      </div>
+
+      <div class="field">
+        <label class="field-label">Ton budget, en gros</label>
+        <div class="field-options">
+          <label class="field-option"><input type="radio" name="budget" value="Moins de 150€"> Moins de 150€</label>
+          <label class="field-option"><input type="radio" name="budget" value="150–400€"> 150–400€</label>
+          <label class="field-option"><input type="radio" name="budget" value="400–800€"> 400–800€</label>
+          <label class="field-option"><input type="radio" name="budget" value="Autre / à discuter"> Autre / à discuter</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Comment tu préfères acheter</label>
+        <div class="field-options">
+          <label class="field-option"><input type="radio" name="canal" value="Seconde main de préférence"> Seconde main de préférence</label>
+          <label class="field-option"><input type="radio" name="canal" value="Neuf de préférence"> Neuf de préférence</label>
+          <label class="field-option"><input type="radio" name="canal" value="Peu importe"> Peu importe</label>
+          <label class="field-option"><input type="radio" name="canal" value="On en parle ensemble"> On en parle ensemble</label>
+        </div>
+      </div>
+
+      <button class="form-submit" type="submit" id="contact-submit">Envoyer</button>
+      <p class="form-status" id="contact-status"></p>
+    </form>
+
+    <div class="form-success" id="contact-success" style="display:none;">
+      <p class="voice" style="font-size:19px;">C'est envoyé.</p>
+      <p>Je reviens vers toi rapidement.</p>
+      <a class="simple-cta" href="../espace.html">Retour à l'espace</a>
+    </div>
+  </div>
+</div>
+
+<script src="../forms.js"></script>
+<script>
+  (function () {
+    var form = document.getElementById('contact-form');
+    var status = document.getElementById('contact-status');
+    var submitBtn = document.getElementById('contact-submit');
+    wireFieldOptions(form);
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var data = {
+        prenom: form.prenom.value,
+        email: form.email.value,
+        whatsapp: form.whatsapp.value,
+        sujet: form.sujet.value || '',
+        instagram: form.instagram.value,
+        budget: form.budget.value || '',
+        canal: form.canal.value || ''
+      };
+      submitBtn.disabled = true;
+      status.textContent = 'Envoi en cours…';
+      status.className = 'form-status';
+
+      submitToSheet('contact', data).then(function () {
+        form.style.display = 'none';
+        document.getElementById('contact-success').style.display = 'block';
+      }).catch(function () {
+        status.textContent = "Un souci à l'envoi — réessaie, ou écris directement à bonjour@adrienpons.fr.";
+        status.className = 'form-status is-error';
+        submitBtn.disabled = false;
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

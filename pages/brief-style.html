@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ton brief style — Adrien Pons</title>
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-brand">Adrien Pons</span>
+  <div class="nav-links">
+    <a href="../espace.html">Espace</a>
+    <a href="atelier.html">Atelier</a>
+    <a href="vestiaire.html">Vestiaire</a>
+    <a href="regard.html">Regard</a>
+    <a href="adrienpons.html">Adrien Pons</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<div class="simple-page">
+  <div class="simple-inner">
+    <p class="simple-kicker">Regard — Le regard / Le vestiaire</p>
+    <h1 class="simple-title voice">Ton brief style</h1>
+    <div class="simple-body" id="brief-intro">
+      <p>Sept petites étapes pour que je comprenne ton style, ton quotidien et tes envies avant qu'on se parle. Compte 5 à 10 minutes.</p>
+    </div>
+
+    <form class="form-block" id="brief-form">
+      <div class="form-progress" id="brief-progress"></div>
+
+      <!-- Étape 1 — Toi -->
+      <div class="form-step is-active" data-step="1">
+        <p class="form-step-label">Étape 1 / 7</p>
+        <h2 class="form-step-title voice">Toi</h2>
+
+        <div class="field">
+          <label class="field-label" for="prenom">Ton prénom<span class="req">*</span></label>
+          <input class="field-input" type="text" id="prenom" name="prenom" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="email">Ton email<span class="req">*</span></label>
+          <input class="field-input" type="email" id="email" name="email" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="telephone">Ton téléphone / WhatsApp</label>
+          <input class="field-input" type="tel" id="telephone" name="telephone">
+        </div>
+        <div class="field">
+          <label class="field-label" for="instagram">Ton Instagram</label>
+          <input class="field-input" type="text" id="instagram" name="instagram" placeholder="@...">
+        </div>
+      </div>
+
+      <!-- Étape 2 — Ton quotidien -->
+      <div class="form-step" data-step="2">
+        <p class="form-step-label">Étape 2 / 7</p>
+        <h2 class="form-step-title voice">Ton quotidien</h2>
+
+        <div class="field">
+          <label class="field-label">Ta situation aujourd'hui<span class="req">*</span></label>
+          <div class="field-options">
+            <label class="field-option"><input type="radio" name="situation" value="Vie pro en bureau" required> Vie pro en bureau</label>
+            <label class="field-option"><input type="radio" name="situation" value="Vie pro terrain / créative"> Vie pro terrain / créative</label>
+            <label class="field-option"><input type="radio" name="situation" value="Études"> Études</label>
+            <label class="field-option"><input type="radio" name="situation" value="Parentalité"> Parentalité</label>
+            <label class="field-option"><input type="radio" name="situation" value="Autre"> Autre</label>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label">Les moments où tu as le plus besoin d'aide côté style</label>
+          <div class="field-options">
+            <label class="field-option"><input type="checkbox" name="moments" value="Travail"> Travail</label>
+            <label class="field-option"><input type="checkbox" name="moments" value="Soirées / sorties"> Soirées / sorties</label>
+            <label class="field-option"><input type="checkbox" name="moments" value="Quotidien casual"> Quotidien casual</label>
+            <label class="field-option"><input type="checkbox" name="moments" value="Occasions spéciales"> Occasions spéciales</label>
+            <label class="field-option"><input type="checkbox" name="moments" value="Rendez-vous"> Rendez-vous</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 3 — Ton style aujourd'hui -->
+      <div class="form-step" data-step="3">
+        <p class="form-step-label">Étape 3 / 7</p>
+        <h2 class="form-step-title voice">Ton style aujourd'hui</h2>
+
+        <div class="field">
+          <label class="field-label" for="style_actuel">Comment tu décrirais ton style aujourd'hui<span class="req">*</span></label>
+          <textarea class="field-textarea" id="style_actuel" name="style_actuel" required></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label" for="ce_qui_plait">Ce que tu aimes dans ta garde-robe actuelle</label>
+          <textarea class="field-textarea" id="ce_qui_plait" name="ce_qui_plait"></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label" for="ce_qui_change">Ce qui ne te correspond plus, ce que tu as envie de changer</label>
+          <textarea class="field-textarea" id="ce_qui_change" name="ce_qui_change"></textarea>
+        </div>
+      </div>
+
+      <!-- Étape 4 — Morphologie & confort -->
+      <div class="form-step" data-step="4">
+        <p class="form-step-label">Étape 4 / 7</p>
+        <h2 class="form-step-title voice">Morphologie & confort</h2>
+
+        <div class="field">
+          <label class="field-label" for="taille">Tes tailles habituelles (haut / bas)</label>
+          <input class="field-input" type="text" id="taille" name="taille" placeholder="Ex : M en haut, 38 en bas">
+        </div>
+        <div class="field">
+          <label class="field-label" for="pointure">Ta pointure</label>
+          <input class="field-input" type="text" id="pointure" name="pointure">
+        </div>
+        <div class="field">
+          <label class="field-label" for="matieres_eviter">Des coupes ou matières que tu évites, et pourquoi</label>
+          <textarea class="field-textarea" id="matieres_eviter" name="matieres_eviter"></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label" for="zones">Des zones que tu préfères mettre en valeur ou au contraire couvrir</label>
+          <textarea class="field-textarea" id="zones" name="zones" placeholder="Facultatif, uniquement si ça t'aide à en parler"></textarea>
+        </div>
+      </div>
+
+      <!-- Étape 5 — Couleurs & matières -->
+      <div class="form-step" data-step="5">
+        <p class="form-step-label">Étape 5 / 7</p>
+        <h2 class="form-step-title voice">Couleurs & matières</h2>
+
+        <div class="field">
+          <label class="field-label" for="couleurs_aimees">Couleurs que tu aimes porter</label>
+          <input class="field-input" type="text" id="couleurs_aimees" name="couleurs_aimees">
+        </div>
+        <div class="field">
+          <label class="field-label" for="couleurs_eviter">Couleurs que tu évites</label>
+          <input class="field-input" type="text" id="couleurs_eviter" name="couleurs_eviter">
+        </div>
+        <div class="field">
+          <label class="field-label" for="matieres_aimees">Matières que tu préfères</label>
+          <input class="field-input" type="text" id="matieres_aimees" name="matieres_aimees">
+        </div>
+      </div>
+
+      <!-- Étape 6 — Inspiration & budget -->
+      <div class="form-step" data-step="6">
+        <p class="form-step-label">Étape 6 / 7</p>
+        <h2 class="form-step-title voice">Inspiration & budget</h2>
+
+        <div class="field">
+          <label class="field-label" for="inspirations">Marques ou personnes dont le style t'inspire</label>
+          <textarea class="field-textarea" id="inspirations" name="inspirations"></textarea>
+        </div>
+        <div class="field">
+          <label class="field-label" for="lien_photos">Un lien vers des photos d'inspiration (Pinterest, Instagram, album partagé…)</label>
+          <input class="field-input" type="text" id="lien_photos" name="lien_photos" placeholder="https://...">
+          <p class="field-hint">Pas de fichier à joindre ici pour l'instant — un lien suffit.</p>
+        </div>
+        <div class="field">
+          <label class="field-label">Budget global envisagé</label>
+          <div class="field-options">
+            <label class="field-option"><input type="radio" name="budget" value="Moins de 300€"> Moins de 300€</label>
+            <label class="field-option"><input type="radio" name="budget" value="300–800€"> 300–800€</label>
+            <label class="field-option"><input type="radio" name="budget" value="800–1500€"> 800–1500€</label>
+            <label class="field-option"><input type="radio" name="budget" value="Plus de 1500€"> Plus de 1500€</label>
+            <label class="field-option"><input type="radio" name="budget" value="Autre / à discuter"> Autre / à discuter</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Étape 7 — Logistique -->
+      <div class="form-step" data-step="7">
+        <p class="form-step-label">Étape 7 / 7</p>
+        <h2 class="form-step-title voice">Dernière ligne droite</h2>
+
+        <div class="field">
+          <label class="field-label">Ce que tu attends de cet accompagnement</label>
+          <div class="field-options">
+            <label class="field-option"><input type="checkbox" name="attentes" value="Un tri de mon vestiaire actuel"> Un tri de mon vestiaire actuel</label>
+            <label class="field-option"><input type="checkbox" name="attentes" value="De nouvelles pièces"> De nouvelles pièces</label>
+            <label class="field-option"><input type="checkbox" name="attentes" value="Une direction claire, une feuille de route"> Une direction claire, une feuille de route</label>
+            <label class="field-option"><input type="checkbox" name="attentes" value="Un accompagnement shopping en physique"> Un accompagnement shopping en physique</label>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="ville">Ta ville / zone</label>
+          <input class="field-input" type="text" id="ville" name="ville">
+        </div>
+        <div class="field">
+          <label class="field-label">Délai souhaité</label>
+          <div class="field-options">
+            <label class="field-option"><input type="radio" name="delai" value="Le plus tôt possible"> Le plus tôt possible</label>
+            <label class="field-option"><input type="radio" name="delai" value="Dans le mois"> Dans le mois</label>
+            <label class="field-option"><input type="radio" name="delai" value="Pas pressé.e"> Pas pressé.e</label>
+          </div>
+        </div>
+        <div class="field">
+          <label class="field-label" for="autre">Autre chose à me dire avant qu'on se parle ?</label>
+          <textarea class="field-textarea" id="autre" name="autre"></textarea>
+        </div>
+      </div>
+
+      <div class="form-nav">
+        <button type="button" class="form-nav-back" id="brief-back">← Précédent</button>
+        <button type="button" class="form-submit" id="brief-next">Suivant</button>
+        <button type="submit" class="form-submit" id="brief-submit" style="display:none;">Envoyer</button>
+      </div>
+      <p class="form-status" id="brief-status"></p>
+    </form>
+
+    <div class="form-success" id="brief-success" style="display:none;">
+      <p class="voice" style="font-size:19px;">C'est envoyé, merci.</p>
+      <p>J'ai tout ce qu'il me faut pour préparer notre échange.</p>
+      <a class="simple-cta" href="../espace.html">Retour à l'espace</a>
+    </div>
+  </div>
+</div>
+
+<script src="../forms.js"></script>
+<script>
+  (function () {
+    var form = document.getElementById('brief-form');
+    var steps = Array.prototype.slice.call(form.querySelectorAll('.form-step'));
+    var total = steps.length;
+    var current = 0;
+    var progress = document.getElementById('brief-progress');
+    var backBtn = document.getElementById('brief-back');
+    var nextBtn = document.getElementById('brief-next');
+    var submitBtn = document.getElementById('brief-submit');
+    var status = document.getElementById('brief-status');
+    var intro = document.getElementById('brief-intro');
+
+    for (var i = 0; i < total; i++) {
+      var dot = document.createElement('span');
+      progress.appendChild(dot);
+    }
+    wireFieldOptions(form);
+
+    function render() {
+      steps.forEach(function (s, idx) { s.classList.toggle('is-active', idx === current); });
+      var dots = progress.children;
+      for (var i = 0; i < dots.length; i++) {
+        dots[i].classList.toggle('is-done', i < current);
+        dots[i].classList.toggle('is-active', i === current);
+      }
+      backBtn.disabled = current === 0;
+      nextBtn.style.display = current === total - 1 ? 'none' : '';
+      submitBtn.style.display = current === total - 1 ? '' : 'none';
+      intro.style.display = current === 0 ? '' : 'none';
+      status.textContent = '';
+      status.className = 'form-status';
+    }
+
+    function currentStepValid() {
+      var els = steps[current].querySelectorAll('[required]');
+      for (var i = 0; i < els.length; i++) {
+        if (!els[i].reportValidity()) return false;
+      }
+      return true;
+    }
+
+    nextBtn.addEventListener('click', function () {
+      if (!currentStepValid()) return;
+      if (current < total - 1) { current++; render(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+    });
+    backBtn.addEventListener('click', function () {
+      if (current > 0) { current--; render(); window.scrollTo({top: 0, behavior: 'smooth'}); }
+    });
+
+    function checkedValues(name) {
+      var vals = [];
+      form.querySelectorAll('input[name="' + name + '"]:checked').forEach(function (i) { vals.push(i.value); });
+      return vals.join(', ');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!currentStepValid()) return;
+
+      var data = {
+        prenom: form.prenom.value,
+        email: form.email.value,
+        telephone: form.telephone.value,
+        instagram: form.instagram.value,
+        situation: form.situation.value || '',
+        moments: checkedValues('moments'),
+        style_actuel: form.style_actuel.value,
+        ce_qui_plait: form.ce_qui_plait.value,
+        ce_qui_change: form.ce_qui_change.value,
+        taille: form.taille.value,
+        pointure: form.pointure.value,
+        matieres_eviter: form.matieres_eviter.value,
+        zones: form.zones.value,
+        couleurs_aimees: form.couleurs_aimees.value,
+        couleurs_eviter: form.couleurs_eviter.value,
+        matieres_aimees: form.matieres_aimees.value,
+        inspirations: form.inspirations.value,
+        lien_photos: form.lien_photos.value,
+        budget: form.budget.value || '',
+        attentes: checkedValues('attentes'),
+        ville: form.ville.value,
+        delai: form.delai.value || '',
+        autre: form.autre.value
+      };
+
+      submitBtn.disabled = true;
+      status.textContent = 'Envoi en cours…';
+      status.className = 'form-status';
+
+      submitToSheet('brief', data).then(function () {
+        form.style.display = 'none';
+        intro.style.display = 'none';
+        document.getElementById('brief-success').style.display = 'block';
+      }).catch(function () {
+        status.textContent = "Un souci à l'envoi — réessaie, ou écris directement à bonjour@adrienpons.fr.";
+        status.className = 'form-status is-error';
+        submitBtn.disabled = false;
+      });
+    });
+
+    render();
+  })();
+</script>
+
+</body>
+</html>
