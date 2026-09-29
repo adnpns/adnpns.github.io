@@ -427,7 +427,7 @@ body {
           width: 100%;
           gap: 10px 16px;
     }
-    input, textarea, select, .field-textarea {
+        .field-input, .field-textarea, textarea, select {
           font-size: 16px;
     }
     .form-nav-back {
