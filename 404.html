@@ -3,10 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Page introuvable — Adrien Pons</title>
+<title>Pièce introuvable — Adrien Pons</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="stylesheet" href="/style.css">
+<style>
+  .lost-tag { display: inline-block; font-family: Georgia, serif; font-style: italic; color: var(--accent); border: 1px dashed var(--accent); border-radius: 3px; padding: 4px 12px; margin-bottom: 28px; transform: rotate(-3deg); }
+  .lost-find { display: flex; gap: 22px; align-items: center; margin: 34px 0 30px; padding: 18px; border: 1px solid var(--line); border-radius: 6px; text-decoration: none; transition: border-color .35s ease; }
+  .lost-find:hover { border-color: var(--accent); }
+  .lost-find img { width: 120px; height: 120px; object-fit: cover; border-radius: 3px; flex-shrink: 0; background: var(--void-alt); }
+  .lost-find .t { font-family: Georgia, serif; font-size: 20px; color: var(--ink); margin: 0 0 6px; }
+  .lost-find .x { color: var(--ink-soft); font-size: 14px; line-height: 1.6; margin: 0; }
+  .lost-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+  .lost-actions button { font: inherit; background: none; cursor: pointer; }
+  @media (max-width: 520px) { .lost-find { flex-direction: column; align-items: flex-start; } .lost-find img { width: 100%; height: 220px; } }
+</style>
 </head>
 <body>
 
@@ -24,14 +35,44 @@
 
 <div class="simple-page">
   <div class="simple-inner">
-    <p class="simple-kicker">404</p>
-    <h1 class="simple-title voice">Cette page n'existe pas. Ou plus.</h1>
+    <span class="lost-tag">404 · Taille unique · Introuvable</span>
+    <h1 class="simple-title voice">Cette page est partie avant la fin de la vente.</h1>
     <div class="simple-body">
-      <p>Le lien est peut-être ancien. Tout le reste est toujours là.</p>
+      <p>Tous les bacs ont été retournés, aucune trace. Pour se consoler, une trouvaille tirée au hasard dans le vestiaire&nbsp;:</p>
     </div>
-    <a class="simple-cta" href="/espace.html">Retour à l'espace</a>
+
+    <a class="lost-find" id="find" href="/espace.html">
+      <img id="find-img" src="" alt="">
+      <div>
+        <p class="t" id="find-title">Le vestiaire</p>
+        <p class="x" id="find-text">Des pièces, des trouvailles, des objets.</p>
+      </div>
+    </a>
+
+    <div class="lost-actions">
+      <button class="simple-cta" id="again" type="button">Une autre trouvaille ↻</button>
+      <a class="simple-cta" href="/espace.html">Retour à l'espace</a>
+    </div>
   </div>
 </div>
+
+<script src="/fragments.js"></script>
+<script>
+  (function () {
+    if (typeof FRAGMENTS === 'undefined' || !FRAGMENTS.length) { document.getElementById('again').style.display = 'none'; return; }
+    var last = -1;
+    function pick() {
+      var i; do { i = Math.floor(Math.random() * FRAGMENTS.length); } while (FRAGMENTS.length > 1 && i === last);
+      last = i; var f = FRAGMENTS[i];
+      document.getElementById('find').href = '/pages/fragment.html?key=' + encodeURIComponent(f.key);
+      var img = document.getElementById('find-img'); img.src = '/' + f.image; img.alt = f.title;
+      document.getElementById('find-title').textContent = f.num + ' · ' + f.title;
+      var t = f.text || ''; document.getElementById('find-text').textContent = t.length > 140 ? t.slice(0, 137).replace(/\s+\S*$/, '') + '…' : t;
+    }
+    document.getElementById('again').addEventListener('click', pick);
+    pick();
+  })();
+</script>
 
 </body>
 </html>
