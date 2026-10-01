@@ -57,7 +57,9 @@ function renderField() {
     el.dataset.shape = f.shape;
     el.style.left = pos.x + '%';
     el.style.top = (pos.y / units * 100) + '%';
-    el.style.width = pos.width + 'px';
+    // Les tailles sont pensées pour un écran de 1440 px : on réduit sur les écrans plus étroits.
+    const scale = Math.max(0.55, Math.min(1, window.innerWidth / 1440));
+    el.style.width = Math.round(pos.width * scale) + 'px';
     el.style.setProperty('--rot', pos.rot + 'deg');
     el.style.setProperty('--delay', (i * 0.15) + 's');
     el.innerHTML =
