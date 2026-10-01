@@ -48,4 +48,22 @@
           <changefreq>yearly</changefreq>
           <priority>0.5</priority>
     </url>
+    <url>
+          <loc>https://adnpns.github.io/pages/personal-shopper-paris.html</loc>
+          <lastmod>2026-10-01</lastmod>
+          <changefreq>yearly</changefreq>
+          <priority>0.7</priority>
+    </url>
+    <url>
+          <loc>https://adnpns.github.io/pages/acheter-seconde-main-sans-se-tromper.html</loc>
+          <lastmod>2026-10-01</lastmod>
+          <changefreq>yearly</changefreq>
+          <priority>0.7</priority>
+    </url>
+    <url>
+          <loc>https://adnpns.github.io/pages/styliste-shooting-publicitaire.html</loc>
+          <lastmod>2026-10-01</lastmod>
+          <changefreq>yearly</changefreq>
+          <priority>0.7</priority>
+    </url>
 </urlset>
