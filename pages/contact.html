@@ -11,6 +11,18 @@
 <meta property="og:description" content="On se parle ? Quelques informations pour comprendre votre demande et revenir vers vous rapidement.">
 <meta property="og:url" content="https://adnpns.github.io/pages/contact.html">
 <meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="Adrien Pons">
+<meta property="og:image" content="https://adnpns.github.io/images/og-adrien-pons.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Adrien Pons — Styliste &amp; Personal Shopper à Paris">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contact — Adrien Pons">
+<meta name="twitter:description" content="On se parle ? Quelques informations pour comprendre votre demande et revenir vers vous rapidement.">
+<meta name="twitter:image" content="https://adnpns.github.io/images/og-adrien-pons.jpg">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="../favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="stylesheet" href="../style.css"><
 </head>
 <body>
@@ -126,7 +138,7 @@
         form.style.display = 'none';
         document.getElementById('contact-success').style.display = 'block';
       }).catch(function () {
-        status.textContent = "Un souci à l'envoi. Réessayez, ou écrivez directement à bonjour@adrienpons.fr.";
+        status.textContent = "Un souci à l'envoi. Réessayez dans un instant.";
         status.className = 'form-status is-error';
         submitBtn.disabled = false;
       });

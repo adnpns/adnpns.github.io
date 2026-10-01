@@ -7,6 +7,9 @@
 <meta name="description" content="Répondez à quelques questions pour qu'Adrien Pons comprenne votre style, votre quotidien et vos objectifs avant votre rendez-vous personal styling.">
 <link rel="canonical" href="https://adnpns.github.io/pages/brief-style.html">
 <meta name="robots" content="noindex, follow">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="../favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <link rel="stylesheet" href="../style.css"><
 </head>
 <body>
@@ -316,7 +319,7 @@
         intro.style.display = 'none';
         document.getElementById('brief-success').style.display = 'block';
       }).catch(function () {
-        status.textContent = "Un souci à l'envoi. Réessayez, ou écrivez directement à bonjour@adrienpons.fr.";
+        status.textContent = "Un souci à l'envoi. Réessayez dans un instant.";
         status.className = 'form-status is-error';
         submitBtn.disabled = false;
       });
