@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>La Pièce Juste — Personal Shopping sur Mesure | Adrien Pons</title>
-<meta name="description" content="Vous cherchez une pièce précise ? Adrien Pons part en recherche et revient vers vous avec une sélection sur mesure. Personal shopping à Paris.">
+<meta name="description" content="Une pièce précise en tête ? Adrien Pons part en recherche et revient avec une sélection sur mesure. Personal shopping à Paris.">
 <link rel="canonical" href="https://adrienpons.com/pages/piece-juste.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="La Pièce Juste — Personal Shopping sur Mesure">
-<meta property="og:description" content="Dis-m'en le plus possible, je pars en recherche et je reviens vers toi avec une sélection.">
+<meta property="og:description" content="Le plus de détails possible, puis une recherche, puis une sélection.">
 <meta property="og:url" content="https://adrienpons.com/pages/piece-juste.html">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="Adrien Pons">
@@ -18,7 +18,7 @@
 <meta property="og:image:alt" content="Adrien Pons — Styliste &amp; Personal Shopper à Paris">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="La Pièce Juste — Personal Shopping sur Mesure">
-<meta name="twitter:description" content="Dis-m'en le plus possible, je pars en recherche et je reviens vers toi avec une sélection.">
+<meta name="twitter:description" content="Le plus de détails possible, puis une recherche, puis une sélection.">
 <meta name="twitter:image" content="https://adrienpons.com/images/og-adrien-pons.jpg">
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="../favicon-32.png" sizes="32x32">
@@ -60,39 +60,39 @@
 <div class="simple-page">
   <div class="simple-inner">
     <p class="simple-kicker">La pièce juste</p>
-    <h1 class="simple-title voice">Tu cherches une pièce précise ?</h1>
+    <h1 class="simple-title voice">Une pièce précise en tête ?</h1>
     <div class="simple-body">
-      <p>Dis-m'en le plus possible, je pars en recherche et je reviens vers toi avec une sélection.</p>
+      <p>Le plus de détails possible, puis une recherche, puis une sélection.</p>
       <p><a href="personal-shopper-paris.html">Comment se passe une recherche, en détail</a></p>
     </div>
 
     <form class="form-block" id="piece-form">
       <div class="field">
-        <label class="field-label" for="prenom">Ton prénom<span class="req">*</span></label>
+        <label class="field-label" for="prenom">Prénom<span class="req">*</span></label>
         <input class="field-input" type="text" id="prenom" name="prenom" required>
       </div>
 
       <div class="field">
-        <label class="field-label" for="contact">Ton email ou numéro pour te recontacter<span class="req">*</span></label>
+        <label class="field-label" for="contact">E-mail ou numéro pour le retour<span class="req">*</span></label>
         <input class="field-input" type="text" id="contact" name="contact" required>
       </div>
 
       <div class="field">
-        <label class="field-label" for="budget">Budget que tu envisages pour cette pièce<span class="req">*</span></label>
+        <label class="field-label" for="budget">Budget envisagé pour cette pièce<span class="req">*</span></label>
         <input class="field-input" type="text" id="budget" name="budget" required placeholder="Ex : autour de 200€">
       </div>
 
       <div class="field">
-        <label class="field-label" for="description">Décris la pièce que tu recherches<span class="req">*</span></label>
-        <textarea class="field-textarea" id="description" name="description" required placeholder="Type, couleur, matière, marque si tu en as une en tête, occasion pour laquelle tu la cherches…"></textarea>
+        <label class="field-label" for="description">Description de la pièce recherchée<span class="req">*</span></label>
+        <textarea class="field-textarea" id="description" name="description" required placeholder="Type, couleur, matière, marque éventuelle, occasion…"></textarea>
       </div>
 
       <div class="field">
-        <label class="field-label">Pour cette recherche, tu préfères :<span class="req">*</span></label>
+        <label class="field-label">Pour cette recherche, préférence pour :<span class="req">*</span></label>
         <div class="field-options">
-          <label class="field-option"><input type="radio" name="preference" value="Que je privilégie la seconde main" required> Que je privilégie la seconde main</label>
-          <label class="field-option"><input type="radio" name="preference" value="Que je privilégie le neuf"> Que je privilégie le neuf</label>
-          <label class="field-option"><input type="radio" name="preference" value="Peu importe, je veux surtout trouver la bonne pièce"> Peu importe, je veux surtout trouver la bonne pièce</label>
+          <label class="field-option"><input type="radio" name="preference" value="La seconde main" required> La seconde main</label>
+          <label class="field-option"><input type="radio" name="preference" value="Le neuf"> Le neuf</label>
+          <label class="field-option"><input type="radio" name="preference" value="Peu importe, l'essentiel est la bonne pièce"> Peu importe, l'essentiel est la bonne pièce</label>
         </div>
       </div>
 
@@ -102,7 +102,7 @@
 
     <div class="form-success" id="piece-success" style="display:none;">
       <p class="voice" style="font-size:19px;">C'est envoyé.</p>
-      <p>Je pars en recherche et je reviens vers toi.</p>
+      <p>La recherche commence. Retour très vite.</p>
       <a class="simple-cta" href="../espace.html">Retour à l'espace</a>
     </div>
   </div>
@@ -133,7 +133,7 @@
         form.style.display = 'none';
         document.getElementById('piece-success').style.display = 'block';
       }).catch(function () {
-        status.textContent = "Un souci à l'envoi — réessaie dans un instant.";
+        status.textContent = "Un souci à l'envoi — nouvel essai dans un instant ?";
         status.className = 'form-status is-error';
         submitBtn.disabled = false;
       });
