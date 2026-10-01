@@ -24,7 +24,7 @@ const FRAGMENTS = [
     title: 'Seiko',
     shape: 'square',
     image: 'images/seiko.jpg',
-    text: "Trouvée sur Vinted, une forme qui ne ressemblait à aucune autre montre. J'ai fait une offre, elle est partie avant. Quelqu'un a retrouvé la même ailleurs, aurait pu me la revendre plus cher, m'a simplement dit où elle était. Elle est là depuis, avec sa pile morte. Je changerai ça un jour.",
+    text: "Trouvée sur Vinted, une forme qui ne ressemblait à aucune autre montre. Une offre, et elle part avant. Quelqu'un retrouve la même ailleurs, aurait pu la revendre plus cher, et indique simplement où elle est. Elle est là depuis, pile morte comprise. Ça changera un jour.",
     words: ['regard', 'valeur', 'seconde main', 'rencontres']
   },
   {
@@ -33,7 +33,7 @@ const FRAGMENTS = [
     title: 'Vestjoy on Everyday Life',
     shape: 'tall',
     image: 'images/vestjoy.jpg',
-    text: "La tranche a jauni plus vite que le reste de ma bibliothèque, à force d'être posé sur le rebord de la fenêtre. Offert un soir de premier rendez-vous, avant que ça devienne sérieux, puis fini. Il y a une page cornée au chapitre sur les chaussures, celui qu'on n'a jamais réellement lu jusqu'au bout. Le reste, si.",
+    text: "La tranche a jauni plus vite que le reste de la bibliothèque, à force de rester sur le rebord de la fenêtre. Offert un soir de premier rendez-vous, avant que ça devienne sérieux, puis fini. Une page cornée au chapitre sur les chaussures, celui qui n'a jamais été lu jusqu'au bout. Le reste, si.",
     words: ['mémoire', 'sensibilité', 'regard', 'beauté', 'trace']
   },
   {
@@ -42,7 +42,7 @@ const FRAGMENTS = [
     title: 'PSG',
     shape: 'wide',
     image: 'images/psg.jpg',
-    text: "Pas un maillot acheté hier dans une boutique officielle. Un vieux merchandising qu'on ne retrouve plus, floqué au nom d'un joueur que j'ai oublié. Ma mère l'avait acheté trop grand exprès, pour qu'il dure deux étés. Il a fini par m'aller, puis ne plus m'aller, puis rester quand même dans un tiroir qui a changé quatre fois d'appartement.",
+    text: "Pas un maillot acheté hier dans une boutique officielle. Un vieux merchandising introuvable aujourd'hui, floqué au nom d'un joueur oublié. Acheté trop grand exprès, pour durer deux étés. Il a fini par aller, puis ne plus aller, puis rester quand même dans un tiroir qui a changé quatre fois d'appartement.",
     words: ['Paris', 'sport', 'uniforme', 'mémoire']
   },
   {
@@ -51,7 +51,7 @@ const FRAGMENTS = [
     title: 'Varsity Jacket Excalibur',
     shape: 'wide',
     image: 'images/excalibur.jpg',
-    text: "Trouvée en cherchant autre chose, pendant un voyage à Las Vegas en 2017, dans une friperie près du casino qui a donné son nom à la veste. Elle m'allait du premier coup, ce qui n'arrive presque jamais. La doublure rouge est encore intacte. Je n'ai jamais remis les pieds à cet endroit, mais la veste, si, tous les hivers.",
+    text: "Trouvée en cherchant autre chose, pendant un voyage à Las Vegas en 2017, dans une friperie près du casino qui a donné son nom à la veste. Elle allait du premier coup, ce qui n'arrive presque jamais. La doublure rouge est encore intacte. L'endroit n'a jamais été revu ; la veste, si, tous les hivers.",
     words: ['recherche', 'hasard', 'vestiaire', 'trouvaille']
   },
   {
@@ -60,7 +60,7 @@ const FRAGMENTS = [
     title: "Crocs x Levi's",
     shape: 'wide',
     image: 'images/crocs.jpg',
-    text: "Achetées un peu par jeu, sans vraiment y croire, un motif indigo qui rappelle un vieux jean délavé posé sur du caoutchouc increvable. Je les mets l'été, sur le carrelage froid de la cuisine, jamais dehors. Personne ne les trouve élégantes. Moi si, à force.",
+    text: "Achetées un peu par jeu, sans vraiment y croire : un motif indigo qui rappelle un vieux jean délavé, posé sur du caoutchouc increvable. Portées l'été, sur le carrelage froid de la cuisine, jamais dehors. Personne ne les trouve élégantes. À force, si.",
     words: ['jeu', 'confort', 'détournement', 'été', 'style']
   },
   {
@@ -69,7 +69,7 @@ const FRAGMENTS = [
     title: 'Penny Loafers',
     shape: 'long',
     image: 'images/loafers.jpg',
-    text: "Achetés pour un mariage, devenus presque des chaussons à force d'être portés pour tout sauf ça. Mon association préférée : un short de sport et ces mêmes loafers, l'élégance et le quotidien qui se regardent sans se juger.",
+    text: "Achetés pour un mariage, devenus presque des chaussons à force d'être portés pour tout sauf ça. L'association préférée : un short de sport et ces mêmes loafers, l'élégance et le quotidien qui se regardent sans se juger.",
     words: ['tenue', 'confort', 'contraste', 'quotidien']
   },
   {
@@ -78,7 +78,7 @@ const FRAGMENTS = [
     title: 'Porte-clés Paris',
     shape: 'tall',
     image: 'images/porteclefs.jpg',
-    text: "Un porte-clés en métal, trouvé dans un tiroir qui n'était pas censé être le mien, avec les monuments de la ville gravés en couleurs criardes. Le genre d'objet qu'on achète pour quelqu'un d'autre, jamais pour soi. Il ouvre une porte qui n'existe plus.",
+    text: "Un porte-clés en métal, trouvé dans un tiroir qui n'était pas censé être le bon, avec les monuments de la ville gravés en couleurs criardes. Le genre d'objet qu'on achète pour quelqu'un d'autre, jamais pour soi. Il ouvre une porte qui n'existe plus.",
     words: ['Paris', 'détail', 'secret', 'souvenir']
   },
   {
@@ -87,7 +87,7 @@ const FRAGMENTS = [
     title: 'Charm de verre, Groix',
     shape: 'square',
     image: 'images/charm.jpg',
-    text: "Un petit disque de verre fondu, rapporté d'une île où je ne retourne pas si souvent que je le voudrais. Fait à la main par quelqu'un dont je ne connais que le prénom. Il ne vaut presque rien et je ne m'en séparerais pour rien au monde.",
+    text: "Un petit disque de verre fondu, rapporté d'une île où le retour se fait moins souvent que souhaité. Fait à la main par quelqu'un dont seul le prénom est connu. Il ne vaut presque rien, et rien au monde ne le remplacerait.",
     words: ['lieu', 'artisanat', 'souvenir', 'matière']
   },
   {
@@ -96,7 +96,7 @@ const FRAGMENTS = [
     title: 'Bo',
     shape: 'square',
     image: 'images/bo.jpg',
-    text: "Un chien qui n'est pas le mien mais que je regarde presque tous les jours. Il porte un bandana orange sans jamais s'en plaindre. Il ne sait pas ce que je fais dans la vie, et c'est peut-être pour ça que je lui fais confiance.",
+    text: "Un chien croisé presque tous les jours. Il porte un bandana orange sans jamais s'en plaindre. Il ne sait rien des métiers des humains qu'il croise, et c'est peut-être pour ça qu'il inspire confiance.",
     words: ['connexion', 'confiance', 'empathie', 'vivant']
   },
   {
@@ -107,6 +107,195 @@ const FRAGMENTS = [
     image: 'images/fruits.jpg',
     text: "Un panier de faux fruits en plastique, trouvé dans une boutique qui fermait, acheté pour rien, gardé pour la couleur. Ils ne pourrissent jamais, ne se mangent jamais, ne servent à rien d'autre qu'à être regardés.",
     words: ['couleur', 'jeu', 'boutique', 'créativité']
+  },
+  {
+    key: 'arc_en_ciel',
+    num: '11',
+    title: "Pull arc-en-ciel",
+    shape: 'tall',
+    image: 'images/espace/arc-en-ciel.jpg',
+    text: "Toutes les couleurs d'un coup, en grosse maille, sur un fond crème qui ne fait que les laisser parler. Le genre de pièce qui décide de la tenue à elle seule : un jean, et c'est fini.",
+    words: ["couleur", "jeu", "shooting", "matière"]
+  },
+  {
+    key: 'mains',
+    num: '12',
+    title: "Mains, bagues",
+    shape: 'tall',
+    image: 'images/espace/mains.jpg',
+    text: "Des bagues empilées, un médaillon, des ongles vernis. Sur un shooting, les détails finissent souvent par voler la vedette au vêtement.",
+    words: ["détail", "bijoux", "shooting", "style"]
+  },
+  {
+    key: 'varsity_vert',
+    num: '13',
+    title: "Varsity verte",
+    shape: 'tall',
+    image: 'images/espace/varsity-vert.jpg',
+    text: "Une varsity verte au col cravaté, un regard droit vers l'objectif. Le vestiaire universitaire américain, détourné en portrait parisien.",
+    words: ["uniforme", "sport", "shooting", "détournement"]
+  },
+  {
+    key: 'albiceleste',
+    num: '14',
+    title: "Albiceleste",
+    shape: 'tall',
+    image: 'images/espace/albiceleste.jpg',
+    text: "Un maillot de foot argentin porté avec un pantalon de cuir, une chaise de bureau, des baskets turquoise. Le sport sorti du stade, sans jamais renier d'où il vient.",
+    words: ["sport", "uniforme", "shooting", "contraste"]
+  },
+  {
+    key: 'lunettes_blanches',
+    num: '15',
+    title: "Lunettes blanches",
+    shape: 'tall',
+    image: 'images/espace/lunettes-blanches.jpg',
+    text: "Des lunettes enveloppantes, blanches, un peu trop grandes. Un accessoire qui suffit à déplacer toute une silhouette d'une décennie.",
+    words: ["détail", "accessoire", "shooting", "style"]
+  },
+  {
+    key: 'echarpe_portee',
+    num: '16',
+    title: "L'écharpe",
+    shape: 'tall',
+    image: 'images/espace/echarpe-portee.jpg',
+    text: "Une écharpe de supporter tenue à bout de bras, comme une banderole. Deux personnes, deux pulls jaunes, une même équipe.",
+    words: ["Paris", "sport", "shooting", "souvenir"]
+  },
+  {
+    key: 'pull_jaune',
+    num: '17',
+    title: "Pull jaune",
+    shape: 'tall',
+    image: 'images/espace/pull-jaune.jpg',
+    text: "Un pull jaune côtelé sur un col de chemise blanche, devant un fond bleu profond. Le contraste fait tout le travail.",
+    words: ["couleur", "contraste", "shooting", "vestiaire"]
+  },
+  {
+    key: 'fond_olive',
+    num: '18',
+    title: "Fond olive",
+    shape: 'tall',
+    image: 'images/espace/fond-olive.jpg',
+    text: "Pull marine, chemise blanche, cravate bordeaux, sur un fond olive. Un uniforme d'écolier rejoué sans nostalgie.",
+    words: ["uniforme", "couleur", "shooting", "tenue"]
+  },
+  {
+    key: 'cuir_rouge',
+    num: '19',
+    title: "Cuir rouge",
+    shape: 'tall',
+    image: 'images/espace/cuir-rouge.jpg',
+    text: "Un blouson de cuir rouge sur un t-shirt imprimé. Une pièce qui a déjà beaucoup vécu, et qui le montre.",
+    words: ["matière", "trace", "shooting", "vestiaire"]
+  },
+  {
+    key: 'chemise_blanche',
+    num: '20',
+    title: "Chemise blanche",
+    shape: 'wide',
+    image: 'images/espace/chemise-blanche.jpg',
+    text: "Une chemise blanche trop grande, en noir et blanc. Rien d'autre. Parfois la pièce la plus simple dit le plus.",
+    words: ["regard", "sobriété", "shooting", "matière"]
+  },
+  {
+    key: 'rose',
+    num: '21',
+    title: "Rose",
+    shape: 'tall',
+    image: 'images/espace/rose.jpg',
+    text: "Une maille rose vif sur un jean clair. Une couleur qu'on n'ose pas toujours, portée comme une évidence.",
+    words: ["couleur", "audace", "shooting", "style"]
+  },
+  {
+    key: 'col_en_v',
+    num: '22',
+    title: "Col en V",
+    shape: 'tall',
+    image: 'images/espace/col-en-v.jpg',
+    text: "Un haut de survêtement marine à large V bleu ciel, des mocassins turquoise. Le sport des années 80, assis sur une chaise de salon.",
+    words: ["sport", "couleur", "shooting", "détournement"]
+  },
+  {
+    key: 'casquette',
+    num: '23',
+    title: "Casquette",
+    shape: 'tall',
+    image: 'images/espace/casquette.jpg',
+    text: "Une casquette à visière plate, orange et blanche, logo d'équipe brodé. Le merchandising sportif devenu objet de collection.",
+    words: ["sport", "détail", "trouvaille", "accessoire"]
+  },
+  {
+    key: 'echarpe',
+    num: '24',
+    title: "Écharpe de supporter",
+    shape: 'tall',
+    image: 'images/espace/echarpe.jpg',
+    text: "Rouge, blanc, noir, frangée aux deux bouts. Un objet de tribune, chargé de dimanches et de chants.",
+    words: ["Paris", "sport", "souvenir", "matière"]
+  },
+  {
+    key: 'bob',
+    num: '25',
+    title: "Bob en laine",
+    shape: 'tall',
+    image: 'images/espace/bob.jpg',
+    text: "Un bob tricoté, motifs ethniques, laine épaisse. Une pièce de voyage qui a trouvé sa place dans un vestiaire de ville.",
+    words: ["matière", "artisanat", "trouvaille", "voyage"]
+  },
+  {
+    key: 'cesca',
+    num: '26',
+    title: "Chaise cannée",
+    shape: 'tall',
+    image: 'images/espace/cesca.jpg',
+    text: "Cannage, tube chromé, bois courbé : une chaise de designer chinée, devenue accessoire de shooting.",
+    words: ["objet", "design", "trouvaille", "shooting"]
+  },
+  {
+    key: 'tabouret',
+    num: '27',
+    title: "Tabouret de piano",
+    shape: 'tall',
+    image: 'images/espace/tabouret.jpg',
+    text: "Bois tourné, assise capitonnée, vis de réglage. Un tabouret de piano ancien, sur lequel les modèles du shooting se sont assis tour à tour.",
+    words: ["objet", "shooting", "trace", "artisanat"]
+  },
+  {
+    key: 'varsity',
+    num: '28',
+    title: "Varsity",
+    shape: 'tall',
+    image: 'images/espace/varsity.jpg',
+    text: "Corps vert, manches crème, lettre brodée. La varsity, uniforme de campus devenu classique de friperie.",
+    words: ["uniforme", "sport", "vestiaire", "trouvaille"]
+  },
+  {
+    key: 'satin_bleu',
+    num: '29',
+    title: "Satin bleu",
+    shape: 'tall',
+    image: 'images/espace/satin-bleu.jpg',
+    text: "Un blouson de satin bleu électrique, liserés jaunes, écusson étoilé. La brillance d'une veste d'équipe des années 80.",
+    words: ["sport", "couleur", "matière", "trouvaille"]
+  },
+  {
+    key: 'rugby_jaune',
+    num: '30',
+    title: "Rugby jaune",
+    shape: 'wide',
+    image: 'images/espace/rugby-jaune.jpg',
+    text: "Un maillot de rugby jaune soleil au col blanc. Épais, solide, fait pour durer plus qu'une saison.",
+    words: ["sport", "couleur", "vestiaire", "matière"]
+  },
+  {
+    key: 'gj_rugby',
+    num: '31',
+    title: "GJ Rugby",
+    shape: 'wide',
+    image: 'images/espace/gj-rugby.jpg',
+    text: "Satin noir, bords côtelés rouge et jaune, « GJ Rugby » brodé dans le dos. Une veste de club amateur, quelque part, un jour.",
+    words: ["sport", "souvenir", "trouvaille", "uniforme"]
   }
 ];
 
@@ -128,5 +317,26 @@ const FRAGMENT_LAYOUT = {
   porteclefs: { x: 44, y: 40, width: 100, rot: -2.5 },
   charm:      { x: 60, y: 78, width: 130, rot: 2 },
   bo:         { x: 86, y: 68, width: 150, rot: -1 },
-  fruits:     { x: 10, y: 48, width: 155, rot: 1.5 }
+  fruits:     { x: 10, y: 48, width: 155, rot: 1.5 },
+  arc_en_ciel      : { x: 80, y: 132, width: 125, rot: 2.5 },
+  casquette        : { x: 51, y: 128, width: 125, rot: -1.5 },
+  mains            : { x: 23, y: 130, width: 135, rot: -1.5 },
+  bob              : { x: 53, y: 157, width: 115, rot: -2.5 },
+  varsity_vert     : { x: 80, y: 169, width: 135, rot: -1.5 },
+  cesca            : { x: 8, y: 158, width: 135, rot: -2.5 },
+  albiceleste      : { x: 23, y: 175, width: 115, rot: -1.5 },
+  echarpe          : { x: 76, y: 164, width: 125, rot: -2.5 },
+  lunettes_blanches: { x: 59, y: 195, width: 115, rot: 2.0 },
+  tabouret         : { x: 39, y: 194, width: 115, rot: -1.5 },
+  echarpe_portee   : { x: 20, y: 215, width: 135, rot: -1.0 },
+  varsity          : { x: 80, y: 222, width: 135, rot: -2.0 },
+  pull_jaune       : { x: 43, y: 231, width: 125, rot: 2.5 },
+  satin_bleu       : { x: 74, y: 228, width: 125, rot: 2.5 },
+  fond_olive       : { x: 13, y: 250, width: 125, rot: -1.5 },
+  rugby_jaune      : { x: 76, y: 258, width: 165, rot: -1.0 },
+  cuir_rouge       : { x: 26, y: 258, width: 115, rot: -1.5 },
+  gj_rugby         : { x: 54, y: 260, width: 180, rot: 1.5 },
+  chemise_blanche  : { x: 72, y: 283, width: 180, rot: 1.5 },
+  rose             : { x: 80, y: 264, width: 115, rot: -1.5 },
+  col_en_v         : { x: 32, y: 299, width: 125, rot: -2.5 }
 };

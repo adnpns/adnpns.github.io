@@ -34,10 +34,21 @@ function initConstellation() {
   window.addEventListener('resize', renderLines);
 }
 
+// Hauteur de l'espace en « écrans » : y = 0-100 pour le premier écran,
+// 100-200 pour le deuxième, etc. L'espace s'allonge avec le nombre de fragments.
+function spaceUnits() {
+  let maxY = 0;
+  FRAGMENTS.forEach((f, i) => { maxY = Math.max(maxY, getLayoutFor(f.key, i, FRAGMENTS.length).y); });
+  return Math.max(100, Math.ceil(maxY + 20));
+}
+
 function renderField() {
   const field = document.getElementById('field');
   if (!field) return;
   field.innerHTML = '';
+  const units = spaceUnits();
+  const space = document.querySelector('.space');
+  if (space) space.style.minHeight = (units * (window.innerWidth < 700 ? 1.4 : 1)) + 'vh';
   FRAGMENTS.forEach((f, i) => {
     const pos = getLayoutFor(f.key, i, FRAGMENTS.length);
     const el = document.createElement('div');
@@ -45,7 +56,7 @@ function renderField() {
     el.dataset.key = f.key;
     el.dataset.shape = f.shape;
     el.style.left = pos.x + '%';
-    el.style.top = pos.y + '%';
+    el.style.top = (pos.y / units * 100) + '%';
     el.style.width = pos.width + 'px';
     el.style.setProperty('--rot', pos.rot + 'deg');
     el.style.setProperty('--delay', (i * 0.15) + 's');
@@ -84,26 +95,29 @@ function renderLines() {
   const h = document.querySelector('.space').offsetHeight || window.innerHeight;
   svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
 
+  const units = spaceUnits();
+  // Chaque fragment est relié à ses 2 voisins les plus proches parmi ceux
+  // qui partagent au moins un mot : une constellation lisible, pas une toile.
+  const pts = FRAGMENTS.map((f, i) => {
+    const p = getLayoutFor(f.key, i, FRAGMENTS.length);
+    return { f, x: (p.x / 100) * w, y: (p.y / units) * h };
+  });
   const seen = new Set();
-  FRAGMENTS.forEach((a, i) => {
-    FRAGMENTS.forEach((b, j) => {
-      if (j <= i) return;
-      const shared = a.words.some(word => b.words.includes(word));
-      if (!shared) return;
-      const key = a.key + '-' + b.key;
-      if (seen.has(key)) return;
-      seen.add(key);
-
-      const posA = getLayoutFor(a.key, i, FRAGMENTS.length);
-      const posB = getLayoutFor(b.key, j, FRAGMENTS.length);
-      const x1 = (posA.x / 100) * w, y1 = (posA.y / 100) * h;
-      const x2 = (posB.x / 100) * w, y2 = (posB.y / 100) * h;
-
-      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      line.setAttribute('x1', x1); line.setAttribute('y1', y1);
-      line.setAttribute('x2', x2); line.setAttribute('y2', y2);
-      svg.appendChild(line);
-    });
+  pts.forEach((a, i) => {
+    pts
+      .map((b, j) => ({ b, j, d: Math.hypot(a.x - b.x, a.y - b.y) }))
+      .filter(o => o.j !== i && a.f.words.some(word => o.b.f.words.includes(word)))
+      .sort((p, q) => p.d - q.d)
+      .slice(0, 2)
+      .forEach(({ b, j }) => {
+        const key = Math.min(i, j) + '-' + Math.max(i, j);
+        if (seen.has(key)) return;
+        seen.add(key);
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
+        line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
+        svg.appendChild(line);
+      });
   });
 }
 
