@@ -37,7 +37,13 @@
           <priority>0.7</priority>
     </url>
     <url>
-          <loc>https://adrienpons.com/pages/contact.html</loc>
+          <loc>https://adnpns.github.io/pages/personal-styling-ou-relooking.html</loc>
+          <lastmod>2026-09-29</lastmod>
+          <changefreq>yearly</changefreq>
+          <priority>0.7</priority>
+    </url>
+    <url>
+          <loc>https://adnpns.github.io/pages/contact.html</loc>
           <lastmod>2026-09-29</lastmod>
           <changefreq>yearly</changefreq>
           <priority>0.5</priority>
