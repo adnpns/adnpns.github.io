@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://adrienpons.com/images/og-adrien-pons.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Adrien Pons — Styliste &amp; Personal Shopper à Paris">
+<meta property="og:image:alt" content="Adrien Pons · Styliste &amp; Personal Shopper à Paris">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Stylisme pour la Publicité & les Shootings à Paris | Adrien Pons">
 <meta name="twitter:description" content="Stylisme professionnel pour shootings publicitaires, clips et artistes à Paris.">
@@ -23,7 +23,10 @@
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="../favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../da.css?v=4">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -42,68 +45,177 @@
   "url": "https://adrienpons.com/pages/atelier.html"
 }
 </script>
+<style>
+  @media (max-width: 760px) { .atelier .switch { display: none !important; } }
+  .atelier .switch { display: flex; gap: 4px; margin-top: 18px; }
+  .atelier .switch button { background: none; color: var(--ink-soft); border: 1px solid var(--line); padding: 7px 12px; cursor: pointer; }
+  .atelier .switch button[aria-pressed="true"] { color: var(--ink); border-color: var(--ink-soft); }
+  .atelier .map { position: relative; height: 60vh; min-height: 420px; border-bottom: 1px solid var(--line); }
+  .atelier .map[hidden], .atelier .index[hidden] { display: none; }
+  .atelier .map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .atelier .map line { stroke: var(--line); stroke-width: 1; }
+  .atelier .map line.hot { stroke: var(--accent); }
+  .atelier .dot { position: absolute; transform: translate(-50%, -50%); color: var(--ink-soft); text-align: center; }
+  .atelier .dot img { display: block; width: 76px; aspect-ratio: 4 / 5; object-fit: cover; margin: 0 auto 8px; opacity: .85; transition: transform .4s ease, opacity .3s; }
+  .atelier .dot:hover img, .atelier .dot:focus-visible img { opacity: 1; transform: scale(1.25); }
+  .atelier .dot .t { display: block; font-family: var(--serif); text-transform: none; letter-spacing: 0; font-size: 13px; opacity: 0; transition: opacity .3s; white-space: nowrap; color: var(--ink); }
+  .atelier .dot:hover .t, .atelier .dot:focus-visible .t { opacity: 1; }
+  .atelier .sheet { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px; padding-top: 110px; scroll-margin-top: 80px; }
+  .atelier .sheet .meta { grid-column: 1 / -1; display: flex; gap: 22px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 12px; color: var(--ink-soft); }
+  .atelier .sheet .main { grid-column: 1 / 8; position: relative; margin: 0; cursor: zoom-in; overflow: hidden; }
+  .atelier .sheet .main img { width: 100%; max-height: 82vh; object-fit: cover; display: block; transition: transform .7s ease; }
+  .atelier .sheet .main:hover img { transform: scale(1.02); }
+  .atelier .sheet figcaption { position: absolute; left: 12px; bottom: 12px; background: rgba(12,11,10,.78); padding: 4px 8px; }
+  .atelier .sheet .side { grid-column: 8 / 13; display: flex; flex-direction: column; gap: 24px; }
+  .atelier .sheet.flip .main { grid-column: 6 / 13; grid-row: 2; }
+  .atelier .sheet.flip .side { grid-column: 1 / 6; grid-row: 2; }
+  .atelier .sheet h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(26px, 2.6vw, 40px); line-height: 1.08; margin: 0 0 12px; }
+  .atelier .sheet p { color: var(--ink-soft); margin: 0; max-width: 46ch; }
+  .atelier .cred { display: block; margin-top: 14px; color: var(--star); }
+  .atelier .thumbs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .atelier .thumbs figure { margin: 0; cursor: zoom-in; }
+  .atelier .thumbs img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
+  .atelier .more { background: none; border: 0; padding: 0; color: var(--ink-soft); cursor: pointer; text-align: left; }
+  .atelier .more:hover { color: var(--accent); }
+  @media (max-width: 800px) { .atelier .sheet .main, .atelier .sheet .side, .atelier .sheet.flip .main, .atelier .sheet.flip .side { grid-column: 1 / -1; grid-row: auto; } }
+  .atelier .sheet.textonly .side { grid-column: 1 / 8; grid-row: auto; }
+  .atelier .dot .ph { display: block; width: 76px; aspect-ratio: 4 / 5; margin: 0 auto 8px; border: 1px solid var(--line); }
+</style>
 </head>
-<body>
+<body class="da">
 
 <nav class="nav">
-  <span class="nav-brand">Adrien Pons</span>
-  <div class="nav-links">
-    <a href="../espace.html">Espace</a>
-    <a href="atelier.html">Atelier</a>
-    <a href="vestiaire.html">Vestiaire</a>
-    <a href="regard.html">Regard</a>
-    <a href="adrienpons.html">Adrien Pons</a>
-    <a href="contact.html">Contact</a>
-  </div>
+  <span class="nav-brand"><a href="../espace.html">Adrien Pons</a></span>
+  <div class="nav-links"><a href="../espace.html"><i>01</i>Espace</a><a href="../pages/atelier.html" aria-current="page"><i>02</i>Atelier</a><a href="../pages/vestiaire.html"><i>03</i>Vestiaire</a><a href="../pages/regard.html"><i>04</i>Regard</a><a href="../pages/journal.html"><i>05</i>Journal</a><a href="../pages/adrienpons.html"><i>06</i>Adrien Pons</a><a href="../pages/contact.html"><i>07</i>Contact</a></div>
 </nav>
-
-<div class="simple-page">
-  <div class="simple-inner">
-    <p class="simple-kicker">Atelier</p>
-    <h1 class="simple-title voice">Comprendre un univers. Lui donner une forme concrète.</h1>
-    <div class="simple-blocks">
-      <div class="block">
-        <p class="block-label">Interpréter</p>
-        <p class="block-text">Comprendre un brief, un univers, une intention déjà posée par l'agence ou les créatifs.</p>
-      </div>
-      <div class="block">
-        <p class="block-label">Construire</p>
-        <p class="block-text">Traduire cette intention en personnages et silhouettes : proportions, matières, couleurs, cohérence.</p>
-      </div>
-      <div class="block">
-        <p class="block-label">Trouver</p>
-        <p class="block-text">Sourcer la bonne pièce, seconde main, boutique, location ou stock personnel selon ce que sert le projet.</p>
-      </div>
+<main class="page atelier">
+  <header class="page-head">
+    <div><div class="mono"><span>Atelier</span><span>Index ATL</span><span>13 projets</span><span>2024 à 2026</span></div>
+    <h1 class="voice">Comprendre un univers. Lui donner une forme concrète.</h1></div>
+    <div class="aside">
+      <p class="mono" style="color:var(--ink)">01 Interpréter · 02 Construire · 03 Trouver</p>
+      <p>Lire un brief, traduire une intention en personnages et en silhouettes, puis sourcer la bonne pièce&nbsp;: seconde main, boutique, location ou stock personnel.</p>
+      <div class="switch" role="group" aria-label="Affichage de l'index"><button type="button" id="b-map" aria-pressed="true" class="mono">Carte</button><button type="button" id="b-list" aria-pressed="false" class="mono">Liste</button></div>
     </div>
-    <details class="simple-more">
-      <summary>Le processus, en détail</summary>
-      <div class="simple-body">
-        <p>Un projet commence rarement avec une page blanche. Un brief arrive avec une intention, un univers, une ambiance. L'agence ou les créatifs ont généralement déjà posé une direction et parfois des pistes très précises. Le travail commence là. Comprendre ce qui est demandé. Identifier ce qui doit être traduit par le vêtement. Chercher les références qui permettent d'alimenter cette direction, puis passer progressivement de l'intention à des silhouettes réelles.</p>
-        <p>Le processus continue ensuite dans le réel. Chercher les pièces. Construire les looks. Composer avec ce qui existe réellement. Essayer. Ajuster. Recommencer. Une silhouette ne se construit pas uniquement sur un moodboard. Les vêtements trouvés, les contraintes de production et les essayages transforment souvent les premières intentions. Le stylisme se construit aussi à cet endroit.</p>
-      </div>
-    </details>
-
-    <p class="simple-kicker" style="margin-top:56px;">Projets</p>
-    <ul class="simple-list simple-list-long">
-      <li><span>Backmarket — Shake To Trade, Félipé et Ronaldo</span>Deux personnages pour la même mécanique : un passionné de maracas aux pièces fortes d'inspiration sud-américaine, un bartender star de Mulhouse en costume cheap et chemise kitsch.</li>
-      <li><span>Backmarket — Shake To Trade, Marjolaine et ses boules à neige</span>Un personnage pour un film de campagne. Construire une châtelaine quinquagénaire, entre ordre, tradition et humour piquant : cardigans, perles, matières nobles, un vestiaire de femme qui reçoit.</li>
-      <li><span>Backmarket — Retro Tech</span>Le Vlog 2005 : deux silhouettes années 2000 pour une campagne tech seconde main. Velours, taille basse, zip-hoodies et accessoires qui brillent, pour faire dialoguer le rétro et l'électronique.</li>
-      <li><span>Backmarket — Gifting Season, les portraits</span>Quatre personas de shoppeurs de fêtes de fin d'année. Construire une garde-robe et une attitude différentes pour chacun, à partir d'un même brief cadeaux.</li>
-      <li><span>Dunkin' — ProteinMilk x Basic Fit</span>Stylisme pour un shoot autour du sport et de la routine protéinée. Palette pastel, vestiaire fitness et lifestyle, entre salle de sport et vie quotidienne.</li>
-      <li><span>Dunkin' — Match avec ton Match</span>Shoot autour d'un thème de duo assorti. Direction streetwear décontractée, accessoires et couleurs pensés pour fonctionner en tandem.</li>
-      <li><span>Bollé</span>Deux silhouettes homme, deux silhouettes femme et un couple, pour une campagne acétate. Un travail de layering, de matières techniques et de textures, pensé pour mettre en valeur l'accessoire sans écraser le reste du look.</li>
-      <li><span>Burger King — Intentions</span>Trois directions pour un shoot autour d'un menu. Un registre girly années 2000, un registre Tecktonik, un registre swag période Bieber : trois silhouettes, trois attitudes, un seul brief.</li>
-      <li><span>Visa x Deliveroo — Dump</span>Un carrousel façon photo dump : la photo de confirmation de livraison devenue moment royal. Cinq scènes, des tenues d'intérieur ultra confortables et un détail qui couronne tout, un plaid porté en cape, un casque gaming posé comme une couronne.</li>
-      <li><span>Visa — Ski</span>Deux talents, un vestiaire de montagne du quotidien plutôt qu'une panoplie de ski. Polaires, doudounes, pantalons de travail écru : une pièce forte bleu Visa, une pièce blanche, et la superposition pour faire le reste.</li>
-      <li><span>Lidl — 90's Ad</span>Un plateau télé des années 90 rejoué au premier degré. Un présentateur en costume gris à épaulettes et cravate trop large, une présentatrice en tailleur couleur douce : très clean, légèrement de mauvais goût, jamais caricatural.</li>
-      <li><span>Lidl — Injustice, partie 2</span>Des silhouettes lisibles en une seconde à l'écran. Un présentateur crédible en figure journalistique, deux employés de supermarché aux couleurs de leur enseigne : l'exactitude du quotidien plutôt que le costume.</li>
-    </ul>
-
-    <p class="simple-body"><a href="styliste-shooting-publicitaire.html">Ce que fait vraiment un styliste sur un shooting</a></p>
-
-    <a class="simple-cta" href="contact.html">Discuter d'un projet</a>
+  </header>
+  <div class="map" id="map"><svg id="lines" aria-hidden="true"></svg><a class="dot mono" href="#ADN-01" data-i="12" style="left:44%;top:40%"><img src="../images/atelier/t/adn-01-final-01.jpg" alt="" loading="lazy">ADN-01<span class="t">ADN.Bazaar · Book vintage</span></a><a class="dot mono" href="#ATL-01" data-i="0" style="left:8%;top:30%"><img src="../images/atelier/t/atl-01-final-01.jpg" alt="" loading="lazy">ATL-01<span class="t">Backmarket · Félipé et Ronaldo</span></a><a class="dot mono" href="#ATL-02" data-i="1" style="left:20%;top:68%"><img src="../images/atelier/t/atl-02-final-01.jpg" alt="" loading="lazy">ATL-02<span class="t">Backmarket · Marjolaine et ses boules à neige</span></a><a class="dot mono" href="#ATL-03" data-i="2" style="left:30%;top:26%"><img src="../images/atelier/t/atl-03-final-01.jpg" alt="" loading="lazy">ATL-03<span class="t">Backmarket · Retro Tech, Vlog 2005</span></a><a class="dot mono" href="#ATL-04" data-i="3" style="left:40%;top:62%"><img src="../images/atelier/t/atl-04-final-01.jpg" alt="" loading="lazy">ATL-04<span class="t">Lidl · 90&#x27;s Ad</span></a><a class="dot mono" href="#ATL-05" data-i="4" style="left:50%;top:22%"><img src="../images/atelier/t/atl-05-plateau-01.jpg" alt="" loading="lazy">ATL-05<span class="t">Bollé · Acétate</span></a><a class="dot mono" href="#ATL-06" data-i="5" style="left:58%;top:70%"><img src="../images/atelier/t/atl-06-final-01.jpg" alt="" loading="lazy">ATL-06<span class="t">Visa x Deliveroo · Dump</span></a><a class="dot mono" href="#ATL-07" data-i="6" style="left:66%;top:32%"><img src="../images/atelier/t/atl-07-plateau-01.jpg" alt="" loading="lazy">ATL-07<span class="t">Backmarket · Gifting Season</span></a><a class="dot mono" href="#ATL-08" data-i="7" style="left:74%;top:74%"><img src="../images/atelier/t/atl-08-final-01.jpg" alt="" loading="lazy">ATL-08<span class="t">Lidl · Injustice, partie 2</span></a><a class="dot mono" href="#ATL-09" data-i="8" style="left:80%;top:24%"><span class="ph" aria-hidden="true"></span>ATL-09<span class="t">Visa · Ski</span></a><a class="dot mono" href="#ATL-10" data-i="9" style="left:88%;top:60%"><img src="../images/atelier/t/atl-10-plateau-03.jpg" alt="" loading="lazy">ATL-10<span class="t">Burger King · Menu 7€90</span></a><a class="dot mono" href="#ATL-11" data-i="10" style="left:94%;top:30%"><img src="../images/atelier/t/atl-11-final-01.jpg" alt="" loading="lazy">ATL-11<span class="t">Dunkin&#x27; · Match avec ton Match</span></a><a class="dot mono" href="#ATL-12" data-i="11" style="left:63%;top:52%"><img src="../images/atelier/t/atl-12-final-01.jpg" alt="" loading="lazy">ATL-12<span class="t">Dunkin&#x27; · ProteinMilk x Basic-Fit</span></a></div>
+  <div class="index" id="list" hidden><a class="row mono" href="#ADN-01" data-peek="../images/atelier/t/adn-01-final-01.jpg"><span>ADN-01</span><b>Book vintage</b><span class="c3">ADN.Bazaar</span><span class="c4">2025</span></a><a class="row mono" href="#ATL-01" data-peek="../images/atelier/t/atl-01-final-01.jpg"><span>ATL-01</span><b>Félipé et Ronaldo</b><span class="c3">Backmarket</span><span class="c4">2024</span></a><a class="row mono" href="#ATL-02" data-peek="../images/atelier/t/atl-02-final-01.jpg"><span>ATL-02</span><b>Marjolaine et ses boules à neige</b><span class="c3">Backmarket</span><span class="c4">2025</span></a><a class="row mono" href="#ATL-03" data-peek="../images/atelier/t/atl-03-final-01.jpg"><span>ATL-03</span><b>Retro Tech, Vlog 2005</b><span class="c3">Backmarket</span><span class="c4">2025</span></a><a class="row mono" href="#ATL-04" data-peek="../images/atelier/t/atl-04-final-01.jpg"><span>ATL-04</span><b>90&#x27;s Ad</b><span class="c3">Lidl</span><span class="c4">2025</span></a><a class="row mono" href="#ATL-05" data-peek="../images/atelier/t/atl-05-plateau-01.jpg"><span>ATL-05</span><b>Acétate</b><span class="c3">Bollé</span><span class="c4">2025</span></a><a class="row mono" href="#ATL-06" data-peek="../images/atelier/t/atl-06-final-01.jpg"><span>ATL-06</span><b>Dump</b><span class="c3">Visa x Deliveroo</span><span class="c4">2025</span></a><a class="row mono" href="#ATL-07" data-peek="../images/atelier/t/atl-07-plateau-01.jpg"><span>ATL-07</span><b>Gifting Season</b><span class="c3">Backmarket</span><span class="c4">2025</span></a><a class="row mono" href="#ATL-08" data-peek="../images/atelier/t/atl-08-final-01.jpg"><span>ATL-08</span><b>Injustice, partie 2</b><span class="c3">Lidl</span><span class="c4">2025</span></a><a class="row mono" href="#ATL-09"><span>ATL-09</span><b>Ski</b><span class="c3">Visa</span><span class="c4">2025</span></a><a class="row mono" href="#ATL-10" data-peek="../images/atelier/t/atl-10-plateau-03.jpg"><span>ATL-10</span><b>Menu 7€90</b><span class="c3">Burger King</span><span class="c4">2025</span></a><a class="row mono" href="#ATL-11" data-peek="../images/atelier/t/atl-11-final-01.jpg"><span>ATL-11</span><b>Match avec ton Match</b><span class="c3">Dunkin&#x27;</span><span class="c4">2026</span></a><a class="row mono" href="#ATL-12" data-peek="../images/atelier/t/atl-12-final-01.jpg"><span>ATL-12</span><b>ProteinMilk x Basic-Fit</b><span class="c3">Dunkin&#x27;</span><span class="c4">2026</span></a></div>
+  
+    <section class="sheet" id="ADN-01">
+      <div class="meta mono"><span>ADN-01</span><span>ADN.Bazaar</span><span>2025</span><span>Éditorial studio</span></div>
+      <figure class="main" data-i="12" data-k="0"><img src="../images/atelier/adn-01-final-01.jpg" alt="ADN.Bazaar · éditorial vintage, photo Yann Stofer"><figcaption class="mono">Visuel final</figcaption></figure>
+      <div class="side"><div><h2>Book vintage</h2><p>Éditorial studio personnel, pensé pour montrer une méthode plutôt qu'une commande client. Pièces vintage sur fond papier coloré : varsity jacket, pull rayé, blouson cuir, pull moutarde, bijoux en détail.</p><span class="cred mono">Photo Yann Stofer</span></div><div class="thumbs"><figure data-i="12" data-k="1"><img src="../images/atelier/t/adn-01-final-02.jpg" alt="" loading="lazy"></figure><figure data-i="12" data-k="2"><img src="../images/atelier/t/adn-01-final-03.jpg" alt="" loading="lazy"></figure><figure data-i="12" data-k="3"><img src="../images/atelier/t/adn-01-final-04.jpg" alt="" loading="lazy"></figure></div>
+        <button class="more mono" type="button" data-i="12" data-k="0">L'éditorial : 16 images →</button> <button class="more mono" type="button" data-i="12" data-k="16">Les packshots : 8 pièces →</button>
+        <button class="more mono" type="button" data-i="12" data-k="0">Toutes les images : 24 →</button></div>
+    </section>
+    <section class="sheet flip" id="ATL-01">
+      <div class="meta mono"><span>ATL-01</span><span>Backmarket</span><span>2024</span><span>Film · réseaux sociaux</span></div>
+      <figure class="main" data-i="0" data-k="0"><img src="../images/atelier/atl-01-final-01.jpg" alt="Backmarket · Félipé et Ronaldo" loading="lazy"><figcaption class="mono">Visuel final</figcaption></figure>
+      <div class="side"><div><h2>Félipé et Ronaldo</h2><p>Deux personnages pour la même mécanique : un passionné de maracas aux pièces fortes d&#x27;inspiration sud-américaine, un bartender star de Mulhouse en costume cheap et chemise kitsch.</p><span class="cred mono">© Back Market / Marcel</span></div><div class="thumbs"><figure data-i="0" data-k="1"><img src="../images/atelier/t/atl-01-final-02.jpg" alt="" loading="lazy"></figure><figure data-i="0" data-k="2"><img src="../images/atelier/t/atl-01-final-03.jpg" alt="" loading="lazy"></figure><figure data-i="0" data-k="3"><img src="../images/atelier/t/atl-01-final-04.jpg" alt="" loading="lazy"></figure></div>
+        <button class="more mono" type="button" data-i="0" data-k="0">Toutes les images : 8 →</button></div>
+    </section>
+    <section class="sheet" id="ATL-02">
+      <div class="meta mono"><span>ATL-02</span><span>Backmarket</span><span>2025</span><span>Film · réseaux sociaux</span></div>
+      <figure class="main" data-i="1" data-k="0"><img src="../images/atelier/atl-02-final-01.jpg" alt="Backmarket · Marjolaine et ses boules à neige" loading="lazy"><figcaption class="mono">Visuel final</figcaption></figure>
+      <div class="side"><div><h2>Marjolaine et ses boules à neige</h2><p>Un personnage pour un film de campagne. Construire une châtelaine quinquagénaire, entre ordre, tradition et humour piquant : cardigans, perles, matières nobles, un vestiaire de femme qui reçoit.</p><span class="cred mono">© Back Market / Marcel</span></div><div class="thumbs"><figure data-i="1" data-k="1"><img src="../images/atelier/t/atl-02-final-02.jpg" alt="" loading="lazy"></figure><figure data-i="1" data-k="2"><img src="../images/atelier/t/atl-02-final-03.jpg" alt="" loading="lazy"></figure><figure data-i="1" data-k="3"><img src="../images/atelier/t/atl-02-final-04.jpg" alt="" loading="lazy"></figure></div>
+        <button class="more mono" type="button" data-i="1" data-k="0">Toutes les images : 8 →</button></div>
+    </section>
+    <section class="sheet flip" id="ATL-03">
+      <div class="meta mono"><span>ATL-03</span><span>Backmarket</span><span>2025</span><span>Film</span></div>
+      <figure class="main" data-i="2" data-k="0"><img src="../images/atelier/atl-03-final-01.jpg" alt="Backmarket · Retro Tech, Vlog 2005" loading="lazy"><figcaption class="mono">Visuel final</figcaption></figure>
+      <div class="side"><div><h2>Retro Tech, Vlog 2005</h2><p>Le Vlog 2005 : deux silhouettes années 2000 pour une campagne tech seconde main. Velours, taille basse, zip-hoodies et accessoires qui brillent, pour faire dialoguer le rétro et l&#x27;électronique.</p><span class="cred mono">© Back Market / Marcel</span></div><div class="thumbs"><figure data-i="2" data-k="1"><img src="../images/atelier/t/atl-03-final-02.jpg" alt="" loading="lazy"></figure><figure data-i="2" data-k="2"><img src="../images/atelier/t/atl-03-plateau-01.jpg" alt="" loading="lazy"></figure></div>
+        </div>
+    </section>
+    <section class="sheet" id="ATL-04">
+      <div class="meta mono"><span>ATL-04</span><span>Lidl</span><span>2025</span><span>Film</span></div>
+      <figure class="main" data-i="3" data-k="0"><img src="../images/atelier/atl-04-final-01.jpg" alt="Lidl · 90&#x27;s Ad" loading="lazy"><figcaption class="mono">Visuel final</figcaption></figure>
+      <div class="side"><div><h2>90&#x27;s Ad</h2><p>Un plateau télé des années 90 rejoué au premier degré. Un présentateur en costume gris à épaulettes et cravate trop large, une présentatrice en tailleur couleur douce : très clean, légèrement de mauvais goût, jamais caricatural.</p><span class="cred mono">© Lidl / Marcel</span></div><div class="thumbs"><figure data-i="3" data-k="1"><img src="../images/atelier/t/atl-04-final-02.jpg" alt="" loading="lazy"></figure><figure data-i="3" data-k="2"><img src="../images/atelier/t/atl-04-final-03.jpg" alt="" loading="lazy"></figure><figure data-i="3" data-k="3"><img src="../images/atelier/t/atl-04-final-04.jpg" alt="" loading="lazy"></figure></div>
+        <button class="more mono" type="button" data-i="3" data-k="0">Toutes les images : 7 →</button></div>
+    </section>
+    <section class="sheet flip" id="ATL-05">
+      <div class="meta mono"><span>ATL-05</span><span>Bollé</span><span>2025</span><span>Shooting</span></div>
+      <figure class="main" data-i="4" data-k="0"><img src="../images/atelier/atl-05-plateau-01.jpg" alt="Bollé · Acétate" loading="lazy"><figcaption class="mono">Sur le plateau</figcaption></figure>
+      <div class="side"><div><h2>Acétate</h2><p>Deux silhouettes homme, deux silhouettes femme et un couple, pour une campagne acétate. Un travail de layering, de matières techniques et de textures, pensé pour mettre en valeur l&#x27;accessoire sans écraser le reste du look.</p></div><div class="thumbs"><figure data-i="4" data-k="1"><img src="../images/atelier/t/atl-05-plateau-02.jpg" alt="" loading="lazy"></figure><figure data-i="4" data-k="2"><img src="../images/atelier/t/atl-05-plateau-03.jpg" alt="" loading="lazy"></figure><figure data-i="4" data-k="3"><img src="../images/atelier/t/atl-05-plateau-04.jpg" alt="" loading="lazy"></figure></div>
+        </div>
+    </section>
+    <section class="sheet" id="ATL-06">
+      <div class="meta mono"><span>ATL-06</span><span>Visa x Deliveroo</span><span>2025</span><span>Shooting · carrousel</span></div>
+      <figure class="main" data-i="5" data-k="0"><img src="../images/atelier/atl-06-final-01.jpg" alt="Visa x Deliveroo · Dump" loading="lazy"><figcaption class="mono">Visuel final</figcaption></figure>
+      <div class="side"><div><h2>Dump</h2><p>Un carrousel façon photo dump : la photo de confirmation de livraison devenue moment royal. Cinq scènes, des tenues d&#x27;intérieur ultra confortables et un détail qui couronne tout, un plaid porté en cape, un casque gaming posé comme une couronne.</p><span class="cred mono">Photo @frankieallio</span></div><div class="thumbs"><figure data-i="5" data-k="1"><img src="../images/atelier/t/atl-06-final-02.jpg" alt="" loading="lazy"></figure><figure data-i="5" data-k="2"><img src="../images/atelier/t/atl-06-final-03.jpg" alt="" loading="lazy"></figure><figure data-i="5" data-k="3"><img src="../images/atelier/t/atl-06-final-04.jpg" alt="" loading="lazy"></figure></div>
+        <button class="more mono" type="button" data-i="5" data-k="0">Toutes les images : 7 →</button></div>
+    </section>
+    <section class="sheet flip" id="ATL-07">
+      <div class="meta mono"><span>ATL-07</span><span>Backmarket</span><span>2025</span><span>Film · portraits</span></div>
+      <figure class="main" data-i="6" data-k="0"><img src="../images/atelier/atl-07-plateau-01.jpg" alt="Backmarket · Gifting Season" loading="lazy"><figcaption class="mono">Sur le plateau</figcaption></figure>
+      <div class="side"><div><h2>Gifting Season</h2><p>Quatre personas de shoppeurs de fêtes de fin d&#x27;année. Construire une garde-robe et une attitude différentes pour chacun, à partir d&#x27;un même brief cadeaux.</p></div><div class="thumbs"><figure data-i="6" data-k="1"><img src="../images/atelier/t/atl-07-plateau-03.jpg" alt="" loading="lazy"></figure></div>
+        </div>
+    </section>
+    <section class="sheet" id="ATL-08">
+      <div class="meta mono"><span>ATL-08</span><span>Lidl</span><span>2025</span><span>Film</span></div>
+      <figure class="main" data-i="7" data-k="0"><img src="../images/atelier/atl-08-final-01.jpg" alt="Lidl · Injustice, partie 2" loading="lazy"><figcaption class="mono">Visuel final</figcaption></figure>
+      <div class="side"><div><h2>Injustice, partie 2</h2><p>Des silhouettes lisibles en une seconde à l&#x27;écran. Un présentateur crédible en figure journalistique, deux employés de supermarché aux couleurs de leur enseigne : l&#x27;exactitude du quotidien plutôt que le costume.</p><span class="cred mono">Lidl / Marcel · image Sasha Metgy</span></div><div class="thumbs"><figure data-i="7" data-k="1"><img src="../images/atelier/t/atl-08-plateau-02.jpg" alt="" loading="lazy"></figure><figure data-i="7" data-k="2"><img src="../images/atelier/t/atl-08-plateau-03.jpg" alt="" loading="lazy"></figure></div>
+        </div>
+    </section>
+    <section class="sheet flip textonly" id="ATL-09">
+      <div class="meta mono"><span>ATL-09</span><span>Visa</span><span>2025</span><span>Shooting</span></div>
+      <div class="side"><div><h2>Ski</h2><p>Deux talents, un vestiaire de montagne du quotidien plutôt qu&#x27;une panoplie de ski. Polaires, doudounes, pantalons de travail écru : une pièce forte bleu Visa, une pièce blanche, et la superposition pour faire le reste.</p></div>
+        </div>
+    </section>
+    <section class="sheet" id="ATL-10">
+      <div class="meta mono"><span>ATL-10</span><span>Burger King</span><span>2025</span><span>Shooting</span></div>
+      <figure class="main" data-i="9" data-k="0"><img src="../images/atelier/atl-10-plateau-03.jpg" alt="Burger King · Menu 7€90" loading="lazy"><figcaption class="mono">Sur le plateau</figcaption></figure>
+      <div class="side"><div><h2>Menu 7€90</h2><p>Trois directions pour un shoot autour d&#x27;un menu. Un registre girly années 2000, un registre Tecktonik, un registre swag période Bieber : trois silhouettes, trois attitudes, un seul brief.</p></div><div class="thumbs"><figure data-i="9" data-k="1"><img src="../images/atelier/t/atl-10-plateau-05.jpg" alt="" loading="lazy"></figure></div></div>
+    </section>
+    <section class="sheet flip" id="ATL-11">
+      <div class="meta mono"><span>ATL-11</span><span>Dunkin&#x27;</span><span>2026</span><span>Shooting · réseaux sociaux</span></div>
+      <figure class="main" data-i="10" data-k="0"><img src="../images/atelier/atl-11-final-01.jpg" alt="Dunkin&#x27; · Match avec ton Match" loading="lazy"><figcaption class="mono">Visuel final</figcaption></figure>
+      <div class="side"><div><h2>Match avec ton Match</h2><p>Shoot autour d&#x27;un thème de duo assorti. Direction streetwear décontractée, accessoires et couleurs pensés pour fonctionner en tandem.</p><span class="cred mono">© Dunkin&#x27; France</span></div><div class="thumbs"><figure data-i="10" data-k="1"><img src="../images/atelier/t/atl-11-final-02.jpg" alt="" loading="lazy"></figure><figure data-i="10" data-k="2"><img src="../images/atelier/t/atl-11-final-03.jpg" alt="" loading="lazy"></figure><figure data-i="10" data-k="3"><img src="../images/atelier/t/atl-11-plateau-02.jpg" alt="" loading="lazy"></figure></div>
+        <button class="more mono" type="button" data-i="10" data-k="0">Toutes les images : 8 →</button></div>
+    </section>
+    <section class="sheet" id="ATL-12">
+      <div class="meta mono"><span>ATL-12</span><span>Dunkin&#x27;</span><span>2026</span><span>Shooting</span></div>
+      <figure class="main" data-i="11" data-k="0"><img src="../images/atelier/atl-12-final-01.jpg" alt="Dunkin' · ProteinMilk x Basic-Fit" loading="lazy"><figcaption class="mono">Visuel final</figcaption></figure>
+      <div class="side"><div><h2>ProteinMilk x Basic-Fit</h2><p>Stylisme pour un shoot autour du sport et de la routine protéinée. Palette pastel, vestiaire fitness et lifestyle, entre salle de sport et vie quotidienne.</p><span class="cred mono">© Dunkin' France</span></div><div class="thumbs"><figure data-i="11" data-k="1"><img src="../images/atelier/t/atl-12-final-02.jpg" alt="" loading="lazy"></figure><figure data-i="11" data-k="2"><img src="../images/atelier/t/atl-12-final-03.jpg" alt="" loading="lazy"></figure></div>
+        </div>
+    </section>
+  <div class="section-label mono"><span>Le processus, en détail</span><span>ATL</span></div>
+  <div class="prose">
+    <p>Un projet commence rarement avec une page blanche. Un brief arrive avec une intention, un univers, une ambiance. L'agence ou les créatifs ont généralement déjà posé une direction, parfois des pistes très précises. Le travail commence là&nbsp;: comprendre ce qui est demandé, identifier ce qui doit être traduit par le vêtement, chercher les références qui alimentent cette direction, puis passer de l'intention à des silhouettes réelles.</p>
+    <p>Le processus continue dans le réel. Chercher les pièces, construire les looks, composer avec ce qui existe vraiment. Essayer, ajuster, recommencer. Une silhouette ne se construit pas uniquement sur un moodboard&nbsp;: les vêtements trouvés, les contraintes de production et les essayages transforment souvent les premières intentions.</p>
+    <p><a href="styliste-shooting-publicitaire.html">Ce que fait vraiment un styliste sur un shooting</a></p>
   </div>
-</div>
-
+  <a class="cta" href="contact.html">Discuter d'un projet →</a>
+</main>
+<script type="application/json" id="atl-data">[{"code": "ATL-01", "client": "Backmarket", "title": "Félipé et Ronaldo", "year": "2024", "type": "Film · réseaux sociaux", "text": "Deux personnages pour la même mécanique : un passionné de maracas aux pièces fortes d'inspiration sud-américaine, un bartender star de Mulhouse en costume cheap et chemise kitsch.", "lead": ["../images/atelier/atl-01-final-01.jpg", "../images/atelier/atl-01-final-02.jpg", "../images/atelier/atl-01-final-03.jpg", "../images/atelier/atl-01-final-04.jpg", "../images/atelier/atl-01-final-05.jpg", "../images/atelier/atl-01-final-06.jpg"], "label": "Visuel final", "gal": [{"src": "../images/atelier/atl-01-final-01.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-01-final-02.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-01-final-03.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-01-final-04.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-01-final-05.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-01-final-06.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-01-plateau-07.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-01-plateau-08.jpg", "label": "Plateau"}], "thumb": "../images/atelier/atl-01-final-01.jpg", "cred": "© Back Market / Marcel", "nfin": 6}, {"code": "ATL-02", "client": "Backmarket", "title": "Marjolaine et ses boules à neige", "year": "2025", "type": "Film · réseaux sociaux", "text": "Un personnage pour un film de campagne. Construire une châtelaine quinquagénaire, entre ordre, tradition et humour piquant : cardigans, perles, matières nobles, un vestiaire de femme qui reçoit.", "lead": ["../images/atelier/atl-02-final-01.jpg", "../images/atelier/atl-02-final-02.jpg", "../images/atelier/atl-02-final-03.jpg", "../images/atelier/atl-02-final-04.jpg"], "label": "Visuel final", "gal": [{"src": "../images/atelier/atl-02-final-01.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-02-final-02.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-02-final-03.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-02-final-04.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-02-plateau-01.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-02-plateau-02.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-02-plateau-03.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-02-plateau-04.jpg", "label": "Plateau"}], "thumb": "../images/atelier/atl-02-final-01.jpg", "cred": "© Back Market / Marcel", "nfin": 4}, {"code": "ATL-03", "client": "Backmarket", "title": "Retro Tech, Vlog 2005", "year": "2025", "type": "Film", "text": "Le Vlog 2005 : deux silhouettes années 2000 pour une campagne tech seconde main. Velours, taille basse, zip-hoodies et accessoires qui brillent, pour faire dialoguer le rétro et l'électronique.", "lead": ["../images/atelier/atl-03-final-01.jpg", "../images/atelier/atl-03-final-02.jpg"], "label": "Visuel final", "gal": [{"src": "../images/atelier/atl-03-final-01.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-03-final-02.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-03-plateau-01.jpg", "label": "Plateau"}], "thumb": "../images/atelier/atl-03-final-01.jpg", "cred": "© Back Market / Marcel", "nfin": 2}, {"code": "ATL-04", "client": "Lidl", "title": "90's Ad", "year": "2025", "type": "Film", "text": "Un plateau télé des années 90 rejoué au premier degré. Un présentateur en costume gris à épaulettes et cravate trop large, une présentatrice en tailleur couleur douce : très clean, légèrement de mauvais goût, jamais caricatural.", "lead": ["../images/atelier/atl-04-final-01.jpg", "../images/atelier/atl-04-final-02.jpg", "../images/atelier/atl-04-final-03.jpg", "../images/atelier/atl-04-final-04.jpg"], "label": "Visuel final", "gal": [{"src": "../images/atelier/atl-04-final-01.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-04-final-02.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-04-final-03.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-04-final-04.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-04-plateau-01.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-04-plateau-02.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-04-plateau-03.jpg", "label": "Plateau"}], "thumb": "../images/atelier/atl-04-final-01.jpg", "cred": "© Lidl / Marcel", "nfin": 4}, {"code": "ATL-05", "client": "Bollé", "title": "Acétate", "year": "2025", "type": "Shooting", "text": "Deux silhouettes homme, deux silhouettes femme et un couple, pour une campagne acétate. Un travail de layering, de matières techniques et de textures, pensé pour mettre en valeur l'accessoire sans écraser le reste du look.", "lead": ["../images/atelier/atl-05-plateau-01.jpg", "../images/atelier/atl-05-plateau-02.jpg", "../images/atelier/atl-05-plateau-03.jpg", "../images/atelier/atl-05-plateau-04.jpg"], "label": "Sur le plateau", "gal": [{"src": "../images/atelier/atl-05-plateau-01.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-05-plateau-02.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-05-plateau-03.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-05-plateau-04.jpg", "label": "Plateau"}], "thumb": "../images/atelier/atl-05-plateau-01.jpg", "cred": "", "nfin": 0}, {"code": "ATL-06", "client": "Visa x Deliveroo", "title": "Dump", "year": "2025", "type": "Shooting · carrousel", "text": "Un carrousel façon photo dump : la photo de confirmation de livraison devenue moment royal. Cinq scènes, des tenues d'intérieur ultra confortables et un détail qui couronne tout, un plaid porté en cape, un casque gaming posé comme une couronne.", "lead": ["../images/atelier/atl-06-final-01.jpg", "../images/atelier/atl-06-final-02.jpg", "../images/atelier/atl-06-final-03.jpg", "../images/atelier/atl-06-final-04.jpg"], "label": "Visuel final", "gal": [{"src": "../images/atelier/atl-06-final-01.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-06-final-02.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-06-final-03.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-06-final-04.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-06-plateau-05.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-06-plateau-06.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-06-plateau-07.jpg", "label": "Plateau"}], "thumb": "../images/atelier/atl-06-final-01.jpg", "cred": "Photo @frankieallio", "nfin": 4}, {"code": "ATL-07", "client": "Backmarket", "title": "Gifting Season", "year": "2025", "type": "Film · portraits", "text": "Quatre personas de shoppeurs de fêtes de fin d'année. Construire une garde-robe et une attitude différentes pour chacun, à partir d'un même brief cadeaux.", "lead": ["../images/atelier/atl-07-plateau-01.jpg", "../images/atelier/atl-07-plateau-03.jpg"], "label": "Sur le plateau", "gal": [{"src": "../images/atelier/atl-07-plateau-01.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-07-plateau-03.jpg", "label": "Plateau"}], "thumb": "../images/atelier/atl-07-plateau-01.jpg", "cred": "", "nfin": 0}, {"code": "ATL-08", "client": "Lidl", "title": "Injustice, partie 2", "year": "2025", "type": "Film", "text": "Des silhouettes lisibles en une seconde à l'écran. Un présentateur crédible en figure journalistique, deux employés de supermarché aux couleurs de leur enseigne : l'exactitude du quotidien plutôt que le costume.", "lead": ["../images/atelier/atl-08-final-01.jpg"], "label": "Visuel final", "gal": [{"src": "../images/atelier/atl-08-final-01.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-08-plateau-02.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-08-plateau-03.jpg", "label": "Plateau"}], "thumb": "../images/atelier/atl-08-final-01.jpg", "cred": "Lidl / Marcel · image Sasha Metgy", "nfin": 1}, {"code": "ATL-09", "client": "Visa", "title": "Ski", "year": "2025", "type": "Shooting", "text": "Deux talents, un vestiaire de montagne du quotidien plutôt qu'une panoplie de ski. Polaires, doudounes, pantalons de travail écru : une pièce forte bleu Visa, une pièce blanche, et la superposition pour faire le reste.", "lead": [], "label": "Planche de stylisme", "gal": [], "thumb": "", "cred": "", "nfin": 0}, {"code": "ATL-10", "client": "Burger King", "title": "Menu 7€90", "year": "2025", "type": "Shooting", "text": "Trois directions pour un shoot autour d'un menu. Un registre girly années 2000, un registre Tecktonik, un registre swag période Bieber : trois silhouettes, trois attitudes, un seul brief.", "lead": ["../images/atelier/atl-10-plateau-03.jpg", "../images/atelier/atl-10-plateau-05.jpg"], "label": "Sur le plateau", "gal": [{"src": "../images/atelier/atl-10-plateau-03.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-10-plateau-05.jpg", "label": "Plateau"}], "thumb": "../images/atelier/atl-10-plateau-03.jpg", "cred": "", "nfin": 0}, {"code": "ATL-11", "client": "Dunkin'", "title": "Match avec ton Match", "year": "2026", "type": "Shooting · réseaux sociaux", "text": "Shoot autour d'un thème de duo assorti. Direction streetwear décontractée, accessoires et couleurs pensés pour fonctionner en tandem.", "lead": ["../images/atelier/atl-11-final-01.jpg", "../images/atelier/atl-11-final-02.jpg", "../images/atelier/atl-11-final-03.jpg"], "label": "Visuel final", "gal": [{"src": "../images/atelier/atl-11-final-01.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-11-final-02.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-11-final-03.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-11-plateau-02.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-11-plateau-03.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-11-plateau-04.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-11-plateau-05.jpg", "label": "Plateau"}, {"src": "../images/atelier/atl-11-plateau-06.jpg", "label": "Plateau"}], "thumb": "../images/atelier/atl-11-final-01.jpg", "cred": "© Dunkin' France", "nfin": 3}, {"code": "ATL-12", "client": "Dunkin'", "title": "ProteinMilk x Basic-Fit", "year": "2026", "type": "Shooting", "text": "Stylisme pour un shoot autour du sport et de la routine protéinée. Palette pastel, vestiaire fitness et lifestyle, entre salle de sport et vie quotidienne.", "lead": ["../images/atelier/atl-12-final-01.jpg", "../images/atelier/atl-12-final-02.jpg", "../images/atelier/atl-12-final-03.jpg"], "label": "Visuel final", "gal": [{"src": "../images/atelier/atl-12-final-01.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-12-final-02.jpg", "label": "Visuel final"}, {"src": "../images/atelier/atl-12-final-03.jpg", "label": "Visuel final"}], "thumb": "../images/atelier/atl-12-final-01.jpg", "cred": "© Dunkin' France", "nfin": 3}, {"code": "ADN-01", "client": "ADN.Bazaar", "title": "Book vintage", "year": "2025", "type": "Éditorial studio", "text": "Éditorial studio personnel, pensé pour montrer une méthode plutôt qu'une commande client. Pièces vintage sur fond papier coloré : varsity jacket, pull rayé, blouson cuir, pull moutarde, bijoux en détail.", "lead": ["../images/atelier/adn-01-final-01.jpg", "../images/atelier/adn-01-final-02.jpg", "../images/atelier/adn-01-final-03.jpg", "../images/atelier/adn-01-final-04.jpg", "../images/atelier/adn-01-final-05.jpg", "../images/atelier/adn-01-final-06.jpg", "../images/atelier/adn-01-final-07.jpg", "../images/atelier/adn-01-final-08.jpg", "../images/atelier/adn-01-final-09.jpg", "../images/atelier/adn-01-final-10.jpg", "../images/atelier/adn-01-final-11.jpg", "../images/atelier/adn-01-final-12.jpg", "../images/atelier/adn-01-final-13.jpg", "../images/atelier/adn-01-final-14.jpg", "../images/atelier/adn-01-final-15.jpg", "../images/atelier/adn-01-final-16.jpg"], "label": "Visuel final", "gal": [{"src": "../images/atelier/adn-01-final-01.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-02.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-03.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-04.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-05.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-06.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-07.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-08.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-09.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-10.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-11.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-12.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-13.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-14.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-15.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-final-16.jpg", "label": "Visuel final"}, {"src": "../images/atelier/adn-01-packshot-01.jpg", "label": "Packshot"}, {"src": "../images/atelier/adn-01-packshot-02.jpg", "label": "Packshot"}, {"src": "../images/atelier/adn-01-packshot-03.jpg", "label": "Packshot"}, {"src": "../images/atelier/adn-01-packshot-04.jpg", "label": "Packshot"}, {"src": "../images/atelier/adn-01-packshot-05.jpg", "label": "Packshot"}, {"src": "../images/atelier/adn-01-packshot-06.jpg", "label": "Packshot"}, {"src": "../images/atelier/adn-01-packshot-07.jpg", "label": "Packshot"}, {"src": "../images/atelier/adn-01-packshot-08.jpg", "label": "Packshot"}], "thumb": "../images/atelier/adn-01-final-01.jpg", "cred": "Photo Yann Stofer", "nfin": 16}]</script>
+<script>
+(function () {
+  var D = JSON.parse(document.getElementById('atl-data').textContent);
+  var POS = [[8, 30], [20, 68], [30, 26], [40, 62], [50, 22], [58, 70], [66, 32], [74, 74], [80, 24], [88, 60], [94, 30], [63, 52], [44, 40]], map = document.getElementById('map'), list = document.getElementById('list');
+  function lines(hot) {
+    var svg = document.getElementById('lines'), W = map.clientWidth, H = map.clientHeight;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.innerHTML = '';
+    D.forEach(function (a, i) { D.forEach(function (b, j) {
+      if (j <= i || a.client !== b.client) return;
+      var l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      l.setAttribute('x1', POS[i][0] / 100 * W); l.setAttribute('y1', POS[i][1] / 100 * H);
+      l.setAttribute('x2', POS[j][0] / 100 * W); l.setAttribute('y2', POS[j][1] / 100 * H);
+      if (hot == i || hot == j) l.setAttribute('class', 'hot');
+      svg.appendChild(l);
+    }); });
+  }
+  lines(); addEventListener('resize', function () { lines(); });
+  map.querySelectorAll('.dot').forEach(function (d) { d.addEventListener('mouseenter', function () { lines(d.dataset.i); }); d.addEventListener('mouseleave', function () { lines(); }); });
+  var bm = document.getElementById('b-map'), bl = document.getElementById('b-list');
+  function mode(m) { map.hidden = m !== 'map'; list.hidden = m !== 'list'; bm.setAttribute('aria-pressed', m === 'map'); bl.setAttribute('aria-pressed', m === 'list'); if (m === 'map') lines(); }
+  bm.onclick = function () { mode('map'); }; bl.onclick = function () { mode('list'); };
+  if (matchMedia('(max-width: 760px)').matches) mode('list');
+  document.addEventListener('click', function (e) {
+    var f = e.target.closest('.sheet figure, .more'); if (!f) return;
+    var d = D[+f.dataset.i]; openGallery(d.gal, +f.dataset.k, d.code + ' · ' + d.title);
+  });
+})();
+</script>
+<footer class="foot mono"><span>Adrien Pons · styliste &amp; personal shopper, Paris</span><span><a href="../pages/contact.html">Contact</a> · <a href="https://www.instagram.com/adnpns/" target="_blank" rel="noopener">Instagram</a></span><span>adrienpons.com · 2026</span></footer>
+<script src="../da.js?v=3"></script>
 </body>
 </html>

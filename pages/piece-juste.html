@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>La Pièce Juste — Personal Shopping sur Mesure | Adrien Pons</title>
+<title>La Pièce Juste · Personal Shopping sur Mesure | Adrien Pons</title>
 <meta name="description" content="Une pièce précise en tête ? Adrien Pons part en recherche et revient avec une sélection sur mesure. Personal shopping à Paris.">
 <link rel="canonical" href="https://adrienpons.com/pages/piece-juste.html">
 <meta property="og:type" content="website">
-<meta property="og:title" content="La Pièce Juste — Personal Shopping sur Mesure">
+<meta property="og:title" content="La Pièce Juste · Personal Shopping sur Mesure">
 <meta property="og:description" content="Le plus de détails possible, puis une recherche, puis une sélection.">
 <meta property="og:url" content="https://adrienpons.com/pages/piece-juste.html">
 <meta property="og:locale" content="fr_FR">
@@ -15,15 +15,18 @@
 <meta property="og:image" content="https://adrienpons.com/images/og-adrien-pons.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Adrien Pons — Styliste &amp; Personal Shopper à Paris">
+<meta property="og:image:alt" content="Adrien Pons · Styliste &amp; Personal Shopper à Paris">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="La Pièce Juste — Personal Shopping sur Mesure">
+<meta name="twitter:title" content="La Pièce Juste · Personal Shopping sur Mesure">
 <meta name="twitter:description" content="Le plus de détails possible, puis une recherche, puis une sélection.">
 <meta name="twitter:image" content="https://adrienpons.com/images/og-adrien-pons.jpg">
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" type="image/png" href="../favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../style.css">
+<link rel="stylesheet" href="../da.css?v=4">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -43,18 +46,11 @@
 }
 </script>
 </head>
-<body>
+<body class="da">
 
 <nav class="nav">
-  <span class="nav-brand">Adrien Pons</span>
-  <div class="nav-links">
-    <a href="../espace.html">Espace</a>
-    <a href="atelier.html">Atelier</a>
-    <a href="vestiaire.html">Vestiaire</a>
-    <a href="regard.html">Regard</a>
-    <a href="adrienpons.html">Adrien Pons</a>
-    <a href="contact.html">Contact</a>
-  </div>
+  <span class="nav-brand"><a href="../espace.html">Adrien Pons</a></span>
+  <div class="nav-links"><a href="../espace.html"><i>01</i>Espace</a><a href="../pages/atelier.html"><i>02</i>Atelier</a><a href="../pages/vestiaire.html"><i>03</i>Vestiaire</a><a href="../pages/regard.html" aria-current="page"><i>04</i>Regard</a><a href="../pages/journal.html"><i>05</i>Journal</a><a href="../pages/adrienpons.html"><i>06</i>Adrien Pons</a><a href="../pages/contact.html"><i>07</i>Contact</a></div>
 </nav>
 
 <div class="simple-page">
@@ -133,7 +129,7 @@
         form.style.display = 'none';
         document.getElementById('piece-success').style.display = 'block';
       }).catch(function () {
-        status.textContent = "Un souci à l'envoi — nouvel essai dans un instant ?";
+        status.textContent = "Un souci à l'envoi. Nouvel essai dans un instant ?";
         status.className = 'form-status is-error';
         submitBtn.disabled = false;
       });
@@ -141,5 +137,8 @@
   })();
 </script>
 
+
+<footer class="foot mono"><span>Adrien Pons · styliste &amp; personal shopper, Paris</span><span><a href="../pages/contact.html">Contact</a> · <a href="https://www.instagram.com/adnpns/" target="_blank" rel="noopener">Instagram</a></span><span>adrienpons.com · 2026</span></footer>
+<script src="../da.js?v=3"></script>
 </body>
 </html>

@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pièce introuvable — Adrien Pons</title>
+<title>Pièce introuvable · Adrien Pons</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/da.css?v=4">
 <style>
   .lost-tag { display: inline-block; font-family: Georgia, serif; font-style: italic; color: var(--accent); border: 1px dashed var(--accent); border-radius: 3px; padding: 4px 12px; margin-bottom: 28px; transform: rotate(-3deg); }
   .lost-find { display: flex; gap: 22px; align-items: center; margin: 34px 0 30px; padding: 18px; border: 1px solid var(--line); border-radius: 6px; text-decoration: none; transition: border-color .35s ease; }
@@ -19,23 +22,16 @@
   @media (max-width: 520px) { .lost-find { flex-direction: column; align-items: flex-start; } .lost-find img { width: 100%; height: 220px; } }
 </style>
 </head>
-<body>
+<body class="da">
 
 <nav class="nav">
-  <span class="nav-brand">Adrien Pons</span>
-  <div class="nav-links">
-    <a href="/espace.html">Espace</a>
-    <a href="/pages/atelier.html">Atelier</a>
-    <a href="/pages/vestiaire.html">Vestiaire</a>
-    <a href="/pages/regard.html">Regard</a>
-    <a href="/pages/adrienpons.html">Adrien Pons</a>
-    <a href="/pages/contact.html">Contact</a>
-  </div>
+  <span class="nav-brand"><a href="/espace.html">Adrien Pons</a></span>
+  <div class="nav-links"><a href="/espace.html"><i>01</i>Espace</a><a href="/pages/atelier.html"><i>02</i>Atelier</a><a href="/pages/vestiaire.html"><i>03</i>Vestiaire</a><a href="/pages/regard.html"><i>04</i>Regard</a><a href="/pages/journal.html"><i>05</i>Journal</a><a href="/pages/adrienpons.html"><i>06</i>Adrien Pons</a><a href="/pages/contact.html"><i>07</i>Contact</a></div>
 </nav>
 
 <div class="simple-page">
   <div class="simple-inner">
-    <span class="lost-tag">404 · Taille unique · Introuvable</span>
+    <p class="simple-kicker">Réf. 404 · Taille unique · Introuvable</p>
     <h1 class="simple-title voice">Cette page est partie avant la fin de la vente.</h1>
     <div class="simple-body">
       <p>Tous les bacs ont été retournés, aucune trace. Pour se consoler, une trouvaille tirée au hasard dans le vestiaire&nbsp;:</p>
@@ -74,5 +70,6 @@
   })();
 </script>
 
+<footer class="foot mono"><span>Adrien Pons · styliste &amp; personal shopper, Paris</span><span><a href="/pages/contact.html">Contact</a> · <a href="https://www.instagram.com/adnpns/" target="_blank" rel="noopener">Instagram</a></span><span>adrienpons.com · 2026</span></footer>
 </body>
 </html>

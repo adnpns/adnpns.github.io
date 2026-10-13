@@ -139,7 +139,7 @@ function initFragmentPage() {
   document.getElementById('nb-num').textContent = f.num;
   document.getElementById('nb-title').textContent = f.title;
   document.getElementById('nb-text').textContent = f.text;
-  document.title = f.title + ' — Adrien Pons';
+  document.title = f.title + ' · Adrien Pons';
 
   const img = document.getElementById('nb-image');
   const shapeRatio = { square: '1/1', tall: '3/5', wide: '4/5', long: '5/3' };

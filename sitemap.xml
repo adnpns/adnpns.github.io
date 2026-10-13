@@ -66,4 +66,22 @@
           <changefreq>yearly</changefreq>
           <priority>0.7</priority>
     </url>
+    <url>
+          <loc>https://adrienpons.com/pages/journal.html</loc>
+          <lastmod>2026-10-02</lastmod>
+          <changefreq>weekly</changefreq>
+          <priority>0.7</priority>
+    </url>
+    <url>
+          <loc>https://adrienpons.com/pages/tailles-vintage-les-pieges.html</loc>
+          <lastmod>2026-10-05</lastmod>
+          <changefreq>monthly</changefreq>
+          <priority>0.6</priority>
+    </url>
+    <url>
+          <loc>https://adrienpons.com/pages/premier-rendez-vous-styling.html</loc>
+          <lastmod>2026-10-13</lastmod>
+          <changefreq>monthly</changefreq>
+          <priority>0.6</priority>
+    </url>
 </urlset>
