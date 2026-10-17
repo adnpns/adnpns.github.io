@@ -53,6 +53,23 @@
 
 <h1 class="sr-only">Adrien Pons · styliste, personal shopper et conseil en image à Paris</h1>
 
+<aside class="intro-espace" aria-label="Présentation">
+  <p class="ie-name">Adrien Pons, styliste à Paris.</p>
+  <p class="ie-what">Stylisme pour la pub, le film et le shooting. Personal styling. Vintage.</p>
+  <p class="ie-go"><a href="pages/atelier.html">Voir les projets →</a><a href="pages/regard.html">Personal styling →</a></p>
+  <p class="ie-hint">Les objets se survolent et s'ouvrent.</p>
+</aside>
+<style>
+  .intro-espace { position: fixed; left: clamp(18px, 4vw, 56px); bottom: clamp(18px, 4vh, 44px); z-index: 20; max-width: 360px; font-family: "DM Mono", ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-soft); background: rgba(12,11,10,.88); padding: 14px 18px 12px; pointer-events: none; }
+  .intro-espace p { margin: 0 0 6px; }
+  .intro-espace .ie-name { font-family: Georgia, serif; font-size: 22px; letter-spacing: 0; text-transform: none; color: var(--ink); margin-bottom: 6px; }
+  .intro-espace .ie-go { display: flex; gap: 18px; margin-top: 12px; pointer-events: auto; }
+  .intro-espace .ie-go a { color: var(--ink); border-bottom: 1px solid var(--line); }
+  .intro-espace .ie-go a:hover { color: var(--accent); border-color: var(--accent); }
+  .intro-espace .ie-hint { color: var(--star); margin-top: 10px; }
+  @media (max-width: 760px) { .intro-espace { right: 18px; max-width: none; } .intro-espace .ie-name { font-size: 18px; } .intro-espace .ie-hint { display: none; } }
+</style>
+
 <div class="space">
   <svg class="constellation-svg" id="lines"></svg>
   <div id="field"></div>
@@ -60,7 +77,7 @@
 </div>
 
 <script src="fragments.js?v=4"></script>
-<script src="main.js?v=5"></script>
+<script src="main.js?v=6"></script>
 <script>
   initConstellation();
   applyHighlightFromURL();

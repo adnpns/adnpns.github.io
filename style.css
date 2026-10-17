@@ -134,7 +134,7 @@ body {
 }
 
 .fragment.enter {
-  animation: fadeInFrag 1.2s ease forwards, drift 22s ease-in-out infinite;
+  animation: fadeInFrag 0.8s ease forwards, drift 22s ease-in-out infinite;
   animation-delay: var(--delay), var(--delay);
   opacity: 0;
 }

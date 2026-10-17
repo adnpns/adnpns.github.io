@@ -89,6 +89,11 @@
   .atelier .film .ratio { position: relative; aspect-ratio: 16 / 9; background: #000; }
   .atelier .film iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
   @media (max-width: 800px) { .atelier .reel { padding: 8px; } .atelier .reel.n2 video { height: auto; width: 100%; } .atelier .reel.n2 .v { flex: 1 1 0; } .atelier .reel video { height: auto; width: 100%; } }
+  .atelier .also { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 28px 40px; }
+  .atelier .also-item { border-top: 1px solid var(--line); padding-top: 14px; scroll-margin-top: 90px; }
+  .atelier .also-item .mono { color: var(--ink-soft); }
+  .atelier .also-item b { display: block; font-family: var(--serif); font-weight: 400; font-size: 24px; margin: 8px 0; }
+  .atelier .also-item p { color: var(--ink-soft); margin: 0; }
 </style>
 </head>
 <body class="da">
@@ -146,22 +151,10 @@
       <div class="side"><div><h2>Dump</h2><p>Un carrousel façon photo dump : la photo de confirmation de livraison devenue moment royal. Cinq scènes, des tenues d&#x27;intérieur ultra confortables et un détail qui couronne tout, un plaid porté en cape, un casque gaming posé comme une couronne.</p><span class="cred mono">Photo @frankieallio</span></div><div class="thumbs"><figure data-i="5" data-k="1"><img src="../images/atelier/t/atl-06-final-04.jpg" alt="" loading="lazy"></figure><figure data-i="5" data-k="2"><img src="../images/atelier/t/atl-06-plateau-05.jpg" alt="" loading="lazy"></figure><figure data-i="5" data-k="3"><img src="../images/atelier/t/atl-06-plateau-06.jpg" alt="" loading="lazy"></figure></div>
         <button class="more mono" type="button" data-i="5" data-k="0">Toutes les images : 5 →</button></div>
     </section>
-    <section class="sheet" id="ATL-06">
-      <div class="meta mono"><span>ATL-06</span><span>Backmarket</span><span>2025</span><span>Film · portraits</span></div>
-      <figure class="main" data-i="6" data-k="0"><img src="../images/atelier/atl-07-plateau-01.jpg" alt="Backmarket · Gifting Season" loading="lazy"><figcaption class="mono">Sur le plateau</figcaption></figure>
-      <div class="side"><div><h2>Gifting Season</h2><p>Quatre personas de shoppeurs de fêtes de fin d&#x27;année. Construire une garde-robe et une attitude différentes pour chacun, à partir d&#x27;un même brief cadeaux.</p></div><div class="thumbs"><figure data-i="6" data-k="1"><img src="../images/atelier/t/atl-07-plateau-03.jpg" alt="" loading="lazy"></figure></div>
-        </div>
-    </section>
-    <section class="sheet flip" id="ATL-07">
+    <section class="sheet" id="ATL-07">
       <div class="meta mono"><span>ATL-07</span><span>Lidl</span><span>2025</span><span>Film</span></div>
       <figure class="main film"><div class="ratio"><iframe src="https://player.vimeo.com/video/1153602772?title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" title="Lidl · Injustice, partie 2" allow="fullscreen; picture-in-picture" loading="lazy"></iframe></div><figcaption class="mono">Film</figcaption></figure>
       <div class="side"><div><h2>Injustice, partie 2</h2><p>Des silhouettes lisibles en une seconde à l&#x27;écran. Un présentateur crédible en figure journalistique, deux employés de supermarché aux couleurs de leur enseigne : l&#x27;exactitude du quotidien plutôt que le costume.</p><span class="cred mono">Lidl / Marcel · réalisation et image Sasha Metgy</span></div><div class="thumbs"><figure data-i="7" data-k="0"><img src="../images/atelier/t/atl-08-plateau-02.jpg" alt="" loading="lazy"></figure><figure data-i="7" data-k="1"><img src="../images/atelier/t/atl-08-plateau-03.jpg" alt="" loading="lazy"></figure></div>
-        </div>
-    </section>
-    <section class="sheet textonly" id="ATL-08">
-      <div class="meta mono"><span>ATL-08</span><span>Visa</span><span>2025</span><span>Shooting</span></div>
-      
-      <div class="side"><div><h2>Ski</h2><p>Deux talents, un vestiaire de montagne du quotidien plutôt qu&#x27;une panoplie de ski. Polaires, doudounes, pantalons de travail écru : une pièce forte bleu Visa, une pièce blanche, et la superposition pour faire le reste.</p></div>
         </div>
     </section>
     <section class="sheet flip" id="ATL-09">
@@ -170,11 +163,14 @@
       <div class="side"><div><h2>Match avec ton Match</h2><p>Shoot autour d&#x27;un thème de duo assorti. Direction streetwear décontractée, accessoires et couleurs pensés pour fonctionner en tandem.</p><span class="cred mono">© Dunkin&#x27; France</span></div><div class="thumbs"><figure data-i="9" data-k="1"><img src="../images/atelier/t/atl-11-final-02.jpg" alt="" loading="lazy"></figure><figure data-i="9" data-k="2"><img src="../images/atelier/t/atl-11-final-03.jpg" alt="" loading="lazy"></figure><figure data-i="9" data-k="3"><img src="../images/atelier/t/atl-11-plateau-02.jpg" alt="" loading="lazy"></figure></div>
         <button class="more mono" type="button" data-i="9" data-k="0">Toutes les images : 8 →</button></div>
     </section>
+
+  <div class="section-label mono"><span>Également</span><span>Visuels à venir</span></div>
+  <div class="also"><div class="also-item" id="ATL-06"><span class="mono">ATL-06 · Backmarket · 2025</span><b>Gifting Season</b><p>Quatre personas de shoppeurs de fêtes de fin d&#x27;année. Construire une garde-robe et une attitude différentes pour chacun, à partir d&#x27;un même brief cadeaux.</p></div><div class="also-item" id="ATL-08"><span class="mono">ATL-08 · Visa · 2025</span><b>Ski</b><p>Deux talents, un vestiaire de montagne du quotidien plutôt qu&#x27;une panoplie de ski. Polaires, doudounes, pantalons de travail écru : une pièce forte bleu Visa, une pièce blanche, et la superposition pour faire le reste.</p></div></div>
   <div class="section-label mono"><span>Le processus, en détail</span><span>ATL</span></div>
   <div class="prose">
     <p>Un projet commence rarement avec une page blanche. Un brief arrive avec une intention, un univers, une ambiance. L'agence ou les créatifs ont généralement déjà posé une direction, parfois des pistes très précises. Le travail commence là&nbsp;: comprendre ce qui est demandé, identifier ce qui doit être traduit par le vêtement, chercher les références qui alimentent cette direction, puis passer de l'intention à des silhouettes réelles.</p>
     <p>Le processus continue dans le réel. Chercher les pièces, construire les looks, composer avec ce qui existe vraiment. Essayer, ajuster, recommencer. Une silhouette ne se construit pas uniquement sur un moodboard&nbsp;: les vêtements trouvés, les contraintes de production et les essayages transforment souvent les premières intentions.</p>
-    <p><a href="styliste-shooting-publicitaire.html">Ce que fait vraiment un styliste sur un shooting</a></p>
+    <p><a href="styliste-shooting-publicitaire.html">Ce que fait vraiment un styliste sur un shooting</a> · <a href="louer-ou-acheter-pour-un-shooting.html">Louer ou acheter les vêtements d'un tournage</a></p>
   </div>
   <a class="cta" href="contact.html">Discuter d'un projet →</a>
 </main>

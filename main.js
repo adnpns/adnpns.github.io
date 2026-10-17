@@ -61,7 +61,7 @@ function renderField() {
     const scale = Math.max(0.55, Math.min(1, window.innerWidth / 1440));
     el.style.width = Math.round(pos.width * scale) + 'px';
     el.style.setProperty('--rot', pos.rot + 'deg');
-    el.style.setProperty('--delay', (i * 0.15) + 's');
+    el.style.setProperty('--delay', (i * 0.04) + 's');
     el.innerHTML =
       '<div class="fragment-surface"><img src="' + f.image + '" alt="" loading="lazy"></div>' +
       '<div class="fragment-caption">' + f.title + '</div>';
