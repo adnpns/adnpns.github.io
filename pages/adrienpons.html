@@ -57,8 +57,14 @@
       <p class="mono"><span>Adrien Pons</span><span>Styliste · personal shopper · vintage dealer</span><span>Paris</span></p>
       <h1>Un fil. Plusieurs formes.</h1>
     </div>
-    <p class="aside">Plusieurs métiers en apparence. La même matière, regardée sous différents angles : chercher, observer, comprendre, trouver.</p>
+    <div class="aside portrait"><img src="../images/adrien-pons-portrait.jpg" alt="Adrien Pons, styliste à Paris" width="928" height="1400"><p>Plusieurs métiers en apparence. La même matière, regardée sous différents angles : chercher, observer, comprendre, trouver.</p></div>
   </header>
+  <style>
+    .page-head .portrait { display: flex; gap: 28px; align-items: flex-end; max-width: 640px; }
+    .page-head .portrait img { width: 300px; height: auto; display: block; box-shadow: 0 20px 44px rgba(0,0,0,.5); }
+    .page-head .portrait p { margin: 0; }
+    @media (max-width: 760px) { .page-head .portrait { flex-direction: column; align-items: flex-start; gap: 22px; } .page-head .portrait img { width: 100%; max-width: 420px; } }
+  </style>
 
   <ol class="thread">
     <li class="step" data-peek="../images/espace/mains.jpg"><span class="mono soft">AP-01 · Études</span><div><b>Psychologie</b><p>La psychologie d'abord, pour comprendre les gens, à l'Université Paris Descartes, puis un bachelor en marketing du luxe. Très vite, une évidence : on raconte beaucoup de soi par ce qu'on porte. Le vêtement comme outil de confiance et de bien-être. Observer, écouter, poser les bonnes questions avant de proposer quoi que ce soit : une façon de faire qui sert aujourd'hui autant en boutique qu'en rendez-vous de styling, et jusque dans l'observation du comportement des chiens chez Mauvais Cabots.</p></div></li>
