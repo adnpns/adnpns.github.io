@@ -259,18 +259,23 @@
     if (C.vue === "qg") vueQG(ZONE); else vueProjet(ZONE, MAIN);
     appliquerEtat(MAIN); allerA();
   }
+  var NOEUD = null, UNEFOIS = false;
   function demarrer(cfgEl) {
+    NOEUD = cfgEl;
     C = JSON.parse(cfgEl.textContent); C.cle = C.page;
     MAIN = cfgEl.closest("main") || cfgEl.parentElement;
     document.documentElement.classList.add("qk"); if (C.sombre) document.documentElement.classList.add("qk-sombre");
     var css = C.kit.replace(/kit\.js.*$/, "kit.css");
     if (!$('link[href="' + css + '"]')) { var st = el("link"); st.rel = "stylesheet"; st.href = css; document.head.appendChild(st); }
     if (window.__qkCode) lsSet("code", window.__qkCode);
+    $$(".qk-nav,.qk-bar,#qk-zone[data-qk-auto]").forEach(function (x) { x.remove(); });
     nav(MAIN);
     ZONE = document.getElementById("qk-zone");
-    if (!ZONE) { ZONE = el("div"); ZONE.id = "qk-zone"; var b = $(".qk-bar", MAIN); b.parentNode.insertBefore(ZONE, b.nextSibling); }
+    if (!ZONE) { ZONE = el("div"); ZONE.id = "qk-zone"; ZONE.dataset.qkAuto = "1"; var b = $(".qk-bar", MAIN); b.parentNode.insertBefore(ZONE, b.nextSibling); }
     ETAT = lsGet("cache_" + C.cle) || ETAT; PRET = true;
-    suivreChamps(MAIN); rendre(); vider();
+    if (!MAIN.__qk) { MAIN.__qk = 1; suivreChamps(MAIN); }
+    visee = null; rendre(); vider();
+    if (UNEFOIS) return; UNEFOIS = true;
     document.addEventListener("visibilitychange", function () { if (!document.hidden) vider(); });
     window.addEventListener("online", vider);
     setInterval(function () { if (!document.hidden) vider(); }, 45000);
@@ -281,17 +286,24 @@
     var memo = function () { window.__qkCode = i.value.trim(); };
     i.addEventListener("input", memo); i.addEventListener("change", memo);
     var c = lsGet("code"); if (!c) return;
+    // La page s'ouvre-t-elle déjà toute seule avec ce code ? (selon ce que son propre script mémorise)
+    var src = $$("script:not([src])").map(function (x) { return x.textContent; }).join(" "), seule = false;
+    try {
+      if (src.indexOf('getItem("ap_code")') >= 0 && localStorage.getItem("ap_code") === c) seule = true;
+      if (src.indexOf('getItem("tres-code")') >= 0 && sessionStorage.getItem("tres-code") === c) seule = true;
+    } catch (e) {}
+    if (seule) return;
     setTimeout(function () {
       if (document.getElementById("qg-cfg") || !document.body.contains(i) || i.value) return;
       i.value = c; window.__qkCode = c;
       var f = i.form, b = f ? $("button", f) : $("#gate button, #go");
       if (f && f.requestSubmit) f.requestSubmit(b || undefined); else if (b) b.click();
-    }, 250);
+    }, 1200);
   }
   function guetter() {
-    var c = document.getElementById("qg-cfg"); if (c) { demarrer(c); return; }
-    codeMemorise();
-    var o = new MutationObserver(function () { var c2 = document.getElementById("qg-cfg"); if (c2) { o.disconnect(); demarrer(c2); } });
+    var c = document.getElementById("qg-cfg"); if (c) demarrer(c); else codeMemorise();
+    // Toujours à l'écoute : si la page remet son contenu (2e déchiffrement), on rebranche le menu et les fiches.
+    var o = new MutationObserver(function () { var c2 = document.getElementById("qg-cfg"); if (c2 && c2 !== NOEUD) demarrer(c2); });
     o.observe(document.documentElement, { childList: true, subtree: true });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", guetter); else guetter();
