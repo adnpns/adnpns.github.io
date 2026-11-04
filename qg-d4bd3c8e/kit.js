@@ -50,6 +50,12 @@
       if (!premier) { premier = true; visee = null; } rendre();
     }).catch(function () { indic("hors ligne", true); });
   }
+  var DOCS = null, docsEnCours = false;
+  function chargerDocs() {
+    if (docsEnCours) return; docsEnCours = true;
+    appel({ action: "docs" }).then(function (r) { DOCS = r.docs; lsSet("docs_" + C.cle, DOCS); docsEnCours = false; rendre(); })
+      .catch(function () { docsEnCours = false; });
+  }
   function majLocale(t) {
     var i = ETAT.taches.findIndex(function (x) { return x.id === t.id; });
     if (i >= 0) ETAT.taches[i] = t; else ETAT.taches.push(t);
@@ -71,7 +77,8 @@
   // ---------- menu, retour, fil d'Ariane ----------
   function nav(main) {
     var n = el("nav", "qk-nav");
-    var liens = '<a href="' + C.qg + '" class="' + (C.vue === "qg" ? "on" : "") + '">QG</a>';
+    var liens = '<a href="' + C.qg + '" class="' + (C.vue === "qg" ? "on" : "") + '">QG</a>'
+      + '<a href="' + C.qg + 'documents.html" class="qk-docs' + (C.vue === "docs" ? " on" : "") + '">Documents</a>';
     C.ordre.forEach(function (k) { var p = C.projets[k]; liens += '<a href="' + p.url + '" class="' + (C.projet === k ? "on" : "") + '">' + esc(p.nom) + "</a>"; });
     n.innerHTML = '<div class="qk-menu">' + liens + "</div>";
     var b = el("div", "qk-bar");
@@ -142,12 +149,46 @@
     if (b.hasAttribute("data-qk-copier")) { b.textContent = "Copié ✓"; setTimeout(function () { b.textContent = "Copier"; }, 1500); }
   });
 
+  var TYPES = { doc: "Doc", sheet: "Tableur", form: "Formulaire", presentation: "Diapos", page: "Page", outil: "Outil" };
+  function ligneDoc(d) {
+    return '<a class="qk-doc" href="' + esc(d.url) + '" target="_blank" rel="noopener"><span class="qk-type t-' + esc(d.type) + '">' + (TYPES[d.type] || "Lien") + "</span>"
+      + '<span class="qk-dt"><b>' + esc(d.titre) + "</b><small>" + [d.note, d.dossier, d.date ? dateCourte(String(d.date).slice(0, 10)) : ""].filter(Boolean).map(esc).join(" · ") + "</small></span></a>";
+  }
+  function blocDocs(liste, titre, max, lienTout) {
+    var b = el("section", "qk-sec qk-docsbloc");
+    var vus = max ? liste.slice(0, max) : liste;
+    b.innerHTML = "<h2>" + titre + " <small>" + liste.length + "</small></h2>" + vus.map(ligneDoc).join("")
+      + (max && liste.length > max ? '<a class="qk-btn" href="' + lienTout + '">Tout voir (' + liste.length + ")</a>" : "");
+    return b;
+  }
+  function vueDocs(zone) {
+    var D = DOCS || [], q0 = (zone.querySelector("#qk-cherche") || {}).value || "";
+    zone.innerHTML = '<input id="qk-cherche" class="qk-cherche" type="search" placeholder="Chercher un document, une page, un outil…">';
+    var champ = $("#qk-cherche", zone); champ.value = q0;
+    var res = el("div"); zone.appendChild(res);
+    function dessiner() {
+      var q = champ.value.trim().toLowerCase(), f = function (d) { return !q || (d.titre + " " + (d.dossier || "") + " " + (d.note || "")).toLowerCase().indexOf(q) >= 0; };
+      res.innerHTML = "";
+      if (!DOCS) { res.appendChild(el("p", "qk-vide", "Chargement de tes documents…")); return; }
+      ["qg"].concat(C.ordre, ["autres"]).forEach(function (k) {
+        var l = D.filter(function (d) { return d.projet === k && f(d); }); if (!l.length) return;
+        var nom = k === "qg" ? "QG et organisation" : k === "autres" ? "Autres" : C.projets[k].nom;
+        var b = blocDocs(l, nom); b.id = "p-" + k; res.appendChild(b);
+      });
+      var ar = D.filter(function (d) { return d.projet === "archive" && f(d); });
+      if (ar.length) { var de = el("details", "qk-archives", "<summary>Anciennes versions et archives (" + ar.length + ")</summary>" + ar.map(ligneDoc).join("")); if (q) de.open = true; res.appendChild(de); }
+    }
+    champ.oninput = dessiner; dessiner();
+  }
   // ---------- vue QG (tour de contrôle) ----------
   function vueQG(zone) {
     var auj = jour(), T = ETAT.taches, h = "";
     var duJour = T.filter(function (t) { return t.statut !== "fait" && (t.aujourdhui || (t.echeance && t.echeance <= auj)); })
       .sort(function (a, b) { return a.priorite - b.priorite || String(a.echeance || "9").localeCompare(String(b.echeance || "9")); });
     zone.innerHTML = "";
+    var jours = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"], mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"], n0 = new Date();
+    var ouv = T.filter(function (t) { return t.statut !== "fait"; }).length, bl = T.filter(function (t) { return t.statut === "bloque" || t.statut === "attente"; }).length;
+    zone.appendChild(el("p", "qk-date", jours[n0.getDay()] + " " + n0.getDate() + " " + mois[n0.getMonth()] + " · " + ouv + " tâches ouvertes" + (bl ? " · " + bl + " en attente" : "")));
     var s1 = el("section", "qk-sec", "<h2>Aujourd'hui <small>" + duJour.length + " tâche" + (duJour.length > 1 ? "s" : "") + " · par priorité</small></h2>");
     if (!duJour.length) s1.appendChild(el("p", "qk-vide", "Rien de prévu aujourd'hui. Choisis une prochaine action dans un projet ci-dessous."));
     duJour.forEach(function (t) { s1.appendChild(ligne(t, true)); });
@@ -166,7 +207,8 @@
         + (p.desc ? '<p class="qk-desc">' + esc(p.desc) + "</p>" : "")
         + '<p class="qk-lab">Prochaine action</p>' + (proch ? '<a class="qk-lien" href="' + urlTache(proch) + '">' + esc(proch.titre) + "</a>" : '<span class="qk-vide">À définir</span>')
         + (bloq.length ? '<p class="qk-lab">Bloqué / en attente</p>' + bloq.map(function (t) { return '<a class="qk-lien qk-bloq" href="' + urlTache(t) + '">' + esc(t.titre) + " <small>" + NOMS_STATUT[t.statut] + (t.note ? " · " + esc(String(t.note).slice(0, 60)) : "") + "</small></a>"; }).join("") : "")
-        + '<a class="qk-btn" href="' + p.url + '">Ouvrir ' + esc(p.nom) + "</a>";
+        + '<div class="qk-pied"><a class="qk-btn plein" href="' + p.url + '">Ouvrir</a>'
+        + (DOCS ? '<a class="qk-btn" href="' + C.qg + "documents.html#p-" + k + '">Documents · ' + DOCS.filter(function (d) { return d.projet === k; }).length + "</a>" : "") + "</div>";
       g.appendChild(c);
     });
     s2.appendChild(g); zone.appendChild(s2);
@@ -203,12 +245,15 @@
     var libres = ici.filter(function (t) { return !$('[data-qk-tache="' + t.id + '"]', main); });
     var ouverts = {}; $$(".qk-fiche[open]", zone).forEach(function (d) { ouverts[d.id] = 1; });
     zone.innerHTML = "";
-    if (!libres.length) { zone.hidden = true; return; }
+    var mesDocs = (DOCS || []).filter(function (d) { return d.projet === C.projet; });
+    if (!libres.length && !mesDocs.length) { zone.hidden = true; return; }
     zone.hidden = false;
+    if (!libres.length) { zone.appendChild(blocDocs(mesDocs, "Documents", 6, C.qg + "documents.html#p-" + C.projet)); return; }
     var a = libres.filter(function (t) { return t.statut !== "fait"; }).sort(function (x, y) { return x.priorite - y.priorite; });
     var f = libres.filter(function (t) { return t.statut === "fait"; });
     zone.appendChild(el("h2", "qk-h2", "Tâches <small>" + a.length + " en cours" + (f.length ? " · " + f.length + " faite" + (f.length > 1 ? "s" : "") : "") + "</small>"));
     a.concat(f).forEach(function (t) { var d = fiche(t, false); if (ouverts[d.id]) d.open = true; zone.appendChild(d); });
+    if (mesDocs.length) zone.appendChild(blocDocs(mesDocs, "Documents", 6, C.qg + "documents.html#p-" + C.projet));
   }
 
   // ---------- cases et notes de la page (data-k / data-n) synchronisées ----------
@@ -245,9 +290,11 @@
   function allerA() {
     var h = decodeURIComponent(location.hash.slice(1)); if (!h || h === visee) return;
     var x = document.getElementById(h); if (!x) return;
+    if (!DOCS && C.vue === "docs") return; // on attend la liste complète pour viser juste
     visee = h;
     for (var p = x; p; p = p.parentElement) { if (p.tagName === "DETAILS") p.open = true; if (p.classList && p.classList.contains("ferme")) p.classList.remove("ferme"); if (p.hidden && p.id !== "qk-zone") p.hidden = false; }
-    setTimeout(function () { x.scrollIntoView({ behavior: "smooth", block: "start" }); x.classList.remove("qk-flash"); void x.offsetWidth; x.classList.add("qk-flash"); }, 60);
+    var vise = Date.now(); window.__qkVise = vise;
+    setTimeout(function () { x.scrollIntoView({ block: "start" }); x.classList.remove("qk-flash"); void x.offsetWidth; x.classList.add("qk-flash"); }, 60);
   }
   window.addEventListener("hashchange", function () { visee = null; allerA(); });
 
@@ -256,7 +303,9 @@
   function rendre() {
     if (!PRET) return;
     var a = document.activeElement; if (a && ZONE.contains(a) && (a.tagName === "TEXTAREA" || a.tagName === "INPUT" && a.type !== "checkbox")) return;
-    if (C.vue === "qg") vueQG(ZONE); else vueProjet(ZONE, MAIN);
+    var y = window.scrollY; ZONE.style.minHeight = ZONE.offsetHeight + "px"; // la page ne saute pas pendant la mise à jour
+    if (C.vue === "qg") vueQG(ZONE); else if (C.vue === "docs") vueDocs(ZONE); else vueProjet(ZONE, MAIN);
+    ZONE.style.minHeight = ""; if (Math.abs(window.scrollY - y) > 2 && !(window.__qkVise && Date.now() - window.__qkVise < 2000)) window.scrollTo(0, y);
     appliquerEtat(MAIN); allerA();
   }
   var NOEUD = null, UNEFOIS = false;
@@ -272,9 +321,9 @@
     nav(MAIN);
     ZONE = document.getElementById("qk-zone");
     if (!ZONE) { ZONE = el("div"); ZONE.id = "qk-zone"; ZONE.dataset.qkAuto = "1"; var b = $(".qk-bar", MAIN); b.parentNode.insertBefore(ZONE, b.nextSibling); }
-    ETAT = lsGet("cache_" + C.cle) || ETAT; PRET = true;
+    ETAT = lsGet("cache_" + C.cle) || ETAT; DOCS = lsGet("docs_" + C.cle); PRET = true;
     if (!MAIN.__qk) { MAIN.__qk = 1; suivreChamps(MAIN); }
-    visee = null; rendre(); vider();
+    visee = null; rendre(); vider(); chargerDocs();
     if (UNEFOIS) return; UNEFOIS = true;
     document.addEventListener("visibilitychange", function () { if (!document.hidden) vider(); });
     window.addEventListener("online", vider);
