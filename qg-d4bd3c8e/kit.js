@@ -21,7 +21,12 @@
     var n = function (h, p) { return h + p.replace(/index\.html$/, "").replace(/\/$/, ""); };
     return n(a.host, a.pathname) === n(location.host, location.pathname);
   }
-  function urlTache(t) { var p = C.projets[t.projet]; return (t.page || (p && p.url) || C.qg) + "#t-" + t.id; }
+  function avecCode(u, ancre) {
+    var a = document.createElement("a"); a.href = u; var c = C.codes && C.codes[a.host];
+    if (!c || a.host === location.host) return u + (ancre ? "#" + ancre : "");
+    return u.split("#")[0] + "#c=" + encodeURIComponent(c) + (ancre ? "&" + ancre : "");
+  }
+  function urlTache(t) { var p = C.projets[t.projet]; return avecCode(t.page || (p && p.url) || C.qg, "t-" + t.id); }
   function dateCourte(s) { if (!s) return ""; var p = String(s).split("-"); return p.length === 3 ? p[2] + "/" + p[1] : s; }
 
   // ---------- API (POST text/plain : pas de pré-vol CORS) ----------
@@ -79,7 +84,7 @@
     var n = el("nav", "qk-nav");
     var liens = '<a href="' + C.qg + '" class="' + (C.vue === "qg" ? "on" : "") + '">QG</a>'
       + '<a href="' + C.qg + 'documents.html" class="qk-docs' + (C.vue === "docs" ? " on" : "") + '">Documents</a>';
-    C.ordre.forEach(function (k) { var p = C.projets[k]; liens += '<a href="' + p.url + '" class="' + (C.projet === k ? "on" : "") + '">' + esc(p.nom) + "</a>"; });
+    C.ordre.forEach(function (k) { var p = C.projets[k]; liens += '<a href="' + avecCode(p.url) + '" class="' + (C.projet === k ? "on" : "") + '">' + esc(p.nom) + "</a>"; });
     n.innerHTML = '<div class="qk-menu">' + liens + "</div>";
     var b = el("div", "qk-bar");
     if (C.vue !== "qg") {
@@ -151,7 +156,7 @@
 
   var TYPES = { doc: "Doc", sheet: "Tableur", form: "Formulaire", presentation: "Diapos", page: "Page", outil: "Outil" };
   function ligneDoc(d) {
-    return '<a class="qk-doc" href="' + esc(d.url) + '" target="_blank" rel="noopener"><span class="qk-type t-' + esc(d.type) + '">' + (TYPES[d.type] || "Lien") + "</span>"
+    return '<a class="qk-doc" href="' + esc(avecCode(d.url)) + '" target="_blank" rel="noopener"><span class="qk-type t-' + esc(d.type) + '">' + (TYPES[d.type] || "Lien") + "</span>"
       + '<span class="qk-dt"><b>' + esc(d.titre) + "</b><small>" + [d.note, d.dossier, d.date ? dateCourte(String(d.date).slice(0, 10)) : ""].filter(Boolean).map(esc).join(" · ") + "</small></span></a>";
   }
   function blocDocs(liste, titre, max, lienTout) {
@@ -202,12 +207,12 @@
       var bloq = ouverts.filter(function (t) { return t.statut === "bloque" || t.statut === "attente"; });
       var pc = l.length ? Math.round(100 * faits / l.length) : 0;
       var c = el("div", "qk-projet");
-      c.innerHTML = '<div class="qk-ph"><a href="' + p.url + '"><b>' + esc(p.nom) + "</b></a><small>" + faits + "/" + l.length + "</small></div>"
+      c.innerHTML = '<div class="qk-ph"><a href="' + avecCode(p.url) + '"><b>' + esc(p.nom) + "</b></a><small>" + faits + "/" + l.length + "</small></div>"
         + '<div class="qk-barre"><i style="width:' + pc + '%"></i></div>'
         + (p.desc ? '<p class="qk-desc">' + esc(p.desc) + "</p>" : "")
         + '<p class="qk-lab">Prochaine action</p>' + (proch ? '<a class="qk-lien" href="' + urlTache(proch) + '">' + esc(proch.titre) + "</a>" : '<span class="qk-vide">À définir</span>')
         + (bloq.length ? '<p class="qk-lab">Bloqué / en attente</p>' + bloq.map(function (t) { return '<a class="qk-lien qk-bloq" href="' + urlTache(t) + '">' + esc(t.titre) + " <small>" + NOMS_STATUT[t.statut] + (t.note ? " · " + esc(String(t.note).slice(0, 60)) : "") + "</small></a>"; }).join("") : "")
-        + '<div class="qk-pied"><a class="qk-btn plein" href="' + p.url + '">Ouvrir</a>'
+        + '<div class="qk-pied"><a class="qk-btn plein" href="' + avecCode(p.url) + '">Ouvrir</a>'
         + (DOCS ? '<a class="qk-btn" href="' + C.qg + "documents.html#p-" + k + '">Documents · ' + DOCS.filter(function (d) { return d.projet === k; }).length + "</a>" : "") + "</div>";
       g.appendChild(c);
     });
@@ -330,7 +335,15 @@
     setInterval(function () { if (!document.hidden) vider(); }, 45000);
   }
   // Un seul code par appareil : on retient le code qui a ouvert une page, et on le propose aux autres pages du même site.
+  function codeDansLien() {
+    var m = location.hash.match(/(?:^#|&)c=([^&]+)/); if (!m) return null;
+    var c = decodeURIComponent(m[1]), reste = location.hash.replace(/(?:^#|&)c=[^&]+/, "").replace(/^&/, "").replace(/^#?/, "");
+    try { history.replaceState(null, "", location.pathname + location.search + (reste ? "#" + reste : "")); } catch (e) {}
+    lsSet("code", c); try { localStorage.setItem("ap_code", c); } catch (e) {}
+    return c;
+  }
   function codeMemorise() {
+    var lien = codeDansLien();
     var i = $("input[type=password]"); if (!i) return;
     var memo = function () { window.__qkCode = i.value.trim(); };
     i.addEventListener("input", memo); i.addEventListener("change", memo);
@@ -341,13 +354,13 @@
       if (src.indexOf('getItem("ap_code")') >= 0 && localStorage.getItem("ap_code") === c) seule = true;
       if (src.indexOf('getItem("tres-code")') >= 0 && sessionStorage.getItem("tres-code") === c) seule = true;
     } catch (e) {}
-    if (seule) return;
+    if (seule && !lien) return;
     setTimeout(function () {
       if (document.getElementById("qg-cfg") || !document.body.contains(i) || i.value) return;
       i.value = c; window.__qkCode = c;
       var f = i.form, b = f ? $("button", f) : $("#gate button, #go");
       if (f && f.requestSubmit) f.requestSubmit(b || undefined); else if (b) b.click();
-    }, 1200);
+    }, lien ? 50 : 1200);
   }
   function guetter() {
     var c = document.getElementById("qg-cfg"); if (c) demarrer(c); else codeMemorise();
