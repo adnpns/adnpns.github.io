@@ -39,8 +39,9 @@
     appel(f[0]).then(function (r) {
       var g = fileAttente(); g.shift(); lsSet("file_" + C.cle, g);
       if (r.tache) { majLocale(r.tache); }
+      if (!g.length) toast("Enregistré ✓ visible partout (ordi, téléphone, Claude)");
       enCours = false; vider();
-    }).catch(function () { enCours = false; indic("hors ligne", true); });
+    }).catch(function () { enCours = false; indic("hors ligne", true); toast("Pas de réseau : gardé ici, envoyé dès le retour du réseau", true); });
   }
   function charger() {
     if (fileAttente().length) return vider();
@@ -59,6 +60,11 @@
     majLocale(t); rendre();
     var o = { id: t.id }; for (var k2 in champs) o[k2] = champs[k2];
     envoyer({ action: "tache", tache: o, par: "page " + C.page });
+  }
+  var tmToast;
+  function toast(txt, alerte) {
+    var t = $("#qk-toast"); if (!t) { t = el("div"); t.id = "qk-toast"; document.body.appendChild(t); }
+    t.textContent = txt; t.className = "on" + (alerte ? " off" : ""); clearTimeout(tmToast); tmToast = setTimeout(function () { t.className = ""; }, 2600);
   }
   function indic(txt, alerte) { var i = $("#qk-sync"); if (i) { i.textContent = txt; i.classList.toggle("qk-off", !!alerte); } }
 
@@ -102,6 +108,7 @@
     var c = "";
     if (f.pourquoi) c += '<p class="qk-pq"><b>Pourquoi</b> ' + esc(f.pourquoi) + "</p>";
     if (f.gain) c += '<p class="qk-pq"><b>Ce que ça rapporte</b> ' + esc(f.gain) + "</p>";
+    if (f.deja && f.deja.length) c += '<p class="qk-st">Déjà fait</p><ul class="qk-mat">' + f.deja.map(function (e) { return "<li>" + e + "</li>"; }).join("") + "</ul>";
     if (f.etapes && f.etapes.length) c += '<ol class="qk-etapes">' + f.etapes.map(function (e) { return "<li>" + e + "</li>"; }).join("") + "</ol>";
     if (f.materiel && f.materiel.length) c += '<p class="qk-st">Matériel</p><ul class="qk-mat">' + f.materiel.map(function (e) { return "<li>" + e + "</li>"; }).join("") + "</ul>";
     if (f.html) c += '<div class="qk-html">' + f.html + "</div>";
@@ -111,7 +118,7 @@
     if (surQG && p.url) lk.unshift('<a class="qk-btn plein" href="' + urlTache(t) + '">Ouvrir la fiche</a>');
     if (lk.length) c += '<div class="qk-acts">' + lk.join("") + "</div>";
     c += '<div class="qk-suivi"><label>Statut <select class="qk-statut">' + Object.keys(NOMS_STATUT).map(function (k) { return '<option value="' + k + '"' + (k === t.statut ? " selected" : "") + ">" + NOMS_STATUT[k] + "</option>"; }).join("") + "</select></label>"
-      + '<textarea class="qk-note" placeholder="Note (réponse reçue, payé le…)">' + esc(t.note) + "</textarea></div>";
+      + '<textarea class="qk-note" placeholder="Note (réponse reçue, payé le…)">' + esc(t.note) + '</textarea><button class="qk-btn plein qk-valider">Valider</button></div>';
     d.innerHTML = s + '<div class="qk-corps">' + c + "</div>";
     brancherFiche(d, t);
     return d;
@@ -121,7 +128,9 @@
     cb.onchange = function () { changerTache(t, { statut: cb.checked ? "fait" : "a_faire" }); };
     var se = $(".qk-statut", d); if (se) se.onchange = function () { changerTache(t, { statut: se.value }); };
     var no = $(".qk-note", d), tm;
-    if (no) no.oninput = function () { clearTimeout(tm); tm = setTimeout(function () { t.note = no.value; majLocale(t); envoyer({ action: "tache", tache: { id: t.id, note: no.value }, par: "page " + C.page }); }, 800); };
+    var envoiNote = function () { clearTimeout(tm); if (no.value === (t.note || "")) { toast("Enregistré ✓"); return; } t.note = no.value; majLocale(t); envoyer({ action: "tache", tache: { id: t.id, note: no.value }, par: "page " + C.page }); };
+    if (no) { no.oninput = function () { clearTimeout(tm); tm = setTimeout(envoiNote, 1500); }; no.onblur = envoiNote; }
+    var va = $(".qk-valider", d); if (va) va.onclick = function (e) { e.preventDefault(); envoiNote(); };
   }
 
   // ---------- copier / boutons d'action (délégation) ----------
