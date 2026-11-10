@@ -174,3 +174,31 @@ html.qk .qk-quoi{font-family:"Iowan Old Style","Palatino Linotype",Palatino,Geor
 @media (max-width:520px){html.qk .qk-quoi{font-size:30px}.qk-hero{padding:22px 18px 18px}}
 @media (prefers-reduced-motion:reduce){.qk-hero,.qk-pn,.qk-coche{transition:none;animation:none}}
 html.qk main:has(.qk-hero){max-width:580px}
+/* ---------- 10/11 bis : énergie, minuteur, Claude, congélateur, icône ---------- */
+.qk-enb{margin-left:auto;background:none;border:0;font-size:20px;line-height:1;padding:2px 4px;cursor:pointer;opacity:1}
+.qk-kd{justify-content:flex-end;margin-bottom:-14px}
+.qk-en{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
+.qk-en button{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 4px;border-radius:18px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:15px;font-weight:600;cursor:pointer}
+.qk-en button span{font-size:36px}
+.qk-en button:active{transform:scale(.96)}
+.qk-rassure{margin:10px 0 0;font-size:14px;opacity:.7;font-style:italic}
+.qk-hero .qk-2>*{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:14px 4px;border-radius:14px;border:1px solid color-mix(in srgb,var(--bg) 28%,transparent);background:none;color:var(--bg);font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;line-height:1.15}
+.qk-rond{position:relative;width:190px;height:190px;margin:18px auto 6px}
+.qk-rond svg{width:100%;height:100%;transform:rotate(-90deg)}
+.qk-rond circle{fill:none;stroke-width:9}
+.qk-rond .f{stroke:color-mix(in srgb,var(--bg) 18%,transparent)}
+.qk-rond .v{stroke:var(--bg);stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear}
+.qk-temps{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.qk-chrono .qk-kick{font-size:15px;opacity:.85}
+.qk-chrono .qk-pas,.qk-chrono .qk-rassure{text-align:center}
+.qk-chrono.fini{background:#5f8f5f;color:#fff}.qk-chrono.fini .qk-go{color:#2f4f2f}
+.qk-chrono.fini .qk-2>*{color:#fff;border-color:rgba(255,255,255,.4)}
+.qk-mini{background:var(--doux);border-radius:10px;padding:10px 12px}
+.qk-chs button[data-s=congele]{grid-column:1/-1}
+button.qk-tuile{font:inherit;text-align:left;cursor:pointer}
+.qk-frigo{cursor:default}.qk-frigo>span:nth-child(2){flex:1}
+.qk-frigo button{flex:none;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:var(--doux);color:var(--ink);font-size:14px;font-weight:600;cursor:pointer}
+.qk-install{display:flex;gap:12px;align-items:flex-start;margin-top:18px;padding:14px;border-radius:16px;background:var(--doux);font-size:14px;line-height:1.4}
+.qk-install span{font-size:24px}.qk-install p{margin:0;flex:1}
+.qk-install button{background:none;border:0;color:var(--mute);font-size:15px;cursor:pointer;padding:0 2px}
+@media (display-mode:standalone){html.qk main{padding-top:max(12px,env(safe-area-inset-top))}}

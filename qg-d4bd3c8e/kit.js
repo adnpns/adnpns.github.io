@@ -110,7 +110,7 @@
     (x.boutons || []).forEach(function (b) { h += '<a class="qk-btn plein" target="_blank" rel="noopener" href="' + esc(b.url) + '">' + esc(b.label) + "</a>"; });
     return h + '<button class="qk-btn" data-qk-copier="1">Copier</button>';
   }
-  var CHS = [["fait", "✓ Fait"], ["attente", "⏳ J'attends"], ["bloque", "✋ Bloqué"], ["a_faire", "↺ À faire"]];
+  var CHS = [["fait", "✓ Fait"], ["attente", "⏳ J'attends"], ["bloque", "✋ Bloqué"], ["a_faire", "↺ À faire"], ["congele", "🧊 Au congélateur"]];
   function fiche(t, surQG) {
     var d = el("details", "qk-fiche" + (t.statut === "fait" ? " fait" : ""));
     d.id = "t-" + t.id; d.dataset.id = t.id;
@@ -132,6 +132,7 @@
     for (var k in f0) f[k] = f0[k];
     ["deja", "etapes", "materiel", "textes", "liens"].forEach(function (k) { f[k] = liste(f0[k]); });
     var c = "";
+    if (f.mini) c += '<p class="qk-pq qk-mini"><b>Juste ça pour commencer</b> ' + esc(f.mini) + "</p>";
     if (f.pourquoi) c += '<p class="qk-pq"><b>Pourquoi</b> ' + esc(f.pourquoi) + "</p>";
     if (f.gain) c += '<p class="qk-pq"><b>Ce que ça rapporte</b> ' + esc(f.gain) + "</p>";
     if (f.deja && f.deja.length) c += '<p class="qk-st">Déjà fait</p><ul class="qk-mat">' + f.deja.map(function (e) { return "<li>" + e + "</li>"; }).join("") + "</ul>";
@@ -141,10 +142,11 @@
     (f.textes || []).forEach(function (x) { c += (x.titre ? '<p class="qk-st">' + esc(x.titre) + "</p>" : "") + '<pre class="qk-texte">' + esc(x.texte) + '</pre><div class="qk-acts">' + boutonsTexte(x) + "</div>"; });
     var lk = (f.liens || []).map(function (l) { return '<a class="qk-btn" href="' + esc(l.url) + '">' + esc(l.label) + "</a>"; });
     (t.liens || []).forEach(function (k) { var pp = C.projets[k]; if (pp && k !== t.projet) lk.push('<a class="qk-btn" href="' + pp.url + '">Fait avancer : ' + esc(pp.nom) + " →</a>"); });
+    if (String(C.page).indexOf("mc/")) lk.unshift('<a class="qk-btn plein" target="_blank" rel="noopener" href="' + esc(urlClaude(t)) + '">🤝 Faire avec Claude</a>');
     if (surQG && p.url) lk.push('<a class="qk-btn" href="' + urlTache(t) + '">' + (EMO[t.projet] || "") + " Page " + esc(p.nom) + " →</a>");
     if (lk.length) c += '<div class="qk-acts">' + lk.join("") + "</div>";
     if (!c) c = p.url ? '<div class="qk-acts"><a class="qk-btn plein" href="' + urlTache(t) + '">Ouvrir le mode d\'emploi →</a></div>' : '<p class="qk-vide">Pas de mode d\'emploi pour celle-ci. Fais-la à ta façon.</p>';
-    c += '<div class="qk-suivi"><div class="qk-chs">' + CHS.map(function (x) { return '<button type="button" data-s="' + x[0] + '"' + (x[0] === t.statut ? ' class="on"' : "") + ">" + x[1] + "</button>"; }).join("") + "</div>"
+    c += '<div class="qk-suivi"><div class="qk-chs">' + CHS.map(function (x) { return '<button type="button" data-s="' + x[0] + '"' + (x[0] === t.statut || x[0] === "congele" && congele(t) ? ' class="on"' : "") + ">" + x[1] + "</button>"; }).join("") + "</div>"
       + '<textarea class="qk-note" placeholder="Une note ? (réponse reçue, payé le…). Enregistrée toute seule.">' + esc(t.note) + "</textarea></div>";
     return c;
   }
@@ -155,7 +157,7 @@
       b.onclick = function (e) {
         e.preventDefault(); var s = b.dataset.s;
         if (apres) { apres(s); return; }
-        changerTache(t, { statut: s }); if (s === "fait") bravoPetit(); else toast(NOMS_STATUT[s] + " ✓");
+        appliquer(t, s);
       };
     });
     var no = $(".qk-note", d), tm;
@@ -230,60 +232,158 @@
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") fermer(); });
 
   // ---------- vue QG : un écran calme, une seule chose à la fois ----------
-  var FETE = 0;
+  // 10/11 (réponses d'Adrien) : bloque pour démarrer, choisir, et sur les sujets stressants.
+  // → on demande l'énergie du jour, on montre UN petit geste (fiche.mini), un minuteur de 15 min, l'aide de Claude,
+  //   et un congélateur (fiche.congele) pour que le stock ne pèse plus.
+  var FETE = 0, DUREE = 15 * 60e3;
+  var ENERGIES = [["forme", "🔋", "En forme"], ["moyen", "🙂", "Moyen"], ["plat", "🪫", "À plat"]];
+  var OK_ENERGIE = { plat: ["facile"], moyen: ["facile", "moyen"], forme: ["facile", "moyen", "dur"] };
+  function congele(t) { return !!(t.fiche && t.fiche.congele); }
   function ouverte(t) { return t.statut === "a_faire" || t.statut === "en_cours"; }
+  function vivante(t) { return ouverte(t) && !congele(t); }
+  function effort(t) { return (t.fiche && t.fiche.effort) || "moyen"; }
+  function stressant(t) { return t.projet === "argent" || !!(t.fiche && t.fiche.stress); }
   function tri(a, b) { return (b.statut === "en_cours") - (a.statut === "en_cours") || a.priorite - b.priorite || String(a.echeance || "9").localeCompare(String(b.echeance || "9")); }
   function pourAuj(t, auj) { return t.aujourdhui || (t.echeance && t.echeance <= auj); }
+  function miniPas(t) { var f = t.fiche || {}; return f.mini ? { lab: "Juste ça", txt: f.mini } : liste(f.etapes)[0] ? { lab: "Pour commencer", txt: sansBalises(liste(f.etapes)[0]) } : null; }
   function choix() {
-    var auj = jour(), T = ETAT.taches, passe = lsGet("passe_" + auj) || [], pris = lsGet("choix_" + auj);
-    var libre = function (t) { return ouverte(t) && passe.indexOf(t.id) < 0; };
-    var r = { passe: passe, t: null, mode: "",
-      dj: T.filter(function (t) { return libre(t) && pourAuj(t, auj); }).sort(tri),
-      autres: T.filter(function (t) { return libre(t) && !pourAuj(t, auj); }).sort(tri),
+    var auj = jour(), T = ETAT.taches, passe = lsGet("passe_" + auj) || [], pris = lsGet("choix_" + auj), en = lsGet("energie_" + auj);
+    var ok = OK_ENERGIE[en] || OK_ENERGIE.forme;
+    var libre = function (t) { return vivante(t) && passe.indexOf(t.id) < 0; };
+    var va = function (t) { return ok.indexOf(effort(t)) >= 0; };
+    var tous = T.filter(libre);
+    var r = { passe: passe, t: null, mode: "", energie: en,
+      dj: tous.filter(function (t) { return va(t) && pourAuj(t, auj); }).sort(tri),
+      autres: tous.filter(function (t) { return va(t) && !pourAuj(t, auj); }).sort(tri),
+      trop: tous.filter(function (t) { return !va(t); }).length,
       faits: T.filter(function (t) { return t.statut === "fait" && String(t.maj).slice(0, 10) === auj && !/^test/.test(t.id); }) };
     var pt = pris && T.filter(function (t) { return t.id === pris && ouverte(t); })[0];
     if (pt) { r.t = pt; r.mode = "Ton choix"; }
     else if (r.dj.length) { r.t = r.dj[0]; r.mode = "Pour aujourd'hui"; }
     else if (r.faits.length && !lsGet("encore_" + auj)) r.mode = "fini";
     else if (r.autres.length) { r.t = r.autres[0]; r.mode = "Si tu as l'énergie"; }
-    else r.mode = passe.length ? "passe" : "rien";
+    else r.mode = r.trop ? "repos" : passe.length ? "passe" : "rien";
     return r;
   }
   function vueQG(zone) {
     if (Date.now() < FETE) return;
-    var r = choix(), hero = el("section", "qk-hero");
+    var auj = jour(), m = lsGet("minuteur"), tm = m && ETAT.taches.filter(function (t) { return t.id === m.id && ouverte(t); })[0];
+    if (m && !tm && premier) { lsSet("minuteur", null); m = null; }
     zone.innerHTML = "";
+    if (tm) { zone.appendChild(heroMinuteur(tm, m)); gestes(zone, choix()); return; }
+    if (!lsGet("energie_" + auj)) { zone.appendChild(heroEnergie()); gestes(zone, null); return; }
+    if (!premier && !ETAT.taches.length) { zone.appendChild(el("section", "qk-hero calme", '<div class="qk-emo">☕</div><h1 class="qk-quoi">Je regarde…</h1>')); return; }
+    var r = choix(), hero = el("section", "qk-hero"), en = ENERGIES.filter(function (e) { return e[0] === r.energie; })[0];
+    var bEn = en ? '<button class="qk-enb" title="Changer mon énergie">' + en[1] + "</button>" : "";
     if (r.t) {
-      var t = r.t, p = C.projets[t.projet] || { nom: t.projet }, f = t.fiche || {};
-      var pas = liste(f.etapes)[0], aide = pas ? sansBalises(pas) : t.resume || f.pourquoi || "";
-      hero.innerHTML = '<p class="qk-kick"><span>' + (EMO[t.projet] || "•") + "</span>" + esc(p.nom) + " · " + esc(r.mode) + "</p>"
+      var t = r.t, p = C.projets[t.projet] || { nom: t.projet }, mp = miniPas(t), aide = mp ? mp.txt : t.resume || (t.fiche || {}).pourquoi || "";
+      hero.innerHTML = '<p class="qk-kick"><span>' + (EMO[t.projet] || "•") + "</span>" + esc(p.nom) + " · " + esc(r.mode) + bEn + "</p>"
         + '<h1 class="qk-quoi">' + esc(t.titre) + "</h1>"
-        + (aide ? '<p class="qk-pas">' + (pas ? "<b>Pour commencer</b>" : "") + esc(couper(aide, 150)) + "</p>" : "")
-        + '<button class="qk-go">✓ C\'est fait</button>'
-        + '<div class="qk-2"><button class="qk-voir">Comment faire</button><button class="qk-passe">Pas maintenant</button></div>';
-      $(".qk-go", hero).onclick = function () { faire(t, hero); };
+        + (aide ? '<p class="qk-pas">' + (mp ? "<b>" + mp.lab + "</b>" : "") + esc(couper(aide, 160)) + "</p>" : "")
+        + (stressant(t) ? '<p class="qk-rassure">Ça stresse, c\'est normal. Tu n\'as que ce petit geste à faire.</p>' : "")
+        + '<button class="qk-go">▶ Je commence · 15 min</button>'
+        + '<div class="qk-2"><button class="qk-ok">✓ Fait</button><button class="qk-voir">Comment faire</button><button class="qk-passe">Plus tard</button></div>';
+      $(".qk-go", hero).onclick = function () { lsSet("minuteur", { id: t.id, debut: Date.now() }); vibre(); rendre(); };
+      $(".qk-ok", hero).onclick = function () { faire(t, hero); };
       $(".qk-voir", hero).onclick = function () { if (ficheVide(t) && p.url) location.href = urlTache(t); else feuilleFiche(t); };
       $(".qk-passe", hero).onclick = function () { passer(t, hero); };
     } else {
-      var n = r.faits.length, m = {
+      var n = r.faits.length, msg = {
         fini: ["🌿", "C'est bon pour aujourd'hui.", n + " chose" + (n > 1 ? "s faites" : " faite") + ". Le reste peut attendre."],
+        repos: ["🪫", "Rien de léger en ce moment.", "Alors repos. Se reposer, c'est aussi avancer."],
         passe: ["☁️", "Tout est mis de côté.", "C'est ok. Reviens quand tu veux."],
         rien: ["🌿", "Rien à faire.", "Profite. Si une idée arrive, note-la en dessous."] }[r.mode];
       hero.className += " calme";
-      hero.innerHTML = '<div class="qk-emo">' + m[0] + '</div><h1 class="qk-quoi">' + m[1] + '</h1><p class="qk-pas">' + m[2] + "</p>"
-        + (r.mode === "fini" && r.autres.length ? '<button class="qk-go qk-encore">Une de plus ?</button>' : "")
+      hero.innerHTML = (bEn ? '<p class="qk-kick qk-kd">' + bEn + "</p>" : "") + '<div class="qk-emo">' + msg[0] + '</div><h1 class="qk-quoi">' + msg[1] + '</h1><p class="qk-pas">' + msg[2] + "</p>"
+        + (r.mode === "fini" && (r.autres.length || r.dj.length) ? '<button class="qk-go qk-encore">Une de plus ?</button>' : "")
+        + (r.mode === "repos" ? '<button class="qk-go qk-quand">Montre-moi quand même</button>' : "")
         + (r.mode === "passe" ? '<button class="qk-go qk-revoir">Revoir ce que j\'ai mis de côté</button>' : "");
       var e1 = $(".qk-encore", hero); if (e1) e1.onclick = function () { lsSet("encore_" + jour(), true); rendre(); };
       var e2 = $(".qk-revoir", hero); if (e2) e2.onclick = function () { lsSet("passe_" + jour(), []); rendre(); };
+      var e3 = $(".qk-quand", hero); if (e3) e3.onclick = function () { lsSet("energie_" + jour(), "forme"); rendre(); };
     }
+    var be = $(".qk-enb", hero); if (be) be.onclick = function () { lsSet("energie_" + jour(), null); rendre(); };
     zone.appendChild(hero);
-    if (r.faits.length && r.t) zone.appendChild(el("p", "qk-faits", "<i>" + r.faits.slice(0, 10).map(function () { return "●"; }).join("") + "</i> " + r.faits.length + " faite" + (r.faits.length > 1 ? "s" : "") + " aujourd'hui"));
-    if (r.dj.length + r.autres.length > 1) { var cb = el("button", "qk-lienbtn", "Choisir moi-même"); cb.onclick = feuilleChoix; zone.appendChild(cb); }
+    gestes(zone, r);
+  }
+  function heroEnergie() {
+    var h = el("section", "qk-hero calme");
+    h.innerHTML = '<h1 class="qk-quoi">Comment tu te sens ?</h1><p class="qk-pas">Je te propose une chose qui va avec.</p><div class="qk-en">'
+      + ENERGIES.map(function (e) { return '<button data-e="' + e[0] + '"><span>' + e[1] + "</span>" + e[2] + "</button>"; }).join("") + "</div>";
+    $$("[data-e]", h).forEach(function (b) { b.onclick = function () { lsSet("energie_" + jour(), b.dataset.e); vibre(); rendre(); }; });
+    return h;
+  }
+  function gestes(zone, r) {
+    var mins = lsGet("minutes_" + jour()) || 0, nf = r ? r.faits.length : 0, bits = [];
+    if (nf) bits.push("<i>" + r.faits.slice(0, 10).map(function () { return "●"; }).join("") + "</i> " + nf + " faite" + (nf > 1 ? "s" : ""));
+    if (mins >= 1) bits.push("⏱ " + Math.round(mins) + " min");
+    if (bits.length) zone.appendChild(el("p", "qk-faits", bits.join(" · ") + " aujourd'hui"));
+    if (r && r.t && r.dj.length + r.autres.length > 1) { var cb = el("button", "qk-lienbtn", "Choisir moi-même"); cb.onclick = feuilleChoix; zone.appendChild(cb); }
     var g = el("div", "qk-gestes");
     g.innerHTML = '<button data-g="tete"><span>💭</span>Noter une idée</button><button data-g="projets"><span>🗂</span>Mes projets</button>'
       + '<a href="' + C.qg + 'documents.html"><span>📄</span>Documents</a>';
     $('[data-g="tete"]', g).onclick = feuilleTete; $('[data-g="projets"]', g).onclick = feuilleProjets;
     zone.appendChild(g);
+    var seul = navigator.standalone || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !seul && !lsGet("pwa_vu")) {
+      var ins = el("div", "qk-install", '<span>📲</span><p>Mets le QG sur ton écran d\'accueil : touche <b>Partager</b> puis <b>Sur l\'écran d\'accueil</b>. Tu tapes le code une dernière fois.</p><button aria-label="Fermer">✕</button>');
+      $("button", ins).onclick = function () { lsSet("pwa_vu", true); ins.remove(); };
+      zone.appendChild(ins);
+    }
+  }
+  // ---------- minuteur : 15 minutes, un cercle qui se vide, on peut s'arrêter ----------
+  function heroMinuteur(t, m) {
+    var h = el("section", "qk-hero qk-chrono"), mp = miniPas(t);
+    h.innerHTML = '<p class="qk-kick"><span>' + (EMO[t.projet] || "•") + "</span>" + esc(t.titre) + "</p>"
+      + '<div class="qk-rond"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52" class="f"/><circle cx="60" cy="60" r="52" class="v" pathLength="100"/></svg><b class="qk-temps">15:00</b></div>'
+      + (mp ? '<p class="qk-pas"><b>' + mp.lab + "</b>" + esc(couper(mp.txt, 160)) + "</p>" : "")
+      + '<p class="qk-rassure">Tu n\'as pas à finir. Quand le cercle est vide, tu peux t\'arrêter.</p>'
+      + '<button class="qk-go">✓ C\'est fait</button>'
+      + '<div class="qk-2">' + (String(C.page).indexOf("mc/") ? '<a class="qk-claude" target="_blank" rel="noopener" href="' + esc(urlClaude(t)) + '">🤝 Avec Claude</a>' : "")
+      + '<button class="qk-voir">Comment faire</button><button class="qk-stop">J\'arrête</button></div>';
+    $(".qk-go", h).onclick = function () { finMinuteur(); faire(t, h); };
+    $(".qk-voir", h).onclick = function () { if (ficheVide(t) && (C.projets[t.projet] || {}).url) location.href = urlTache(t); else feuilleFiche(t); };
+    $(".qk-stop", h).onclick = function () { var mn = finMinuteur(); rendre(); toast(mn >= 1 ? "Tu t'y es mis " + Math.round(mn) + " min. C'est ça qui compte 🌱" : "Pas grave. Tu réessaies quand tu veux 🌱"); };
+    tic(h, m);
+    return h;
+  }
+  function finMinuteur() {
+    var m = lsGet("minuteur"); if (!m) return 0;
+    var mn = Math.min(Date.now() - m.debut, (m.duree || DUREE)) / 60e3, k = "minutes_" + jour();
+    lsSet(k, (lsGet(k) || 0) + mn); lsSet("minuteur", null); return mn;
+  }
+  function tic(h, m) {
+    var d = m.duree || DUREE, reste = Math.max(0, d - (Date.now() - m.debut));
+    var v = $(".v", h); if (v) v.style.strokeDashoffset = String(100 * (1 - reste / d));
+    var s = Math.ceil(reste / 1000), tp = $(".qk-temps", h);
+    if (tp) tp.textContent = reste ? Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2) : "🎉";
+    if (!reste && !h.classList.contains("fini")) {
+      h.classList.add("fini"); if (!m.sonne) { vibre(); m.sonne = 1; lsSet("minuteur", m); }
+      $(".qk-rassure", h).textContent = Math.round(d / 60e3) + " minutes ! Bravo. Tu continues ou tu t'arrêtes, les deux sont bien.";
+      var plus = el("button", "qk-plus15", "+15 min"); plus.onclick = function () { var k = "minutes_" + jour(); lsSet(k, (lsGet(k) || 0) + d / 60e3); lsSet("minuteur", { id: m.id, debut: Date.now() }); rendre(); };
+      $(".qk-stop", h).textContent = "Je m'arrête là"; var vo = $(".qk-voir", h); if (vo) vo.remove(); $(".qk-2", h).insertBefore(plus, $(".qk-2", h).firstChild);
+    }
+  }
+  setInterval(function () { var h = document.querySelector(".qk-chrono"), m = lsGet("minuteur"); if (h && m && !document.hidden) tic(h, m); }, 1000);
+  // ---------- faire avec Claude : la tâche déjà expliquée, une étape à la fois ----------
+  function urlClaude(t) {
+    var f = t.fiche || {}, p = C.projets[t.projet] || {}, l = [
+      "Fais cette tâche avec moi, pas à pas : une toute petite étape à la fois, une seule question à la fois, en français très simple. "
+      + "J'ai du mal à démarrer et je stresse vite : rassure-moi, commence par le plus petit geste possible, et prépare toi-même ce qui peut l'être (messages, calculs).",
+      "", "Tâche : " + t.titre + " (" + (p.nom || t.projet) + ")"];
+    if (f.mini) l.push("Premier petit geste prévu : " + f.mini);
+    if (f.pourquoi) l.push("Pourquoi : " + sansBalises(f.pourquoi));
+    if (liste(f.deja).length) l.push("Déjà fait : " + liste(f.deja).map(sansBalises).join(" ; "));
+    if (liste(f.etapes).length) l.push("Étapes prévues : " + liste(f.etapes).map(sansBalises).join(" ; "));
+    if (t.note) l.push("Ma note : " + t.note);
+    return "https://claude.ai/new?q=" + encodeURIComponent(couper(l.join("\n"), 1800));
+  }
+  function geler(t, oui) { var f = {}; for (var k in (t.fiche || {})) f[k] = t.fiche[k]; if (oui) f.congele = true; else delete f.congele; changerTache(t, { fiche: f }); }
+  function appliquer(t, s) {
+    if (s === "congele") { var oui = !congele(t); geler(t, oui); toast(oui ? "Au congélateur 🧊 Rien ne se perd." : "Réveillée ✓"); return; }
+    if (s === "fait") t.maj = jour();
+    changerTache(t, { statut: s });
+    if (s === "fait") bravoPetit(); else toast(s === "a_faire" ? "Remise à faire ✓" : NOMS_STATUT[s] + " ✓ Elle sort de ta vue en attendant.");
   }
   function faire(t, hero) {
     var avant = t.statut, auj = jour(); FETE = Date.now() + 1900; vibre();
@@ -307,15 +407,14 @@
     brancherFiche(box, t, function (s) {
       fermer();
       var c = choix(), hero = $(".qk-hero", ZONE);
-      if (s === "fait" && c.t && c.t.id === t.id && hero) { faire(t, hero); return; }
-      if (s === "fait") t.maj = jour();
-      changerTache(t, { statut: s });
-      if (s === "fait") bravoPetit(); else toast(s === "a_faire" ? "Remise à faire ✓" : NOMS_STATUT[s] + " ✓ Elle sort de ta vue en attendant.");
+      if (s === "fait" && c.t && c.t.id === t.id && hero && !hero.classList.contains("qk-chrono")) { faire(t, hero); return; }
+      if (s === "fait" && lsGet("minuteur") && lsGet("minuteur").id === t.id && hero) { finMinuteur(); faire(t, hero); return; }
+      appliquer(t, s);
     });
   }
   function feuilleTete() {
     var box = el("form", "qk-tete"), proj = "creuser";
-    box.innerHTML = '<h3>💭 Noter une idée</h3><p class="qk-sub">Écris, puis oublie. C\'est gardé dans « À creuser ».</p>'
+    box.innerHTML = '<h3>💭 Noter une idée</h3><p class="qk-sub">Écris, puis oublie. C\'est gardé au frais 🧊, rien ne se perd.</p>'
       + '<textarea name="titre" rows="3" placeholder="Une idée, un truc à ne pas oublier…"></textarea>'
       + '<p class="qk-lbl">Ranger ailleurs ? (pas obligé)</p><div class="qk-chips">' + C.ordre.map(function (k) { return '<button type="button" data-p="' + k + '"' + (k === proj ? ' class="on"' : "") + ">" + (EMO[k] || "") + " " + esc(C.projets[k].nom) + "</button>"; }).join("") + "</div>"
       + '<label class="qk-auj"><input type="checkbox" name="auj"> À faire aujourd\'hui</label><button class="qk-go">Noter</button>';
@@ -323,16 +422,30 @@
     $$(".qk-chips button", box).forEach(function (b) { b.onclick = function () { proj = b.dataset.p; $$(".qk-chips button", box).forEach(function (x) { x.classList.toggle("on", x === b); }); }; });
     box.onsubmit = function (e) {
       e.preventDefault(); var titre = box.titre.value.trim(); if (!titre) { box.titre.focus(); return; }
-      var t = { id: proj + "-" + Math.random().toString(36).slice(2, 8), projet: proj, titre: titre, statut: "a_faire", priorite: box.auj.checked ? 2 : 3, aujourdhui: box.auj.checked, fiche: {}, liens: [], note: "" };
-      majLocale(t); muet = true; envoyer({ action: "tache", tache: t, par: "QG" }); fermer(); vibre(); toast("Noté ✓ Tu peux l'oublier."); rendre();
+      var auj = box.auj.checked, t = { id: proj + "-" + Math.random().toString(36).slice(2, 8), projet: proj, titre: titre, statut: "a_faire", priorite: auj ? 2 : 3, aujourdhui: auj, fiche: auj ? {} : { congele: true }, liens: [], note: "" };
+      majLocale(t); muet = true; envoyer({ action: "tache", tache: t, par: "QG" }); fermer(); vibre();
+      toast(auj ? "Noté ✓ C'est pour aujourd'hui." : "Noté ✓ Gardé au frais, tu peux l'oublier."); rendre();
     };
   }
   function feuilleProjets() {
-    var T = ETAT.taches;
-    feuille('<h3>🗂 Mes projets</h3><div class="qk-tuiles">' + C.ordre.map(function (k) {
-      var p = C.projets[k], n = T.filter(function (t) { return t.projet === k && ouverte(t); }).sort(tri)[0];
+    var T = ETAT.taches, nf = T.filter(function (t) { return ouverte(t) && congele(t); }).length;
+    var pc = feuille('<h3>🗂 Mes projets</h3><div class="qk-tuiles">' + C.ordre.map(function (k) {
+      var p = C.projets[k], n = T.filter(function (t) { return t.projet === k && vivante(t); }).sort(tri)[0];
       return '<a class="qk-tuile" href="' + esc(avecCode(p.url)) + '"><span class="e">' + (EMO[k] || "•") + "</span><b>" + esc(p.nom) + "</b><small>" + (n ? esc(n.titre) : "Rien en ce moment") + "</small></a>";
-    }).join("") + '<a class="qk-tuile" href="' + C.qg + 'documents.html"><span class="e">📄</span><b>Documents</b><small>Tous tes Docs, pages et outils</small></a></div>');
+    }).join("") + '<button class="qk-tuile" data-frigo><span class="e">🧊</span><b>Congélateur</b><small>' + nf + " chose" + (nf > 1 ? "s" : "") + " au frais</small></button>"
+      + '<a class="qk-tuile" href="' + C.qg + 'documents.html"><span class="e">📄</span><b>Documents</b><small>Tous tes Docs, pages et outils</small></a></div>');
+    $("[data-frigo]", pc).onclick = feuilleFrigo;
+  }
+  function feuilleFrigo() {
+    var l = ETAT.taches.filter(function (t) { return ouverte(t) && congele(t); }).sort(tri), box = el("div");
+    box.innerHTML = '<h3>🧊 Congélateur</h3><p class="qk-sub">Tout est gardé ici, au frais. Rien ne se perd. Une fois par semaine, réveille 1 ou 2 choses, pas plus.</p>';
+    if (!l.length) box.appendChild(el("p", "qk-vide", "Vide pour l'instant."));
+    l.forEach(function (t) {
+      var r = el("div", "qk-choix qk-frigo", '<span class="e">' + (EMO[t.projet] || "•") + "</span><span><b>" + esc(t.titre) + "</b><small>" + esc((C.projets[t.projet] || {}).nom || "") + "</small></span><button>Réveiller</button>");
+      $("button", r).onclick = function () { geler(t, false); r.remove(); toast("Réveillée ✓ Elle revient dans ta liste."); };
+      box.appendChild(r);
+    });
+    feuille(box);
   }
   function feuilleChoix() {
     var r = choix(), box = el("div");
@@ -368,13 +481,14 @@
       var d; try { d = fiche(t, false); } catch (e) { d = el("details", "qk-fiche", "<summary><span class=\"qk-tt\"><b>" + esc(t.titre) + "</b></span></summary>"); d.id = "t-" + t.id; }
       if (ouverts[d.id]) d.open = true; return d; };
     var pli = function (cle, titre) { var de = el("details", "qk-plus", "<summary>" + titre + "</summary>"); de.open = !!replis[cle]; de.ontoggle = function () { replis[cle] = de.open; }; return de; };
-    var actifs = libres.filter(ouverte).sort(tri);
+    var actifs = libres.filter(vivante).sort(tri), frigo = libres.filter(function (t) { return ouverte(t) && congele(t); }).sort(tri);
     var attente = libres.filter(function (t) { return t.statut === "attente" || t.statut === "bloque"; }).sort(tri);
     var faites = libres.filter(function (t) { return t.statut === "fait"; });
     if (actifs.length) { zone.appendChild(el("p", "qk-lab2", "La prochaine ici")); var d0 = mk(actifs[0]); d0.classList.add("qk-premiere"); zone.appendChild(d0); }
     else if (libres.length) zone.appendChild(el("p", "qk-lab2", "Rien à faire ici pour l'instant 🌿"));
     var reste = actifs.slice(1).concat(attente);
     if (reste.length) { var de = pli("reste", "Voir les " + reste.length + " autre" + (reste.length > 1 ? "s" : "")); reste.forEach(function (t) { de.appendChild(mk(t)); }); zone.appendChild(de); }
+    if (frigo.length) { var dg = pli("frigo", "🧊 Au congélateur (" + frigo.length + ")"); frigo.forEach(function (t) { dg.appendChild(mk(t)); }); zone.appendChild(dg); }
     if (faites.length) { var df = pli("faites", "✓ Déjà faite" + (faites.length > 1 ? "s" : "") + " (" + faites.length + ")"); faites.forEach(function (t) { df.appendChild(mk(t)); }); zone.appendChild(df); }
     if (mesDocs.length) {
       var dd = pli("docs", "📄 Documents (" + mesDocs.length + ")");
