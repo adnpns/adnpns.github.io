@@ -52,7 +52,7 @@
   function charger() {
     if (fileAttente().length) return vider();
     appel({ action: "lire" }).then(function (r) {
-      ETAT = { taches: r.taches, etat: r.etat }; lsSet("cache_" + C.cle, ETAT); indic("à jour");
+      ETAT = { taches: r.taches, etat: r.etat, agenda: r.agenda || [] }; lsSet("cache_" + C.cle, ETAT); indic("à jour");
       if (!premier) { premier = true; visee = null; } rendre();
     }).catch(function () { indic("hors ligne", true); });
   }
@@ -93,7 +93,7 @@
     else {
       var sous = C.titre && p.url && !memePage(p.url), dest = mc ? C.projets.mc.url : sous ? avecCode(p.url) : C.qg;
       b.innerHTML = '<a class="qk-retour" href="' + dest + '">← ' + esc(mc ? "Accueil" : sous ? p.nom : "QG") + "</a>"
-        + '<span class="qk-ici">' + (C.vue === "docs" ? "📄 Documents" : (EMO[C.projet] || "") + " " + esc(sous ? C.titre : p.nom || C.titre || "")) + "</span>";
+        + '<span class="qk-ici">' + (C.vue === "docs" ? "📄 Documents" : C.vue === "auto" ? "⚙️ Ce qui tourne tout seul" : (EMO[C.projet] || "") + " " + esc(sous ? C.titre : p.nom || C.titre || "")) + "</span>";
     }
     b.innerHTML += '<span id="qk-sync" class="qk-sync" title="à jour"></span>';
     main.insertBefore(b, main.firstChild);
@@ -258,7 +258,9 @@
       trop: tous.filter(function (t) { return !va(t); }).length,
       faits: T.filter(function (t) { return t.statut === "fait" && String(t.maj).slice(0, 10) === auj && !/^test/.test(t.id); }) };
     var pt = pris && T.filter(function (t) { return t.id === pris && ouverte(t); })[0];
+    var bj = briefDuJour(), b1 = bj && bj.n1 && T.filter(function (t) { return t.id === bj.n1 && vivante(t); })[0];
     if (pt) { r.t = pt; r.mode = "Ton choix"; }
+    else if (b1 && passe.indexOf(b1.id) < 0) { r.t = b1; r.mode = "Ce matin"; }
     else if (r.dj.length) { r.t = r.dj[0]; r.mode = "Pour aujourd'hui"; }
     else if (r.faits.length && !lsGet("encore_" + auj)) r.mode = "fini";
     else if (r.autres.length) { r.t = r.autres[0]; r.mode = "Si tu as l'énergie"; }
@@ -319,11 +321,13 @@
     if (mins >= 1) bits.push("⏱ " + Math.round(mins) + " min");
     if (bits.length) zone.appendChild(el("p", "qk-faits", bits.join(" · ") + " aujourd'hui"));
     if (r && r.t && r.dj.length + r.autres.length > 1) { var cb = el("button", "qk-lienbtn", "Choisir moi-même"); cb.onclick = feuilleChoix; zone.appendChild(cb); }
+    blocMatin(zone, r);
     var g = el("div", "qk-gestes");
     g.innerHTML = '<button data-g="tete"><span>💭</span>Noter une idée</button><button data-g="projets"><span>🗂</span>Mes projets</button>'
       + '<a href="' + C.qg + 'documents.html"><span>📄</span>Documents</a>';
     $('[data-g="tete"]', g).onclick = feuilleTete; $('[data-g="projets"]', g).onclick = feuilleProjets;
     zone.appendChild(g);
+    zone.appendChild(el("a", "qk-lienbtn qk-auto-lien", "⚙️ Ce qui tourne tout seul")).href = C.qg + "auto.html";
     var seul = navigator.standalone || (window.matchMedia && matchMedia("(display-mode: standalone)").matches);
     if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !seul && !lsGet("pwa_vu")) {
       var ins = el("div", "qk-install", '<span>📲</span><p>Mets le QG sur ton écran d\'accueil : touche <b>Partager</b> puis <b>Sur l\'écran d\'accueil</b>. Tu tapes le code une dernière fois.</p><button aria-label="Fermer">✕</button>');
@@ -331,6 +335,79 @@
       zone.appendChild(ins);
     }
   }
+  // ---------- « Ce matin » : le Brief de 7 h (gardé par le relais des notifs) + l'agenda du jour ----------
+  var PAGE_POL = "https://claude.ai/artifact/TeKrzqy1jcA9y7VxLuzQM1", PAGE_MODE = "https://claude.ai/artifact/R78HQZcP7fUyvSZ2byt8vV";
+  function lireBrief(v) {
+    try { var b = JSON.parse(v); (b.notifs || []).forEach(function (n) { var m = String(n.click || "").match(/#t-([^&#]+)$/); if (m && !b.n1) b.n1 = decodeURIComponent(m[1]); }); return b; } catch (e) { return null; }
+  }
+  function briefDuJour() { var v = ETAT.etat && ETAT.etat["brief/" + jour()]; return v ? lireBrief(v) : null; }
+  function dernierBrief() {
+    var k = Object.keys(ETAT.etat || {}).filter(function (x) { return /^brief\/\d{4}-\d\d-\d\d$/.test(x); }).sort().pop();
+    return k ? { jour: k.slice(6), b: lireBrief(ETAT.etat[k]) } : null;
+  }
+  function heureFr(h) { return String(h || "").replace(/^0?(\d+):(\d\d)$/, function (_, a, b) { return a + " h" + (b === "00" ? "" : " " + b); }); }
+  function blocMatin(zone, r) {
+    var b = briefDuJour(), tout = ETAT.agenda || [], ag = tout.slice(0, 6);
+    if (!b && !ag.length) return;
+    var s = el("section", "qk-matin"), h = '<p class="qk-ma-k"><span>Ce matin</span>' + (b && b.heure ? "brief reçu à " + heureFr(b.heure) : "") + "</p>";
+    (b ? b.notifs || [] : []).forEach(function (n) {
+      var tt = String(n.title || ""), msg = esc(String(n.message || "").replace(/\s*\n\s*/g, " · "));
+      if (/^🎯/.test(tt)) {
+        var t1 = b.n1 && ETAT.taches.filter(function (t) { return t.id === b.n1; })[0];
+        if (!t1 || (r && r.t && r.t.id === t1.id)) return;
+        h += '<a class="qk-news qk-n1' + (t1.statut === "fait" ? " fait" : "") + '" href="#t-' + esc(t1.id) + '"><span class="qk-news-k">🎯 Ta n°1 du jour</span><b>'
+          + (t1.statut === "fait" ? "✓ " : "") + esc(t1.titre) + "</b></a>";
+        return;
+      }
+      var pol = /^🇫🇷/.test(tt), mode = /^👗/.test(tt); if (!pol && !mode) return;
+      h += '<a class="qk-news" target="_blank" rel="noopener" href="' + (pol ? PAGE_POL : PAGE_MODE) + '"><span class="qk-news-k">' + (pol ? "🇫🇷 Politique" : "👗 Mode")
+        + '</span><b>' + esc(tt.replace(/^\S+\s*/, "")) + "</b><p>" + msg + '</p><span class="qk-news-l">Lire le brief →</span></a>';
+    });
+    if (ag.length) h += '<div class="qk-ma-ag"><p class="qk-news-k">📅 Ta journée</p>' + ag.map(function (e) {
+      return '<div class="qk-ma-l"><span class="qk-ma-h">' + (e.h ? heureFr(e.h) : "Journée") + '</span><span class="qk-ma-t">' + esc(e.titre)
+        + (e.ou ? "<small>" + esc(couper(e.ou, 42)) + "</small>" : "") + "</span></div>";
+    }).join("") + (tout.length > ag.length ? '<p class="qk-ma-plus">+ ' + (tout.length - ag.length) + " autre" + (tout.length - ag.length > 1 ? "s" : "") + " dans ton agenda</p>" : "") + "</div>";
+    s.innerHTML = h; zone.appendChild(s);
+  }
+
+  // ---------- « Ce qui tourne tout seul » : toutes les automatisations, au même endroit ----------
+  // [quand, emoji, nom, ce que ça fait, où ça arrive, "on" | "off"]. À tenir à jour quand une automatisation change.
+  var AUTOS = [
+    ["Chaque matin", [
+      ["7 h", "☀️", "Brief du matin", "Lit ta liste du QG, ton agenda et tes mails, puis choisit ta tâche n°1. Prépare aussi la news politique et la news mode du jour.", "📲 3 notifs · QG « Ce matin »", "on", "brief"],
+      ["7 h", "📡", "Relais des notifs", "Envoie les 3 notifs du brief sur ton iPhone, puis les range ici, en haut du QG.", "📲 Notif", "on"]]],
+    ["Chaque soir", [
+      ["21 h", "🌙", "Bilan du soir", "Du dimanche au jeudi : ce qui a avancé, ce qui a coincé, ta priorité de demain. Ta réponse est rangée dans ton Journal. Range aussi les mails « Lecture ».", "✉️ Mail", "on"]]],
+    ["Chaque lundi", [
+      ["8 h 30", "🐾", "Nouveaux clients Mauvais Cabots", "Regarde qui a rempli le formulaire cette semaine et propose des créneaux pour la rencontre.", "✉️ Mail (seulement s'il y a du nouveau)", "on"],
+      ["9 h", "💶", "Point finances", "Te demande tes encaissements de la semaine, puis calcule ce que chaque activité a rapporté.", "📲 Notif", "on"],
+      ["9 h", "✍️", "Article + post LinkedIn", "Prépare l'article de la semaine pour adrienpons.com. Rien n'est publié sans ton OK.", "💻 Mac allumé", "on"],
+      ["9 h 30", "🧥", "Point ADN", "Vérifie que le Suivi ADN se met à jour, fait le récap de la semaine et les rappels.", "💻 Mac allumé", "on"]]],
+    ["Chaque dimanche", [
+      ["20 h", "💛", "Liste Pauline", "Les nouveaux messages de Pauline deviennent des idées dans ta note Apple.", "💻 Mac allumé", "on"]]],
+    ["Chaque mois", [
+      ["Le 1er", "🔎", "Contrôle du site Mauvais Cabots", "Pages, Google, visibilité : un point court.", "💻 Mac allumé", "on"]]],
+    ["En continu", [
+      ["Toutes les 6 h", "📄", "Documents rangés", "Tes Docs et Sheets Google, classés par projet.", "QG › Documents", "on"]]],
+    ["Coupé", [
+      ["", "✉️", "Mail « Ta journée » (7 h 30)", "Remplacé par le Brief du matin.", "", "off"],
+      ["", "📰", "Briefings politique et mode séparés", "Réunis dans le Brief du matin.", "", "off"],
+      ["", "📋", "Ancien « Brief du jour » (8 h 15)", "Faisait doublon avec le Brief du matin.", "", "off"]]]
+  ];
+  function vueAuto(zone) {
+    var d = dernierBrief(), h = '<p class="qk-auto-intro">Tout ce qui travaille pour toi sans que tu demandes. Aucun message ne part sans toi.</p>';
+    AUTOS.forEach(function (g) {
+      h += '<h2 class="qk-h2">' + esc(g[0]) + '</h2><div class="qk-autos">' + g[1].map(function (a) {
+        var vu = "";
+        if (a[6] === "brief") vu = d ? (d.jour === jour() ? "✓ Passé aujourd'hui" + (d.b && d.b.heure ? " à " + heureFr(d.b.heure) : "") : "Dernier passage : " + dateCourte(d.jour)) : "";
+        return '<div class="qk-auto' + (a[5] === "off" ? " off" : "") + '"><span class="qk-auto-e">' + a[1] + '</span><div><p class="qk-auto-t"><b>' + esc(a[2]) + "</b>"
+          + (a[0] ? '<span class="qk-auto-q">' + esc(a[0]) + "</span>" : "") + "</p><p>" + esc(a[3]) + "</p>"
+          + (a[4] || vu ? '<p class="qk-auto-o">' + esc(a[4]) + (vu ? '<span class="qk-auto-vu">' + vu + "</span>" : "") + "</p>" : "") + "</div></div>";
+      }).join("") + "</div>";
+    });
+    zone.innerHTML = h;
+  }
+
   // ---------- minuteur : 15 minutes, un cercle qui se vide, on peut s'arrêter ----------
   function heroMinuteur(t, m) {
     var h = el("section", "qk-hero qk-chrono"), mp = miniPas(t);
@@ -546,7 +623,7 @@
     if (!PRET) return;
     var a = document.activeElement; if (a && ZONE.contains(a) && (a.tagName === "TEXTAREA" || a.tagName === "INPUT" && a.type !== "checkbox")) return;
     var y = window.scrollY; ZONE.style.minHeight = ZONE.offsetHeight + "px"; // la page ne saute pas pendant la mise à jour
-    if (C.vue === "qg") vueQG(ZONE); else if (C.vue === "docs") vueDocs(ZONE); else vueProjet(ZONE, MAIN);
+    if (C.vue === "qg") vueQG(ZONE); else if (C.vue === "docs") vueDocs(ZONE); else if (C.vue === "auto") vueAuto(ZONE); else vueProjet(ZONE, MAIN);
     ZONE.style.minHeight = ""; if (Math.abs(window.scrollY - y) > 2 && !(window.__qkVise && Date.now() - window.__qkVise < 2000)) window.scrollTo(0, y);
     appliquerEtat(MAIN); allerA();
   }
