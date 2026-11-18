@@ -445,6 +445,7 @@
   // [quand, emoji, nom, ce que ça fait, où ça arrive, "on" | "off"]. À tenir à jour quand une automatisation change.
   var AUTOS = [
     ["En continu", [
+      ["toujours allumé", "✏️", "Éditeur du portfolio", "Démarre avec le Mac et redémarre tout seul s'il s'arrête : le bouton « Éditeur du portfolio » des tâches ouvre toujours http://localhost:8802 (sur le Mac seulement). Lanceur : com.adn.portfolio-editeur.", "💻 localhost:8802", "on"],
       ["toutes les 3 min", "🏠", "Agent immobilier", "Cherche sur Bien'ici et Geolocaux, et lit tes alertes Leboncoin/SeLoger/PAP (mails « IMMO … »), les nouveaux locaux pour la boutique (3e, 4e, 10e, 6e, 7e) et la crèche Mauvais Cabots, et les appartements (Paris et nord-est). Note chaque annonce sur 10. Tourne sur le Mac (immo-agent/).", "📲 Notif dès qu'une annonce sort", "on"]]],
     ["Chaque matin", [
       ["7 h", "☀️", "Brief du matin", "Lit ta liste du QG, ton agenda et tes mails, puis choisit ta tâche n°1. Prépare aussi la news politique et la news mode du jour.", "📲 3 notifs · QG « Ce matin »", "on", "brief"],
