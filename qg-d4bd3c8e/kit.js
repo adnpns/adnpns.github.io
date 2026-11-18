@@ -125,6 +125,69 @@
     brancherFiche(d, t);
     return d;
   }
+  // ---------- liens automatiques : chaque tâche reçoit les boutons des fichiers/sites dont elle parle ----------
+  // [mots repérés dans le titre/résumé/fiche, libellé, adresse]. Ajouter ici toute ressource utile (règle 18/11).
+  var GD = "https://drive.google.com/", GS = "https://docs.google.com/spreadsheets/d/";
+  var RESSOURCES = [
+    [/portfolio|\bbook\b/i, "📕 Portfolio (PDF le plus récent)", GD + "file/d/1H7mGyFB9vnp6jbKg363pa8nZ_oVER3-C/view"],
+    [/portfolio|\bbook\b/i, "✏️ Éditeur du portfolio (sur le Mac)", "http://localhost:8802"],
+    [/portfolio|\bbook\b|\bCV\b|candidature|Carne Bollente/i, "📁 Drive · Candidatures 2026", GD + "drive/folders/1v-SszfeawtDLcuqmjMg0qFFj0lfPfFhO"],
+    [/candidature|Carne Bollente/i, "📊 Suivi des candidatures", GD + "file/d/1dbWuh5iTg94Hmg_JdcmnWBcGZe_S3jc-/view"],
+    [/linkedin/i, "💼 LinkedIn", "https://www.linkedin.com/feed/"],
+    [/linkedin/i, "📁 Photos des posts LinkedIn", GD + "drive/folders/1_YC72ikTgcWvrFuF17rzT75IRrBEEoSi"],
+    [/agences|prospection|relances? .*stylisme|stylisme.*relance|missions? stylisme/i, "📊 Prospection stylisme", GS + "1-m4rSS0O6tYqmuxvG008pg0i6d1dtONySOnaGQAYcJk/edit"],
+    [/brouillon|gmail|relance/i, "✉️ Brouillons Gmail", "GMAIL#drafts"],
+    [/stock|étiquette|avis prix|ADN\d{3}|inventaire|\bréfs?\b|floor|cuirs?\b|grosses pièces/i, "📊 Suivi ADN (stock, prix)", GS + "1RjJ8-o_KHMBeGc-_9ZjtHtQKCQWPwatBJQgtV6T2iMg/edit"],
+    [/Pauline|dépôt/i, "📊 Suivi Adrien & Pauline", GS + "1M7l-TH8AFx81MViSX--SsDI8_J0-x18-oUSC8iQt22g/edit"],
+    [/stories|stickers|photo de profil|posts? .*marque/i, "🎨 DA ADN prête à utiliser", GD + "drive/folders/1YQCJGJlOl3u2b87YvMU3Mc-ZsincdWGW"],
+    [/insta/i, "📷 Instagram", "https://www.instagram.com/"],
+    [/vinted/i, "🛍 Vinted", "https://www.vinted.fr/"],
+    [/bijou/i, "💍 Page des 18 pièces (campagne 1)", "https://claude.ai/artifact/MGHSQcbvzxMUDJsg7w2stv"],
+    [/leboncoin|ikea/i, "📁 Annonces Leboncoin IKEA", GD + "drive/folders/1RImg5WaCBB9Jsoed-bxXubPAnfNOAYAn"],
+    [/leboncoin|ikea/i, "📢 Déposer sur Leboncoin", "https://www.leboncoin.fr/deposer-une-annonce"],
+    [/urssaf/i, "🏛 URSSAF", "https://www.urssaf.fr/accueil/se-connecter.html"],
+    [/\bAPL\b|\bCAF\b/i, "🏛 CAF · mon compte", "https://wwwd.caf.fr/wps/portal/caffr/login"],
+    [/france travail|actualisation|\bASS\b/i, "🏛 France Travail", "https://candidat.francetravail.fr/espacepersonnel/"],
+    [/ameli|\bCSS\b|complémentaire santé|mutuelle|bilan de santé|prévention/i, "🏥 Mon compte ameli", "https://assure.ameli.fr/"],
+    [/soutien psy|\bpsy\b/i, "🧠 Mon soutien psy", "https://monsoutienpsy.ameli.fr/"],
+    [/navigo|solidarité transport/i, "🚇 Solidarité Transport", "https://www.iledefrance-mobilites.fr/titres-et-tarifs/tarifs-solidarite"],
+    [/\bCPF\b/i, "🎓 Mon compte formation", "https://www.moncompteformation.gouv.fr/"],
+    [/NEPH|ANTS/i, "🚗 ANTS permis", "https://permisdeconduire.ants.gouv.fr/"],
+    [/code de la route|test de code|\bcode\b.*score|permis/i, "🚗 En Voiture Simone", "https://www.envoituresimone.com/"],
+    [/impôts|déclarer ses revenus|chèque énergie/i, "🏛 impots.gouv", "https://www.impots.gouv.fr/accueil"],
+    [/figura/i, "🎬 Figurants.com", "https://www.figurants.com/"],
+    [/droits|aides?\b|mutuelle|FSL|frais bancaires/i, "📂 Mes droits & argent", "https://claude.ai/artifact/H3WJfF6YSGPMtRS21vbPtj"],
+    [/supabase/i, "⚙️ Supabase", "https://supabase.com/dashboard"],
+    [/cloudflare/i, "⚙️ Cloudflare", "https://dash.cloudflare.com/"],
+    [/adrienpons\.com|article|référencement|bing/i, "🌐 adrienpons.com", "https://adrienpons.com/"],
+    [/bing/i, "🔎 Bing Webmaster", "https://www.bing.com/webmasters"],
+    [/malt/i, "💼 Malt", "https://www.malt.fr/"],
+    [/spotify/i, "🎵 Spotify", "https://open.spotify.com/collection/tracks"],
+    [/uber one/i, "🚕 Uber One", "https://www.uber.com/fr/fr/u/uber-one/"],
+    [/cleanmymac/i, "🔍 Reçu CleanMyMac dans Gmail", "GMAIL#search/CleanMyMac"],
+    [/propriétaire|loyer|Tristan/i, "✉️ Brouillons Gmail", "GMAIL#drafts"],
+    [/\bMona\b|Marcel/i, "💬 WhatsApp", "https://web.whatsapp.com/"],
+    [/posts?\b/i, "📷 Instagram", "https://www.instagram.com/"],
+    [/carte de visite|supports imprimés|affiches/i, "📁 Drive · Personal Styling (cartes)", GD + "drive/folders/1ZAToVKmiNwRPLWOt5kexqPLG2Z9ebuvk"],
+    [/photos iphone/i, "🖼 Photos iCloud", "https://www.icloud.com/photos/"],
+    [/bankin/i, "🏦 Bankin", "https://app.bankin.com/"],
+    [/wi-?fi|freebox|\bbox\b/i, "📶 Freebox OS", "http://mafreebox.freebox.fr/"],
+    [/coiffeur/i, "✂️ Planity (coiffeurs)", "https://www.planity.com/"],
+    [/laverie/i, "🔎 Laveries à vendre (Leboncoin)", "https://www.leboncoin.fr/recherche?category=1&text=laverie"]
+  ];
+  function liensAuto(t) {
+    var f = t.fiche || {}, morceaux = [t.titre, t.resume, t.note];
+    ["mini", "pourquoi", "gain", "deja", "etapes", "materiel"].forEach(function (k) { morceaux = morceaux.concat(liste(f[k])); });
+    var txt = morceaux.join(" \n "), vus = {}, res = [];
+    liste(f.liens).forEach(function (l) { vus[l.url] = 1; });
+    function ajoute(label, url) { if (!vus[url]) { vus[url] = 1; res.push({ label: label, url: url }); } }
+    RESSOURCES.forEach(function (r) { if (r[0].test(txt)) ajoute(r[1], r[2].replace(/^GMAIL/, "https://mail.google.com/mail/?authuser=" + q(C.compte))); });
+    (txt.match(/https?:\/\/[^\s<>"'«»)]+/g) || []).forEach(function (u) {
+      u = u.replace(/[.,;:]+$/, ""); var h = u.replace(/^https?:\/\//, "").split("/")[0];
+      ajoute((/^(localhost|127\.)/.test(h) ? "💻 " : "🔗 ") + h, u);
+    });
+    return res;
+  }
   function ficheVide(t) { var f = t.fiche || {}; return !["pourquoi", "gain", "deja", "etapes", "materiel", "html", "textes", "liens"].some(function (k) { return f[k] && f[k].length; }); }
   function liste(x) { return x == null || x === "" ? [] : [].concat(x); }
   function corpsFiche(t, surQG) {
@@ -140,7 +203,7 @@
     if (f.materiel && f.materiel.length) c += '<p class="qk-st">Matériel</p><ul class="qk-mat">' + f.materiel.map(function (e) { return "<li>" + e + "</li>"; }).join("") + "</ul>";
     if (f.html) c += '<div class="qk-html">' + f.html + "</div>";
     (f.textes || []).forEach(function (x) { c += (x.titre ? '<p class="qk-st">' + esc(x.titre) + "</p>" : "") + '<pre class="qk-texte">' + esc(x.texte) + '</pre><div class="qk-acts">' + boutonsTexte(x) + "</div>"; });
-    var lk = (f.liens || []).map(function (l) { return '<a class="qk-btn" href="' + esc(l.url) + '">' + esc(l.label) + "</a>"; });
+    var lk = f.liens.concat(liensAuto(t)).map(function (l) { return '<a class="qk-btn" target="_blank" rel="noopener" href="' + esc(l.url) + '">' + esc(l.label) + "</a>"; });
     (t.liens || []).forEach(function (k) { var pp = C.projets[k]; if (pp && k !== t.projet) lk.push('<a class="qk-btn" href="' + pp.url + '">Fait avancer : ' + esc(pp.nom) + " →</a>"); });
     if (String(C.page).indexOf("mc/")) lk.unshift('<a class="qk-btn plein" target="_blank" rel="noopener" href="' + esc(urlClaude(t)) + '">🤝 Faire avec Claude</a>');
     if (surQG && p.url) lk.push('<a class="qk-btn" href="' + urlTache(t) + '">' + (EMO[t.projet] || "") + " Page " + esc(p.nom) + " →</a>");
