@@ -142,7 +142,7 @@
     [/stories|stickers|photo de profil|posts? .*marque/i, "🎨 DA ADN prête à utiliser", GD + "drive/folders/1YQCJGJlOl3u2b87YvMU3Mc-ZsincdWGW"],
     [/insta/i, "📷 Instagram", "https://www.instagram.com/"],
     [/vinted/i, "🛍 Vinted", "https://www.vinted.fr/"],
-    [/bijou/i, "💍 Page des 18 pièces (campagne 1)", "https://claude.ai/artifact/MGHSQcbvzxMUDJsg7w2stv"],
+    [/bijou/i, "💍 Page des lockets (dernière fouille)", "https://claude.ai/artifact/CEwCcLRqerWPMYpMEw27H3"],
     [/leboncoin|ikea/i, "📁 Annonces Leboncoin IKEA", GD + "drive/folders/1RImg5WaCBB9Jsoed-bxXubPAnfNOAYAn"],
     [/leboncoin|ikea/i, "📢 Déposer sur Leboncoin", "https://www.leboncoin.fr/deposer-une-annonce"],
     [/urssaf/i, "🏛 URSSAF", "https://www.urssaf.fr/accueil/se-connecter.html"],
