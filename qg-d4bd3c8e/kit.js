@@ -336,7 +336,8 @@
     }
   }
   // ---------- « Ce matin » : le Brief de 7 h (gardé par le relais des notifs) + l'agenda du jour ----------
-  var PAGE_POL = "https://claude.ai/artifact/TeKrzqy1jcA9y7VxLuzQM1", PAGE_MODE = "https://claude.ai/artifact/R78HQZcP7fUyvSZ2byt8vV";
+  // Docs complets mis à jour par la routine (les anciennes pages TeKrzqy…/R78HQ… lisaient une base plus remplie depuis le 17/11).
+  var PAGE_POL = "https://claude.ai/artifact/TQryMHFS8xNt9HMvPbxUrq", PAGE_MODE = "https://claude.ai/artifact/5pQkgmRd4gByPGyScGEBVp";
   function lireBrief(v) {
     try { var b = JSON.parse(v); (b.notifs || []).forEach(function (n) { var m = String(n.click || "").match(/#t-([^&#]+)$/); if (m && !b.n1) b.n1 = decodeURIComponent(m[1]); }); return b; } catch (e) { return null; }
   }
@@ -360,8 +361,15 @@
         return;
       }
       var pol = /^🇫🇷/.test(tt), mode = /^👗/.test(tt); if (!pol && !mode) return;
-      h += '<a class="qk-news" target="_blank" rel="noopener" href="' + (pol ? PAGE_POL : PAGE_MODE) + '"><span class="qk-news-k">' + (pol ? "🇫🇷 Politique" : "👗 Mode")
-        + '</span><b>' + esc(tt.replace(/^\S+\s*/, "")) + "</b><p>" + msg + '</p><span class="qk-news-l">Lire le brief →</span></a>';
+      var doc = (pol ? PAGE_POL : PAGE_MODE), act = (n.actions || []).filter(function (a) { return /claude\.ai\/artifact\//.test(a.url || ""); })[0];
+      if (act && !/TeKrzqy1jcA9y7VxLuzQM1|R78HQZcP7fUyvSZ2byt8vV/.test(act.url)) doc = act.url;
+      var src = /^https?:/.test(n.click || "") ? n.click : "", titres = (n.titres || []).filter(function (x) { return x && x.t; }).slice(0, 6);
+      h += '<div class="qk-news"><span class="qk-news-k">' + (pol ? "🇫🇷 Politique" : "👗 Mode") + '</span><b>' + esc(tt.replace(/^\S+\s*/, "")) + "</b><p>" + msg + "</p>"
+        + (titres.length > 1 ? '<ul class="qk-news-t">' + titres.map(function (x) {
+            return "<li>" + (/^https?:/.test(x.url || "") ? '<a target="_blank" rel="noopener" href="' + esc(x.url) + '">' + esc(x.t) + "</a>" : esc(x.t)) + "</li>";
+          }).join("") + "</ul>" : "")
+        + '<span class="qk-news-ls"><a class="qk-news-l" target="_blank" rel="noopener" href="' + esc(doc) + '">Lire le brief complet →</a>'
+        + (src ? '<a class="qk-news-l qk-news-src" target="_blank" rel="noopener" href="' + esc(src) + '">L\'article</a>' : "") + "</span></div>";
     });
     if (ag.length) h += '<div class="qk-ma-ag"><p class="qk-news-k">📅 Ta journée</p>' + ag.map(function (e) {
       return '<div class="qk-ma-l"><span class="qk-ma-h">' + (e.h ? heureFr(e.h) : "Journée") + '</span><span class="qk-ma-t">' + esc(e.titre)
@@ -373,6 +381,8 @@
   // ---------- « Ce qui tourne tout seul » : toutes les automatisations, au même endroit ----------
   // [quand, emoji, nom, ce que ça fait, où ça arrive, "on" | "off"]. À tenir à jour quand une automatisation change.
   var AUTOS = [
+    ["En continu", [
+      ["toutes les 3 min", "🏠", "Agent immobilier", "Cherche sur Bien'ici et Geolocaux, et lit tes alertes Leboncoin/SeLoger/PAP (mails « IMMO … »), les nouveaux locaux pour la boutique (3e, 4e, 10e, 6e, 7e) et la crèche Mauvais Cabots, et les appartements (Paris et nord-est). Note chaque annonce sur 10. Tourne sur le Mac (immo-agent/).", "📲 Notif dès qu'une annonce sort", "on"]]],
     ["Chaque matin", [
       ["7 h", "☀️", "Brief du matin", "Lit ta liste du QG, ton agenda et tes mails, puis choisit ta tâche n°1. Prépare aussi la news politique et la news mode du jour.", "📲 3 notifs · QG « Ce matin »", "on", "brief"],
       ["7 h", "📡", "Relais des notifs", "Envoie les 3 notifs du brief sur ton iPhone, puis les range ici, en haut du QG.", "📲 Notif", "on"]]],

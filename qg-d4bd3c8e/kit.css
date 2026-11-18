@@ -212,6 +212,8 @@ button.qk-tuile{font:inherit;text-align:left;cursor:pointer}
 .qk-news b{display:block;font-size:18px;line-height:1.3;font-weight:650;letter-spacing:-.005em}
 .qk-news p{margin:6px 0 0;font-size:15px;line-height:1.45;color:var(--mute);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .qk-news-l{display:block;margin-top:8px;font-size:14px;font-weight:600}
+.qk-news-ls{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:4px}.qk-news-ls a{color:var(--ink)!important;text-decoration:none}.qk-news-src{color:var(--mute)!important;font-weight:500}
+.qk-news-t{margin:10px 0 2px;padding:0;list-style:none}.qk-news-t li{padding:7px 0;border-top:1px solid var(--line);font-size:15px;line-height:1.35}.qk-news-t a{color:var(--ink)!important;text-decoration:none}
 .qk-n1.fait b{color:var(--mute)}
 .qk-ma-ag{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px 6px}
 .qk-ma-l{display:flex;gap:14px;padding:8px 0;border-top:1px solid var(--line)}.qk-ma-ag .qk-news-k+.qk-ma-l{border-top:0;padding-top:4px}
