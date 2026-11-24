@@ -232,3 +232,6 @@ button.qk-tuile{font:inherit;text-align:left;cursor:pointer}
 .qk-auto-o{margin-top:7px!important;font-size:13px!important;color:var(--mute);display:flex;flex-wrap:wrap;gap:6px 12px}
 .qk-auto-vu{color:#5f8f5f;font-weight:600}
 .qk-ma-plus{margin:0;padding:8px 0;border-top:1px solid var(--line);font-size:13px;color:var(--mute)}
+/* Ancienne page Boutique (24/11) : ses couleurs sombres suivent maintenant le style commun */
+html.qk:root{--void:var(--bg);--alt:var(--card);--soft:var(--mute)}
+html.qk .p.forte .t b{color:var(--ink);font-weight:600}

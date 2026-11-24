@@ -83,7 +83,7 @@
   function indic(txt, alerte) { var i = $("#qk-sync"); if (i) { i.textContent = alerte ? txt : ""; i.title = txt; i.classList.toggle("qk-off", !!alerte); } }
 
   // ---------- barre du haut : un seul bouton retour, rien d'autre (10/11 : le menu de 10 onglets dispersait) ----------
-  var EMO = { argent: "💶", boutique: "🧥", mc: "🐾", stylisme: "✂️", emploi: "💼", sport: "🏃", idees: "💡", creuser: "🔭", docs: "📄" };
+  var EMO = { argent: "💶", boutique: "🧥", mc: "🐾", stylisme: "✂️", emploi: "💼", sport: "🏃", idees: "💡", creuser: "⏱️", docs: "📄" };
   var JOURS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"], MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
   function dateLongue() { var n = new Date(); return JOURS[n.getDay()] + " " + n.getDate() + " " + MOIS[n.getMonth()]; }
   function nav(main) {
@@ -93,7 +93,7 @@
     else {
       var sous = C.titre && p.url && !memePage(p.url), dest = mc ? C.projets.mc.url : sous ? avecCode(p.url) : C.qg;
       b.innerHTML = '<a class="qk-retour" href="' + dest + '">← ' + esc(mc ? "Accueil" : sous ? p.nom : "QG") + "</a>"
-        + '<span class="qk-ici">' + (C.vue === "docs" ? "📄 Documents" : C.vue === "auto" ? "⚙️ Ce qui tourne tout seul" : (EMO[C.projet] || "") + " " + esc(sous ? C.titre : p.nom || C.titre || "")) + "</span>";
+        + '<span class="qk-ici">' + (C.vue === "docs" ? "📄 Mes pages" : C.vue === "auto" ? "⚙️ Ce qui tourne tout seul" : (EMO[C.projet] || "") + " " + esc(sous ? C.titre : p.nom || C.titre || "")) + "</span>";
     }
     b.innerHTML += '<span id="qk-sync" class="qk-sync" title="à jour"></span>';
     main.insertBefore(b, main.firstChild);
@@ -258,11 +258,15 @@
       var q = champ.value.trim().toLowerCase(), f = function (d) { return !q || (d.titre + " " + (d.dossier || "") + " " + (d.note || "")).toLowerCase().indexOf(q) >= 0; };
       res.innerHTML = "";
       if (!DOCS) { res.appendChild(el("p", "qk-vide", "Chargement de tes documents…")); return; }
+      var web = function (d) { return d.type === "page" || d.type === "outil"; };
       ["qg"].concat(C.ordre, ["autres"]).forEach(function (k) {
-        var l = D.filter(function (d) { return d.projet === k && f(d); }); if (!l.length) return;
+        var l = D.filter(function (d) { return d.projet === k && web(d) && f(d); }); if (!l.length) return;
         var nom = k === "qg" ? "QG et organisation" : k === "autres" ? "Autres" : C.projets[k].nom;
         var b = blocDocs(l, nom); b.id = "p-" + k; res.appendChild(b);
       });
+      var gd = D.filter(function (d) { return !web(d) && d.projet !== "archive" && f(d); });
+      if (!res.children.length) res.appendChild(el("p", "qk-vide", "Aucune page ne correspond."));
+      if (gd.length) { var dg = el("details", "qk-archives", "<summary>Vieux fichiers Google (Docs, Sheets) · " + gd.length + "</summary>" + gd.map(ligneDoc).join("")); if (q) dg.open = true; res.appendChild(dg); }
       var ar = D.filter(function (d) { return d.projet === "archive" && f(d); });
       if (ar.length) { var de = el("details", "qk-archives", "<summary>Anciennes versions et archives (" + ar.length + ")</summary>" + ar.map(ligneDoc).join("")); if (q) de.open = true; res.appendChild(de); }
     }
@@ -462,7 +466,7 @@
     ["Chaque mois", [
       ["Le 1er", "🔎", "Contrôle du site Mauvais Cabots", "Pages, Google, visibilité : un point court.", "💻 Mac allumé", "on"]]],
     ["En continu", [
-      ["Toutes les 6 h", "📄", "Documents rangés", "Tes Docs et Sheets Google, classés par projet.", "QG › Documents", "on"]]],
+      ["Toutes les 6 h", "📄", "Pages rangées", "Tes pages et outils classés par projet ; les vieux fichiers Google repliés en bas.", "QG › Mes pages", "on"]]],
     ["Coupé", [
       ["", "✉️", "Mail « Ta journée » (7 h 30)", "Remplacé par le Brief du matin.", "", "off"],
       ["", "📰", "Briefings politique et mode séparés", "Réunis dans le Brief du matin.", "", "off"],
@@ -625,7 +629,7 @@
     var libres = ici.filter(function (t) { return !$('[data-qk-tache="' + t.id + '"]', main); });
     var ouverts = {}; $$(".qk-fiche[open]", zone).forEach(function (d) { ouverts[d.id] = 1; });
     zone.innerHTML = "";
-    var mesDocs = (DOCS || []).filter(function (d) { return d.projet === C.projet; });
+    var mesDocs = (DOCS || []).filter(function (d) { return d.projet === C.projet && (d.type === "page" || d.type === "outil"); });
     if (!libres.length && !mesDocs.length) { zone.hidden = true; return; }
     zone.hidden = false;
     var mk = function (t) {
@@ -642,7 +646,7 @@
     if (frigo.length) { var dg = pli("frigo", "🧊 Au congélateur (" + frigo.length + ")"); frigo.forEach(function (t) { dg.appendChild(mk(t)); }); zone.appendChild(dg); }
     if (faites.length) { var df = pli("faites", "✓ Déjà faite" + (faites.length > 1 ? "s" : "") + " (" + faites.length + ")"); faites.forEach(function (t) { df.appendChild(mk(t)); }); zone.appendChild(df); }
     if (mesDocs.length) {
-      var dd = pli("docs", "📄 Documents (" + mesDocs.length + ")");
+      var dd = pli("docs", "📄 Pages et outils (" + mesDocs.length + ")");
       dd.insertAdjacentHTML("beforeend", mesDocs.slice(0, 8).map(ligneDoc).join("") + (mesDocs.length > 8 && String(C.page).indexOf("mc/") !== 0 ? '<a class="qk-btn" href="' + C.qg + "documents.html#p-" + C.projet + '">Tout voir</a>' : ""));
       zone.appendChild(dd);
     }
