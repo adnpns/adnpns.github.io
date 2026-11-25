@@ -44,6 +44,7 @@
     appel(f[0]).then(function (r) {
       var g = fileAttente(); g.shift(); lsSet("file_" + C.cle, g);
       if (r.tache) { majLocale(r.tache); }
+      if (r.affaire) { var ia = (ETAT.affaires || []).findIndex(function (x) { return x.id === r.affaire.id; }); if (ia >= 0) ETAT.affaires[ia] = r.affaire; else (ETAT.affaires = ETAT.affaires || []).push(r.affaire); }
       if (!g.length && !muet) toast("Enregistré ✓");
       muet = false;
       enCours = false; vider();
@@ -52,7 +53,7 @@
   function charger() {
     if (fileAttente().length) return vider();
     appel({ action: "lire" }).then(function (r) {
-      ETAT = { taches: r.taches, etat: r.etat, agenda: r.agenda || [] }; lsSet("cache_" + C.cle, ETAT); indic("à jour");
+      ETAT = { taches: r.taches, etat: r.etat, agenda: r.agenda || [], affaires: r.affaires || [] }; lsSet("cache_" + C.cle, ETAT); indic("à jour");
       if (!premier) { premier = true; visee = null; } rendre();
     }).catch(function () { indic("hors ligne", true); });
   }
@@ -450,7 +451,7 @@
   var AUTOS = [
     ["En continu", [
       ["toujours allumé", "✏️", "Éditeur du portfolio", "Démarre avec le Mac et redémarre tout seul s'il s'arrête : le bouton « Éditeur du portfolio » des tâches ouvre toujours http://localhost:8802 (sur le Mac seulement). Lanceur : com.adn.portfolio-editeur.", "💻 localhost:8802", "on"],
-      ["toutes les 3 min", "🏠", "Agent immobilier", "Cherche sur Bien'ici, Geolocaux, Paris Commerces, In'li et lit tes alertes Leboncoin/PAP. 3 recherches : local boutique (3e, 4e, 10e, 6e, 7e), local crèche Mauvais Cabots, appart (plus tard). Note chaque annonce sur 10. Les mails d'alerte sont rangés dans Gmail (Immo/Boutique, Immo/Crèche, Immo/Appart), jamais dans la boîte de réception. Tourne sur le Mac (immo-agent/).", "📲 1 résumé max par demi-journée et par recherche, seulement ≥ 8/10 (rien pour l'appart)", "on"]]],
+      ["toutes les 3 min", "🏠", "Agent immobilier", "Cherche sur Bien'ici, Geolocaux, Paris Commerces, In'li et lit tes alertes Leboncoin/PAP. 3 recherches : local boutique (3e surtout, puis 4e, 1er, 2e, 10e), local crèche Mauvais Cabots (1er-4e, 9e-12e, 18e-20e, atypique, près d'un parc), appart plus tard (mêmes zones + proche banlieue nord/est). Note chaque annonce sur 10. Les mails d'alerte sont rangés dans Gmail (Immo/Boutique, Immo/Crèche, Immo/Appart), jamais dans la boîte de réception. Tourne sur le Mac (immo-agent/).", "📲 1 résumé max par demi-journée et par recherche, seulement ≥ 8/10 (rien pour l'appart)", "on"]]],
     ["Chaque matin", [
       ["7 h", "☀️", "Brief du matin", "Lit ta liste du QG, ton agenda et tes mails, puis choisit ta tâche n°1. Prépare aussi la news politique et la news mode du jour.", "📲 3 notifs · QG « Ce matin »", "on", "brief"],
       ["7 h", "📡", "Relais des notifs", "Envoie les 3 notifs du brief sur ton iPhone, puis les range ici, en haut du QG.", "📲 Notif", "on"]]],
@@ -701,7 +702,7 @@
     if (!PRET) return;
     var a = document.activeElement; if (a && ZONE.contains(a) && (a.tagName === "TEXTAREA" || a.tagName === "INPUT" && a.type !== "checkbox")) return;
     var y = window.scrollY; ZONE.style.minHeight = ZONE.offsetHeight + "px"; // la page ne saute pas pendant la mise à jour
-    if (C.vue === "qg") vueQG(ZONE); else if (C.vue === "docs") vueDocs(ZONE); else if (C.vue === "auto") vueAuto(ZONE); else vueProjet(ZONE, MAIN);
+    if (C.vue === "pilote") { try { window.dispatchEvent(new CustomEvent("qk-donnees", { detail: ETAT })); } catch (e) {} } else if (C.vue === "qg") vueQG(ZONE); else if (C.vue === "docs") vueDocs(ZONE); else if (C.vue === "auto") vueAuto(ZONE); else vueProjet(ZONE, MAIN);
     ZONE.style.minHeight = ""; if (Math.abs(window.scrollY - y) > 2 && !(window.__qkVise && Date.now() - window.__qkVise < 2000)) window.scrollTo(0, y);
     appliquerEtat(MAIN); allerA();
   }
@@ -718,6 +719,7 @@
     nav(MAIN);
     ZONE = document.getElementById("qk-zone");
     if (!ZONE) { ZONE = el("div"); ZONE.id = "qk-zone"; ZONE.dataset.qkAuto = "1"; var b = $(".qk-bar", MAIN); b.parentNode.insertBefore(ZONE, b.nextSibling); }
+    window.QK = { cfg: C, etat: function () { return ETAT; }, envoyer: envoyer, changerTache: changerTache, majLocale: majLocale, rendre: function () { rendre(); } };
     ETAT = lsGet("cache_" + C.cle) || ETAT; DOCS = lsGet("docs_" + C.cle); PRET = true;
     if (!MAIN.__qk) { MAIN.__qk = 1; suivreChamps(MAIN); }
     visee = null; rendre(); vider(); chargerDocs();
