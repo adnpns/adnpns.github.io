@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Instrument+Serif&display=swap");
 /* Style commun des pages privées (chargé par kit.js). Sobre, chaud, lisible sur téléphone.
    Les variables des anciennes pages (--fg, --mut, --ink, --mute, --card…) sont redéfinies ici pour que tout se ressemble. */
 html.qk:root{--bg:#f6f4f0;--card:#fff;--ink:#1d1c1a;--fg:#1d1c1a;--mute:#75716a;--mut:#75716a;--line:#e4e0d8;--acc:#1d1c1a;--or:#9c7a46;--alert:#f6e7e2;--doux:#efece6;color-scheme:light}
@@ -235,3 +236,79 @@ button.qk-tuile{font:inherit;text-align:left;cursor:pointer}
 /* Ancienne page Boutique (24/11) : ses couleurs sombres suivent maintenant le style commun */
 html.qk:root{--void:var(--bg);--alt:var(--card);--soft:var(--mute)}
 html.qk .p.forte .t b{color:var(--ink);font-weight:600}
+
+/* ===================================================================================================
+   QG v2 partout (27/11) : sombre premium, Inter + Instrument Serif, cartes fines, halo orange.
+   Même ergonomie que le QG du téléphone : barre latérale sur ordinateur, 4 onglets en bas sur téléphone.
+   =================================================================================================== */
+html.qk:root,html.qk.qk-sombre:root{--bg:#09090a;--card:#151517;--card2:#1b1b1e;--ink:#f2f2f3;--fg:#f2f2f3;--mute:#a1a1a8;--mut:#a1a1a8;--tx3:#6b6b73;--line:#232327;--line2:#2e2e33;
+  --acc:#f2f2f3;--or:#ff7a2f;--ok:#4fd1a5;--alert:#2a1710;--doux:#1b1b1e;--void:#09090a;--alt:#151517;--soft:#a1a1a8;color-scheme:dark}
+html.qk:not(.qk-pv) body{background:radial-gradient(1100px 600px at 100% -10%,rgba(255,122,47,.10),transparent 60%),#09090a fixed!important;color:var(--ink)!important;
+  font:15px/1.55 Inter,system-ui,-apple-system,sans-serif!important;-webkit-font-smoothing:antialiased}
+html.qk:not(.qk-pv) main{max-width:880px}
+html.qk:not(.qk-pv) h1,html.qk:not(.qk-pv) .qk-quoi,.qk-pn h3,.qk-ph a b,.qk-docsbloc h2,.qk-brand{font-family:"Instrument Serif",Georgia,serif!important;font-weight:400!important;letter-spacing:-.005em!important}
+html.qk:not(.qk-pv) h1{font-size:44px!important;line-height:1.08;margin:26px 0 8px;color:var(--ink)}
+html.qk:not(.qk-pv) h2{font:500 11px/1.4 Inter,system-ui,sans-serif!important;letter-spacing:.08em!important;text-transform:uppercase!important;color:var(--tx3)!important;border-top:0!important;padding-top:0!important;margin:34px 2px 12px!important}
+html.qk:not(.qk-pv) h3{color:var(--ink)}
+html.qk:not(.qk-pv) p,html.qk:not(.qk-pv) li,html.qk:not(.qk-pv) td{color:inherit}
+html.qk:not(.qk-pv) .card,html.qk:not(.qk-pv) .box,html.qk:not(.qk-pv) details.task,html.qk:not(.qk-pv) details.card,.qk-fiche,.qk-ligne,.qk-projet,.qk-doc,.qk-news,.qk-ma-ag,.qk-auto,.qk-tuile,.qk-choix,.qk-gestes>*{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:18px!important;color:var(--ink)}
+.qk-ligne,.qk-doc{border-radius:12px!important}
+html.qk:not(.qk-pv) table{border-color:var(--line)}html.qk:not(.qk-pv) th,html.qk:not(.qk-pv) td{border-color:var(--line)!important}
+html.qk:not(.qk-pv) input,html.qk:not(.qk-pv) select,html.qk:not(.qk-pv) textarea{background:var(--card2);color:var(--ink);border-color:var(--line2)}
+.qk-fiche input[type=checkbox],.qk-ligne input,.qk-auj input,html.qk:not(.qk-pv) input[type=checkbox]{accent-color:var(--ok)}
+.qk-btn,html.qk:not(.qk-pv) a.btn.ghost,html.qk:not(.qk-pv) .btn:not(.fill):not(a.btn){background:var(--card)!important;border:1px solid var(--line2)!important;color:var(--ink)!important;border-radius:10px!important;font:500 13px/1.2 Inter,sans-serif!important}
+.qk-btn.plein,html.qk:not(.qk-pv) a.btn,html.qk:not(.qk-pv) .btn.fill{background:var(--ink)!important;color:var(--bg)!important;border-color:var(--ink)!important}
+.qk-fiche.qk-premiere{border:1px solid var(--line2)!important;background:radial-gradient(120% 140% at 100% 100%,rgba(255,122,47,.18),transparent 55%),var(--card)!important}
+.qk-pq b,.qk-news-k,.qk-auto-q{color:var(--or)!important}
+.qk-barre i,.qk-gb i{background:linear-gradient(90deg,#ff7a2f,#ffb36b)!important}
+.qk-nav,.qk-bar,.qk-fiche,.qk-ligne,.qk-projet,.qk-hero,.qk-pn,.qk-gestes,.qk-chs,#qk-toast,.qk-matin{font-family:Inter,system-ui,-apple-system,sans-serif!important}
+.qk-bar{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:14px}
+.qk-retour{background:var(--card)!important;border-color:var(--line2)!important}
+.qk-ici{font-weight:500}
+/* ancien QG : la grande carte prend l'allure du rituel (halo orange) */
+.qk-hero{background:radial-gradient(120% 140% at 100% 100%,rgba(255,122,47,.26),transparent 55%),var(--card)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:22px!important}
+.qk-go,.qk-pn .qk-go,.qk-hero.calme .qk-go{background:var(--ink)!important;color:var(--bg)!important}
+.qk-2 button,.qk-hero .qk-2>*{color:var(--ink)!important;border-color:var(--line2)!important}
+.qk-en button{background:rgba(255,255,255,.02)!important;border-color:var(--line2)!important;color:var(--ink)!important}
+.qk-rond .f{stroke:var(--line2)}.qk-rond .v{stroke:var(--or)}
+.qk-chips button.on,.qk-chs button.on:not([data-s=fait]){background:var(--ink)!important;color:var(--bg)!important}
+.qk-chs button[data-s=fait],.qk-hero.bravo{background:#1f5d49!important;border-color:#1f5d49!important;color:#fff!important}
+.qk-pn{background:#111113!important;border:1px solid var(--line)}
+#qk-toast{background:var(--ink);color:var(--bg)}
+/* cadre : barre latérale (ordinateur) */
+.qk-side,.qk-tabs{font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+.qk-side{display:none}
+.qk-side nav{display:flex;flex-direction:column;gap:1px}
+.qk-side a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;color:#a1a1a8!important;text-decoration:none!important;font-size:13.5px}
+.qk-side a i{font-style:normal;width:16px;text-align:center;color:#6b6b73}
+.qk-side a:hover{background:#151517;color:#f2f2f3!important}
+.qk-side a.on{background:#1b1b1e;color:#f2f2f3!important;box-shadow:inset 0 0 0 1px #2e2e33}
+.qk-sl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6b6b73;margin:0 0 6px 10px}
+.qk-brand{display:flex;align-items:center;gap:10px;font-size:20px;color:#f2f2f3;padding-left:4px}
+.qk-brand i{width:28px;height:28px;border-radius:8px;background:#f2f2f3;color:#09090a;display:grid;place-items:center;font:600 11px Inter,sans-serif;font-style:normal}
+.qk-sq{width:10px;height:10px;border-radius:3px;flex:none;margin:0 3px}
+.qk-goal{margin-top:auto;background:#151517;border:1px solid #232327;border-radius:14px;padding:14px}
+.qk-gv{margin-top:6px;color:#f2f2f3}.qk-gv b{font-size:20px;font-weight:500}.qk-gv small{color:#6b6b73;font-size:13px}
+.qk-gb{height:6px;background:#232327;border-radius:6px;overflow:hidden;margin-top:10px}.qk-gb i{display:block;height:100%;width:0;border-radius:6px;transition:width .6s}
+.qk-gr{font-size:11px;color:#6b6b73;margin-top:8px}
+@media (min-width:1000px){
+  html.qk:not(.qk-pv) body{padding-left:262px!important;box-sizing:border-box}
+  html.qk:not(.qk-pv) .qk-side{display:flex;flex-direction:column;gap:20px;position:fixed;z-index:30;left:14px;top:14px;bottom:14px;width:232px;box-sizing:border-box;padding:22px 14px;
+    background:#111113;border:1px solid #232327;border-radius:22px;overflow-y:auto;scrollbar-width:none}
+  html.qk:not(.qk-pv) main{padding-top:20px}
+}
+/* cadre : onglets en bas (téléphone et tablette) */
+.qk-tabs{display:none}
+@media (max-width:999px){
+  html.qk:not(.qk-pv) .qk-tabs{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;justify-content:space-around;padding:10px 8px calc(12px + env(safe-area-inset-bottom));
+    background:rgba(17,17,19,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-top:1px solid #232327}
+  .qk-tabs a{flex:1;font-size:11px;color:#6b6b73!important;text-align:center;text-decoration:none!important}
+  .qk-tabs a i{display:block;font-style:normal;font-size:18px;line-height:1.3}
+  .qk-tabs a.on{color:#f2f2f3!important}
+  html.qk:not(.qk-pv) main{padding-bottom:110px!important}
+  html.qk:not(.qk-pv) #qk-toast{bottom:92px}
+  html.qk:not(.qk-pv) h1{font-size:36px!important}
+}
+/* même police partout dans le contenu (les pages MC avaient Courier) ; titres h1 en serif */
+html.qk:not(.qk-pv) main *:not(h1):not(.qk-quoi):not(code):not(pre):not(kbd){font-family:inherit!important}
+html.qk:not(.qk-pv) main{font-family:Inter,system-ui,-apple-system,sans-serif}

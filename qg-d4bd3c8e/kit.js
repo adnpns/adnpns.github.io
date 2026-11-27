@@ -100,6 +100,43 @@
     main.insertBefore(b, main.firstChild);
   }
 
+
+  // ---------- 27/11 : cadre du QG v2 sur toutes les pages (barre latérale sur ordinateur, 4 onglets en bas sur téléphone) ----------
+  var COUL = { argent: "#f5b544", boutique: "#e0457b", mc: "#ff5a4e", stylisme: "#f2f2f3", emploi: "#a78bfa", sport: "#4fd1a5", idees: "#8b8b95", creuser: "#5b5b63" };
+  var MCP = [["accueil-55073c9c.html", "◐", "Accueil"], ["plan-argent-68a2bc7d.html", "€", "Argent"], ["messages-da531680.html", "✉", "Messages"], ["avis-3e81b7d4.html", "★", "Avis"],
+    ["instagram-f5d0d940.html", "◎", "Instagram"], ["visibilite-20414c5a.html", "↗", "Référencement"], ["partenariats-163bb299.html", "✦", "Partenariats"], ["strategie-071d688b.html", "▦", "Stratégie"]];
+  function cadre() {
+    $$(".qk-side,.qk-tabs").forEach(function (x) { x.remove(); });
+    if (C.vue === "pilote") return;
+    var mc = String(C.page).indexOf("mc/") === 0, ici = location.pathname.split("/").pop(), side = el("aside", "qk-side"), tabs = el("nav", "qk-tabs"), h = "", t = "";
+    function lien(u, ic, nom, on) { return '<a href="' + u + '"' + (on ? ' class="on"' : "") + "><i>" + ic + "</i>" + esc(nom) + "</a>"; }
+    if (mc) {
+      var base = C.projets.mc.url.replace(/[^\/]*$/, "");
+      h = '<div class="qk-brand"><i>MC</i>Mauvais Cabots</div><nav><div class="qk-sl">Pages</div>';
+      MCP.forEach(function (m, n) { h += lien(base + m[0], m[1], m[2], ici === m[0]); if (n < 4) t += lien(base + m[0], m[1], m[2], ici === m[0]); });
+      h += "</nav>";
+    } else {
+      var Q = C.qg, docs = C.vue === "docs";
+      h = '<div class="qk-brand"><i>AP</i>QG · Adrien</div><nav><div class="qk-sl">Essentiel</div>' + lien(Q, "◐", "Aujourd'hui") + lien(Q + "#sujets", "▦", "Sujets")
+        + lien(Q + "#ens", "✦", "Vue d'ensemble") + lien(Q + "#aff", "◎", "Affaires") + lien(Q + "documents.html", "▤", "Mes pages", docs) + lien(Q + "ancien.html", "☰", "Liste & brief", C.vue === "qg") + '</nav><nav><div class="qk-sl">Activités</div>';
+      (C.ordre || []).forEach(function (k) { var p = C.projets[k]; if (p) h += '<a href="' + avecCode(p.url) + '"' + (C.projet === k && !docs ? ' class="on"' : "") + '><span class="qk-sq" style="background:' + (COUL[k] || "#888") + '"></span>' + esc(p.nom) + "</a>"; });
+      h += '</nav><div class="qk-goal"><div class="qk-sl">Objectif 26/11 → 10/12</div><div class="qk-gv"><b class="qk-enc">…</b> <small>/ 3 000 €</small></div><div class="qk-gb"><i></i></div><div class="qk-gr"></div></div>';
+      t = lien(Q, "◐", "Aujourd'hui", C.vue === "qg") + lien(Q + "#sujets", "▦", "Sujets", !!C.projet && !docs) + lien(Q + "#ens", "✦", "Ensemble") + lien(Q + "#aff", "◎", "Affaires");
+    }
+    side.innerHTML = h; tabs.innerHTML = t;
+    document.body.appendChild(side); document.body.appendChild(tabs);
+    objectif();
+  }
+  function objectif() {
+    if (ETAT.affaires && ETAT.affaires.length) lsSet("affaires", ETAT.affaires);
+    var g = $(".qk-goal"), AF = (ETAT.affaires && ETAT.affaires.length ? ETAT.affaires : lsGet("affaires")); if (!g) return; if (!AF) { g.style.display = "none"; return; } g.style.display = "";
+    var DEB = "2026-11-26", FIN = "2026-12-10", auj = jour(), tot = AF.filter(function (a) { return a.statut === "encaisse" && String(a.encaisse_le || a.date) >= DEB; })
+      .reduce(function (s, a) { return s + (+a.montant || 0); }, 0), jr = Math.max(0, Math.round((new Date(FIN) - new Date(auj)) / 864e5));
+    $(".qk-enc", g).textContent = Math.round(tot).toLocaleString("fr-FR") + " €";
+    $(".qk-gb i", g).style.width = Math.min(100, tot / 30) + "%";
+    $(".qk-gr", g).textContent = tot >= 3000 ? "Objectif atteint" : "Il reste " + Math.round(3000 - tot).toLocaleString("fr-FR") + " € en " + jr + " jours";
+  }
+
   // ---------- fiche complète ----------
   function boutonsTexte(x) {
     var t = x.texte || "", h = "";
@@ -704,7 +741,7 @@
     var y = window.scrollY; ZONE.style.minHeight = ZONE.offsetHeight + "px"; // la page ne saute pas pendant la mise à jour
     if (C.vue === "pilote") { try { window.dispatchEvent(new CustomEvent("qk-donnees", { detail: ETAT })); } catch (e) {} } else if (C.vue === "qg") vueQG(ZONE); else if (C.vue === "docs") vueDocs(ZONE); else if (C.vue === "auto") vueAuto(ZONE); else vueProjet(ZONE, MAIN);
     ZONE.style.minHeight = ""; if (Math.abs(window.scrollY - y) > 2 && !(window.__qkVise && Date.now() - window.__qkVise < 2000)) window.scrollTo(0, y);
-    appliquerEtat(MAIN); allerA();
+    appliquerEtat(MAIN); allerA(); objectif();
   }
   var NOEUD = null, UNEFOIS = false;
   function demarrer(cfgEl) {
@@ -713,10 +750,10 @@
     MAIN = cfgEl.closest("main") || cfgEl.parentElement;
     document.documentElement.classList.add("qk"); if (C.sombre) document.documentElement.classList.add("qk-sombre");
     var css = C.kit.replace(/kit\.js.*$/, "kit.css");
-    if (!$('link[href="' + css + '"]')) { var st = el("link"); st.rel = "stylesheet"; st.href = css; document.head.appendChild(st); }
+    if (!$$("link[rel=stylesheet]").some(function (x) { return /qg-d4bd3c8e\/kit\.css/.test(x.href); })) { var st = el("link"); st.rel = "stylesheet"; st.href = css; document.head.appendChild(st); }
     if (window.__qkCode) lsSet("code", window.__qkCode); else if (!lsGet("code")) try { var ap = localStorage.getItem("ap_code"); if (ap) lsSet("code", ap); } catch (e) {}
-    $$(".qk-nav,.qk-bar,#qk-zone[data-qk-auto],.qk-ov").forEach(function (x) { x.remove(); });
-    nav(MAIN);
+    $$(".qk-nav,.qk-bar,#qk-zone[data-qk-auto],.qk-ov,.qk-side,.qk-tabs").forEach(function (x) { x.remove(); });
+    nav(MAIN); if (C.vue === "pilote") document.documentElement.classList.add("qk-pv"); cadre();
     ZONE = document.getElementById("qk-zone");
     if (!ZONE) { ZONE = el("div"); ZONE.id = "qk-zone"; ZONE.dataset.qkAuto = "1"; var b = $(".qk-bar", MAIN); b.parentNode.insertBefore(ZONE, b.nextSibling); }
     window.QK = { cfg: C, etat: function () { return ETAT; }, envoyer: envoyer, changerTache: changerTache, majLocale: majLocale, rendre: function () { rendre(); } };
