@@ -312,3 +312,4 @@ html.qk:not(.qk-pv) input,html.qk:not(.qk-pv) select,html.qk:not(.qk-pv) textare
 /* même police partout dans le contenu (les pages MC avaient Courier) ; titres h1 en serif */
 html.qk:not(.qk-pv) main *:not(h1):not(.qk-quoi):not(code):not(pre):not(kbd){font-family:inherit!important}
 html.qk:not(.qk-pv) main{font-family:Inter,system-ui,-apple-system,sans-serif}
+.qk-side a.qk-sous{padding:6px 10px 6px 34px;font-size:13px}.qk-side a.qk-sous i{font-size:11px}

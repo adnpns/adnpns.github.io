@@ -24,7 +24,8 @@
   function avecCode(u, ancre) {
     var a = document.createElement("a"); a.href = u; var c = C.codes && C.codes[a.host];
     if (!c || a.host === location.host) return u + (ancre ? "#" + ancre : "");
-    return u.split("#")[0] + "#c=" + encodeURIComponent(c) + (ancre ? "&" + ancre : "");
+    // ap=1 : le lien vient d'une page d'Adrien → sur Mauvais Cabots, cet appareil garde la barre « QG · Adrien » (Mona ne reçoit jamais ce lien)
+    return u.split("#")[0] + "#c=" + encodeURIComponent(c) + "&ap=1" + (ancre ? "&" + ancre : "");
   }
   function urlTache(t) { var p = C.projets[t.projet]; return avecCode(t.page || (p && p.url) || C.qg, "t-" + t.id); }
   function dateCourte(s) { if (!s) return ""; var p = String(s).split("-"); return p.length === 3 ? p[2] + "/" + p[1] : s; }
@@ -110,7 +111,13 @@
     if (C.vue === "pilote") return;
     var mc = String(C.page).indexOf("mc/") === 0, ici = location.pathname.split("/").pop(), side = el("aside", "qk-side"), tabs = el("nav", "qk-tabs"), h = "", t = "";
     function lien(u, ic, nom, on) { return '<a href="' + u + '"' + (on ? ' class="on"' : "") + "><i>" + ic + "</i>" + esc(nom) + "</a>"; }
-    if (mc) {
+    if (mc && /(^#|&)ap=1/.test(location.hash)) {
+      lsSet("adrien", 1);
+      var rh = location.hash.replace(/(^#|&)ap=1/, "$1").replace(/^#&/, "#").replace(/^#$/, "");
+      try { history.replaceState(null, "", location.pathname + location.search + rh); } catch (e) {}
+    }
+    var base = C.projets.mc.url.replace(/[^\/]*$/, "");
+    if (mc && !lsGet("adrien")) {
       var base = C.projets.mc.url.replace(/[^\/]*$/, "");
       h = '<div class="qk-brand"><i>MC</i>Mauvais Cabots</div><nav><div class="qk-sl">Pages</div>';
       MCP.forEach(function (m, n) { h += lien(base + m[0], m[1], m[2], ici === m[0]); if (n < 4) t += lien(base + m[0], m[1], m[2], ici === m[0]); });
@@ -119,7 +126,8 @@
       var Q = C.qg, docs = C.vue === "docs";
       h = '<div class="qk-brand"><i>AP</i>QG · Adrien</div><nav><div class="qk-sl">Essentiel</div>' + lien(Q, "◐", "Aujourd'hui") + lien(Q + "#sujets", "▦", "Sujets")
         + lien(Q + "#ens", "✦", "Vue d'ensemble") + lien(Q + "#aff", "◎", "Affaires") + lien(Q + "documents.html", "▤", "Mes pages", docs) + lien(Q + "ancien.html", "☰", "Liste & brief", C.vue === "qg") + '</nav><nav><div class="qk-sl">Activités</div>';
-      (C.ordre || []).forEach(function (k) { var p = C.projets[k]; if (p) h += '<a href="' + avecCode(p.url) + '"' + (C.projet === k && !docs ? ' class="on"' : "") + '><span class="qk-sq" style="background:' + (COUL[k] || "#888") + '"></span>' + esc(p.nom) + "</a>"; });
+      (C.ordre || []).forEach(function (k) { var p = C.projets[k]; if (p) h += '<a href="' + avecCode(p.url) + '"' + (C.projet === k && !docs ? ' class="on"' : "") + '><span class="qk-sq" style="background:' + (COUL[k] || "#888") + '"></span>' + esc(p.nom) + "</a>";
+        if (k === "mc" && mc) MCP.forEach(function (m) { h += '<a class="qk-sous' + (ici === m[0] ? " on" : "") + '" href="' + base + m[0] + '"><i>' + m[1] + "</i>" + esc(m[2]) + "</a>"; }); });
       h += '</nav><div class="qk-goal"><div class="qk-sl">Objectif 26/11 → 10/12</div><div class="qk-gv"><b class="qk-enc">…</b> <small>/ 3 000 €</small></div><div class="qk-gb"><i></i></div><div class="qk-gr"></div></div>';
       t = lien(Q, "◐", "Aujourd'hui", C.vue === "qg") + lien(Q + "#sujets", "▦", "Sujets", !!C.projet && !docs) + lien(Q + "#ens", "✦", "Ensemble") + lien(Q + "#aff", "◎", "Affaires");
     }
