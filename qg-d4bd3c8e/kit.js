@@ -106,6 +106,9 @@
   var COUL = { argent: "#f5b544", boutique: "#e0457b", mc: "#ff5a4e", stylisme: "#f2f2f3", emploi: "#a78bfa", sport: "#4fd1a5", idees: "#8b8b95", creuser: "#5b5b63" };
   var MCP = [["accueil-55073c9c.html", "◐", "Accueil"], ["plan-argent-68a2bc7d.html", "€", "Argent"], ["messages-da531680.html", "✉", "Messages"], ["avis-3e81b7d4.html", "★", "Avis"],
     ["instagram-f5d0d940.html", "◎", "Instagram"], ["visibilite-20414c5a.html", "↗", "Référencement"], ["partenariats-163bb299.html", "✦", "Partenariats"], ["strategie-071d688b.html", "▦", "Stratégie"]];
+  // Chiens & éducation (27/11) : fiches chiens (Drive 02 CHIENS), Dog Intelligence (appli locale du Mac, port 8830), vue client Minerva
+  var MCX = [["https://drive.google.com/drive/folders/1V-KmKQtgJhKKXo36rsDgM6tl0IXU9845", "🐕", "Fiches chiens"],
+    ["http://localhost:8830/", "🧠", "Dog Intelligence"], ["chien-minerva-df2e3e1d.html", "🐾", "Minerva · vue client"]];
   function cadre() {
     $$(".qk-side,.qk-tabs").forEach(function (x) { x.remove(); });
     if (C.vue === "pilote") return;
@@ -121,13 +124,15 @@
       var base = C.projets.mc.url.replace(/[^\/]*$/, "");
       h = '<div class="qk-brand"><i>MC</i>Mauvais Cabots</div><nav><div class="qk-sl">Pages</div>';
       MCP.forEach(function (m, n) { h += lien(base + m[0], m[1], m[2], ici === m[0]); if (n < 4) t += lien(base + m[0], m[1], m[2], ici === m[0]); });
+      h += '</nav><nav><div class="qk-sl">Chiens & éducation</div>';
+      MCX.forEach(function (m) { h += '<a href="' + (m[0].indexOf("http") ? base + m[0] : m[0]) + '"' + (ici === m[0] ? ' class="on"' : "") + (m[0].indexOf("http") ? "" : ' target="_blank" rel="noopener"') + "><i>" + m[1] + "</i>" + esc(m[2]) + "</a>"; });
       h += "</nav>";
     } else {
       var Q = C.qg, docs = C.vue === "docs";
       h = '<div class="qk-brand"><i>AP</i>QG · Adrien</div><nav><div class="qk-sl">Essentiel</div>' + lien(Q, "◐", "Aujourd'hui") + lien(Q + "#sujets", "▦", "Sujets")
         + lien(Q + "#ens", "✦", "Vue d'ensemble") + lien(Q + "#aff", "◎", "Affaires") + lien(Q + "documents.html", "▤", "Mes pages", docs) + lien(Q + "ancien.html", "☰", "Liste & brief", C.vue === "qg") + '</nav><nav><div class="qk-sl">Activités</div>';
       (C.ordre || []).forEach(function (k) { var p = C.projets[k]; if (p) h += '<a href="' + avecCode(p.url) + '"' + (C.projet === k && !docs ? ' class="on"' : "") + '><span class="qk-sq" style="background:' + (COUL[k] || "#888") + '"></span>' + esc(p.nom) + "</a>";
-        if (k === "mc" && mc) MCP.forEach(function (m) { h += '<a class="qk-sous' + (ici === m[0] ? " on" : "") + '" href="' + base + m[0] + '"><i>' + m[1] + "</i>" + esc(m[2]) + "</a>"; }); });
+        if (k === "mc" && mc) MCP.concat(MCX).forEach(function (m) { var ext = !m[0].indexOf("http"); h += '<a class="qk-sous' + (ici === m[0] ? " on" : "") + '" href="' + (ext ? m[0] : base + m[0]) + '"' + (ext ? ' target="_blank" rel="noopener"' : "") + "><i>" + m[1] + "</i>" + esc(m[2]) + "</a>"; }); });
       h += '</nav><div class="qk-goal"><div class="qk-sl">Objectif 26/11 → 10/12</div><div class="qk-gv"><b class="qk-enc">…</b> <small>/ 3 000 €</small></div><div class="qk-gb"><i></i></div><div class="qk-gr"></div></div>';
       t = lien(Q, "◐", "Aujourd'hui", C.vue === "qg") + lien(Q + "#sujets", "▦", "Sujets", !!C.projet && !docs) + lien(Q + "#ens", "✦", "Ensemble") + lien(Q + "#aff", "◎", "Affaires");
     }
